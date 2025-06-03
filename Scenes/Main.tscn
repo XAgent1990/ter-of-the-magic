@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://ciettug7hcnrm"]
+
+[ext_resource type="Script" uid="uid://cjyaqdmxi64j0" path="res://Scripts/Game.cs" id="1_idj7w"]
+[ext_resource type="TileSet" uid="uid://d3dchveij2chi" path="res://GameAssets/WorldTileSet.tres" id="2_kln2b"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_idj7w")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(576, -324)
+
+[node name="World" type="Node2D" parent="."]
+scale = Vector2(1, -1)
+
+[node name="BackLayer" type="TileMapLayer" parent="World"]
+
+[node name="MainLayer" type="TileMapLayer" parent="World"]
+tile_set = ExtResource("2_kln2b")
+
+[node name="FrontLayer" type="TileMapLayer" parent="World"]
