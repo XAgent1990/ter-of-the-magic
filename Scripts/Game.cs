@@ -8,9 +8,11 @@ namespace TeroftheMagic.Scripts;
 public partial class Game : Node2D {
     private static Game instance;
     public static Game Instance { get => instance; }
-    public static World world = new(1000, 500);
-    [Export] public ushort minHeight = 375;
-    [Export] public ushort maxHeight = 425;
+    public static World world;
+    private static byte minHeight = 75;
+    public static byte MinHeight { get => minHeight; set => minHeight = value; }
+    private static byte maxHeight = 85;
+    public static byte MaxHeight { get => maxHeight; set => maxHeight = value; }
     private static byte smoothIterations = 12;
     public static byte SmoothIterations { get => smoothIterations; set => smoothIterations = value; }
     private static int seed = 69;
@@ -20,11 +22,10 @@ public partial class Game : Node2D {
     private static readonly FastNoiseLite noise = new();
     private static float heightMod = .5f;
     /// <summary>
-    /// Zoomfaktor der Berge
     /// Wie die Frequenz einer Sinuskurve
     /// </summary>
     public static float HeightMod { get => heightMod; set => heightMod = value; }
-    private static float caveMod = 2f;
+    private static float caveMod = .5f;
     /// <summary>
     /// Zoomfaktor der Höhlen
     /// </summary>
@@ -49,6 +50,7 @@ public partial class Game : Node2D {
     public void GenerateNewWorld() {
         // random = new(seed);
         noise.Seed = seed;
+        world = new(1000, 500);
         GenerateHeightMap();
         for (ushort x = 0; x < world.data.size.X; x++) {
             for (ushort y = 0; y < heightMap[x]; y++) {
@@ -62,9 +64,15 @@ public partial class Game : Node2D {
         GrowMoss();
     }
 
-    public void GenerateHeightMap() {
+    public static void GenerateHeightMap() {
         for (ushort x = 0; x < world.data.size.X; x++) {
-            heightMap[x] = (ushort)ValueMap(0, 1, minHeight, maxHeight, noise.GetNoise1D(x * heightMod) + .5f);
+            heightMap[x] = (ushort)ValueMap(
+                0,
+                1,
+                PercentToWorldHeight(minHeight),
+                PercentToWorldHeight(maxHeight),
+                noise.GetNoise1D(x * heightMod) + .5f
+            );
         }
     }
 
@@ -82,7 +90,7 @@ public partial class Game : Node2D {
         Vector2I max = world.data.size;
         if ((x == 0 || x == max.X - 1 || y == 0 || y == max.Y - 1) && GetMaterial(x, y) != 2)
             return false;
-        byte r = (byte)Math.Round((noise.GetNoise2D(x * caveMod, y * caveMod) + .5f) * 100);
+        byte r = (byte)Math.Round((noise.GetNoise2D(x / caveMod, y / caveMod) + .5f) * 100);
         // float r = random.Next(0, 100);
         // r /= 1 + y / 600f;
         return r > caveThreshold;
