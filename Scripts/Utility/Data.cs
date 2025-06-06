@@ -5,6 +5,7 @@ namespace TeroftheMagic.Scripts.Utility;
 
 public struct WorldData(ushort x, ushort y) {
     public Vector2I size = new(x, y);
+    public ushort[] heightMap = new ushort[x];
     public ushort[,] back = new ushort[x, y];
     public ushort[,] main = new ushort[x, y];
     public ushort[,] front = new ushort[x, y];
