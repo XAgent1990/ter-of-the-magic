@@ -6,6 +6,8 @@ using static TeroftheMagic.Scripts.Utility.Functions;
 namespace TeroftheMagic.Scripts;
 
 public partial class Game : Node2D {
+    private static Game instance;
+    public static Game Instance { get => instance; }
     public static World world = new(1000, 500);
     [Export] public ushort minHeight = 375;
     [Export] public ushort maxHeight = 425;
@@ -31,6 +33,7 @@ public partial class Game : Node2D {
         // Called every time the node is added to the scene.
         // Initialization here.
         GD.Print("Hello from C# to Godot :)");
+        instance = this;
         // noise.Seed = (int)Time.GetUnixTimeFromSystem();
         noise.NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin;
         GenerateNewWorld();
