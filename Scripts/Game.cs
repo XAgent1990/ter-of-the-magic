@@ -10,12 +10,22 @@ public partial class Game : Node2D {
     [Export] public ushort minHeight = 375;
     [Export] public ushort maxHeight = 425;
     [Export(PropertyHint.Range, "0,20")] public byte smoothIterations = 1;
-    private const int seed = 69;
+    private static int seed = 69;
+    public static int Seed { get => seed; set => seed = value; }
     private static Random random = new(seed);
     private static readonly ushort[] heightMap = new ushort[world.data.size.X];
     private static readonly FastNoiseLite noise = new();
-    private static readonly float heightMod = .5f;
-    private static readonly float caveMod = 6f;
+    private static float heightMod = 2f;
+    /// <summary>
+    /// Zoomfaktor der Berge
+    /// Wie die Frequenz einer Sinuskurve
+    /// </summary>
+	public static float HeightMod { get => heightMod; set => heightMod = value; }
+    private static float caveMod = .5f;
+    /// <summary>
+    /// Zoomfaktor der Höhlen
+    /// </summary>
+	public static float CaveMod { get => caveMod; set => caveMod = value; }
 
     public override void _Ready() {
         // Called every time the node is added to the scene.
@@ -24,7 +34,6 @@ public partial class Game : Node2D {
         // noise.Seed = (int)Time.GetUnixTimeFromSystem();
         noise.NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin;
         GenerateNewWorld();
-        SmoothWorld();
         LoadWorld();
     }
 
@@ -38,12 +47,13 @@ public partial class Game : Node2D {
                 world.data.back[x, y] = material;
             }
         }
+        SmoothWorld();
+        GrowMoss();
     }
 
     public void GenerateHeightMap() {
         for (ushort x = 0; x < world.data.size.X; x++) {
-            heightMap[x] = (ushort)ValueMap(0, 1, minHeight, maxHeight, noise.GetNoise1D(heightMod * x) + .5f);
-            // GD.Print($"{noise.GetNoise1D(heightMod * x) + .5f} | {heightMap[x]}");
+            heightMap[x] = (ushort)ValueMap(0, 1, minHeight, maxHeight, noise.GetNoise1D(x / heightMod) + .5f);
         }
     }
 
@@ -57,14 +67,14 @@ public partial class Game : Node2D {
         return 0;
     }
 
-    public static bool IsCave(float x, float y) {
+    public static bool IsCave(ushort x, ushort y) {
         Vector2I max = world.data.size;
-        if (x == 0 || x == max.X - 1 || y == 0 || y == max.Y - 1)
+        if ((x == 0 || x == max.X - 1 || y == 0 || y == max.Y - 1) && GetMaterial(x, y) != 2)
             return false;
-        // float r = (noise.GetNoise2D(caveMod * x, caveMod * y) + .5f) * 100;
-        float r = random.Next(0, 100);
-        r /= 1 + y / 1000f;
-        return r > 45;
+        float r = (noise.GetNoise2D(x / caveMod, y / caveMod) + .5f) * 100;
+        // float r = random.Next(0, 100);
+        // r /= 1 + y / 600f;
+        return r > 60;
     }
 
     public void SmoothWorld() {
@@ -85,18 +95,38 @@ public partial class Game : Node2D {
 
     public static byte SurroundingGround(ushort x, ushort y) {
         Vector2I max = world.data.size;
-        if (x == 0 || x == max.X - 1 || y == 0 || y == max.Y - 1)
-            return 4;
+        // if (x == 0 || x == max.X - 1 || y == 0 || y == max.Y - 1)
+        // 	return 4;
         byte count = 0;
         for (int X = x - 1; X <= x + 1; X++) {
             for (int Y = y - 1; Y <= y + 1; Y++) {
                 if (X == x && Y == y)
                     continue;
-                if (world.data.main[X, Y] != 0)
+                if (X < 0 || X >= max.X || Y < 0 || Y >= max.Y)
+                    count++;
+                else if (world.data.main[X, Y] != 0)
                     count++;
             }
         }
         return count;
+    }
+
+    public void GrowMoss() {
+        for (int i = 0; i < smoothIterations; i++) {
+            for (ushort x = 0; x < world.data.size.X; x++) {
+                for (ushort y = 0; y < heightMap[x]; y++) {
+                    if (world.data.main[x, y] != 2)
+                        continue;
+                    // if (x == 0 || x == world.data.size.X - 1) {
+                    // 	if (world.data.main[x, y + 1] != 0)
+                    // 		continue;
+                    // }
+                    if (SurroundingGround(x, y) == 8)
+                        continue;
+                    world.data.main[x, y] = 1;
+                }
+            }
+        }
     }
 
     public void LoadWorld() {
