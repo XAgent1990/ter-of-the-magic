@@ -14,33 +14,40 @@ public partial class Game : Node2D {
     [Export(PropertyHint.Range, "0,20")] public byte smoothIterations = 1;
     private static int seed = 69;
     public static int Seed { get => seed; set => seed = value; }
-    private static Random random = new(seed);
+    private static Random random;
     private static readonly ushort[] heightMap = new ushort[world.data.size.X];
     private static readonly FastNoiseLite noise = new();
-    private static float heightMod = 2f;
+    private static float heightMod = .5f;
     /// <summary>
     /// Zoomfaktor der Berge
     /// Wie die Frequenz einer Sinuskurve
     /// </summary>
 	public static float HeightMod { get => heightMod; set => heightMod = value; }
-    private static float caveMod = .5f;
+    private static float caveMod = 2f;
     /// <summary>
     /// Zoomfaktor der Höhlen
     /// </summary>
 	public static float CaveMod { get => caveMod; set => caveMod = value; }
+    private static byte caveThreshold = 60;
+    /// <summary>
+    /// Grenzwert für Höhlengenerierung (0-100)
+    /// 0 = alles Höhle, 100 = keine Höhle
+    /// </summary>
+	public static byte CaveThreshold { get => caveThreshold; set => caveThreshold = value; }
 
     public override void _Ready() {
         // Called every time the node is added to the scene.
         // Initialization here.
         GD.Print("Hello from C# to Godot :)");
         instance = this;
-        // noise.Seed = (int)Time.GetUnixTimeFromSystem();
         noise.NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin;
         GenerateNewWorld();
         LoadWorld();
     }
 
     public void GenerateNewWorld() {
+        // random = new(seed);
+        noise.Seed = seed;
         GenerateHeightMap();
         for (ushort x = 0; x < world.data.size.X; x++) {
             for (ushort y = 0; y < heightMap[x]; y++) {
@@ -56,7 +63,7 @@ public partial class Game : Node2D {
 
     public void GenerateHeightMap() {
         for (ushort x = 0; x < world.data.size.X; x++) {
-            heightMap[x] = (ushort)ValueMap(0, 1, minHeight, maxHeight, noise.GetNoise1D(x / heightMod) + .5f);
+            heightMap[x] = (ushort)ValueMap(0, 1, minHeight, maxHeight, noise.GetNoise1D(x * heightMod) + .5f);
         }
     }
 
@@ -74,10 +81,10 @@ public partial class Game : Node2D {
         Vector2I max = world.data.size;
         if ((x == 0 || x == max.X - 1 || y == 0 || y == max.Y - 1) && GetMaterial(x, y) != 2)
             return false;
-        float r = (noise.GetNoise2D(x / caveMod, y / caveMod) + .5f) * 100;
+        float r = (noise.GetNoise2D(x * caveMod, y * caveMod) + .5f) * 100;
         // float r = random.Next(0, 100);
         // r /= 1 + y / 600f;
-        return r > 60;
+        return r > caveThreshold;
     }
 
     public void SmoothWorld() {
