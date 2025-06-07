@@ -41,7 +41,7 @@ public partial class TestUi : Control {
 
         Vector2I playerPos = world.main.LocalToMap(PlayerMovement.PlayerPosition);
         PlayerPosX.Text = $"Player Pos x: [ {playerPos.X} ]";
-        PlayerPosY.Text = $"Player Pos y: [ {playerPos.Y} ]";
+        PlayerPosY.Text = $"Player Pos y: [ {playerPos.Y * -1} ]";
 
     }
 
