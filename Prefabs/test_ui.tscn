@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://bfoceiykrmmhu"]
+[gd_scene load_steps=4 format=3 uid="uid://bfoceiykrmmhu"]
 
 [ext_resource type="Script" uid="uid://ee4aqadw1sff" path="res://Scripts/ConnectIntSpinBox.cs" id="1_a021g"]
+[ext_resource type="Script" uid="uid://da1bh21cnyqim" path="res://Scripts/TestUi.cs" id="1_ob34c"]
 [ext_resource type="Script" uid="uid://y0280m0kk5ep" path="res://Scripts/ButtonsForAny.cs" id="2_ponrc"]
 
 [node name="Test-UI" type="Control"]
@@ -10,18 +11,20 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_ob34c")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="BG" type="ColorRect" parent="."]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 11
+anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 859.0
-grow_horizontal = 2
+offset_left = -214.0
+grow_horizontal = 0
 grow_vertical = 2
 color = Color(0.427493, 0.42749307, 0.42749307, 1)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect"]
+[node name="VBoxContainer" type="VBoxContainer" parent="BG"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,7 +32,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SpinBox" type="SpinBox" parent="ColorRect/VBoxContainer"]
+[node name="SpinBox" type="SpinBox" parent="BG/VBoxContainer"]
 layout_mode = 2
 rounded = true
 allow_greater = true
@@ -38,7 +41,7 @@ update_on_text_changed = true
 prefix = "Seed"
 script = ExtResource("1_a021g")
 
-[node name="SpinBox2" type="SpinBox" parent="ColorRect/VBoxContainer"]
+[node name="SpinBox2" type="SpinBox" parent="BG/VBoxContainer"]
 layout_mode = 2
 step = 0.10000000000582077
 allow_greater = true
@@ -48,7 +51,7 @@ prefix = "HeightMod"
 script = ExtResource("1_a021g")
 action = 1
 
-[node name="SpinBox3" type="SpinBox" parent="ColorRect/VBoxContainer"]
+[node name="SpinBox3" type="SpinBox" parent="BG/VBoxContainer"]
 layout_mode = 2
 step = 0.10000000000582077
 allow_greater = true
@@ -58,7 +61,7 @@ prefix = "CaveMod"
 script = ExtResource("1_a021g")
 action = 2
 
-[node name="SpinBox4" type="SpinBox" parent="ColorRect/VBoxContainer"]
+[node name="SpinBox4" type="SpinBox" parent="BG/VBoxContainer"]
 layout_mode = 2
 max_value = 200.0
 rounded = true
@@ -69,7 +72,7 @@ prefix = "CaveThreshold"
 script = ExtResource("1_a021g")
 action = 3
 
-[node name="SpinBox5" type="SpinBox" parent="ColorRect/VBoxContainer"]
+[node name="SpinBox5" type="SpinBox" parent="BG/VBoxContainer"]
 layout_mode = 2
 max_value = 50.0
 rounded = true
@@ -80,7 +83,7 @@ prefix = "SmoothIterations"
 script = ExtResource("1_a021g")
 action = 4
 
-[node name="SpinBox6" type="SpinBox" parent="ColorRect/VBoxContainer"]
+[node name="SpinBox6" type="SpinBox" parent="BG/VBoxContainer"]
 layout_mode = 2
 max_value = 50.0
 rounded = true
@@ -91,7 +94,7 @@ prefix = "minHeight"
 script = ExtResource("1_a021g")
 action = 5
 
-[node name="SpinBox7" type="SpinBox" parent="ColorRect/VBoxContainer"]
+[node name="SpinBox7" type="SpinBox" parent="BG/VBoxContainer"]
 layout_mode = 2
 max_value = 50.0
 rounded = true
@@ -102,8 +105,32 @@ prefix = "maxHeight"
 script = ExtResource("1_a021g")
 action = 6
 
-[node name="Button" type="Button" parent="ColorRect/VBoxContainer"]
+[node name="Button" type="Button" parent="BG/VBoxContainer"]
 layout_mode = 2
 focus_mode = 0
 text = "ReMakeGameWorld"
 script = ExtResource("2_ponrc")
+
+[node name="PPX" type="Label" parent="BG/VBoxContainer"]
+layout_mode = 2
+text = "Player Pos x: [ 000 ]"
+
+[node name="MPX" type="Label" parent="BG/VBoxContainer"]
+layout_mode = 2
+text = "Mouse Pos x: [ 000 ]"
+
+[node name="CPX" type="Label" parent="BG/VBoxContainer"]
+layout_mode = 2
+text = "CanvaS Pos x: [ 000 ]"
+
+[node name="PPY" type="Label" parent="BG/VBoxContainer"]
+layout_mode = 2
+text = "Player Pos y: [ 000 ]"
+
+[node name="MPY" type="Label" parent="BG/VBoxContainer"]
+layout_mode = 2
+text = "Mouse Pos y: [ 000 ]"
+
+[node name="CPY" type="Label" parent="BG/VBoxContainer"]
+layout_mode = 2
+text = "Canvas Pos y: [ 000 ]"

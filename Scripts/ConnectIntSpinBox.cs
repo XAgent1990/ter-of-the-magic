@@ -56,11 +56,11 @@ public partial class ConnectIntSpinBox : SpinBox {
                 Game.SmoothIterations = (byte)newValue;
                 break;
             case GameActions.minH:
-                GD.Print($"SmoothIterations = {newValue}");
+                GD.Print($"MinHeight = {newValue}");
                 Game.MinHeight = (byte)newValue;
                 break;
             case GameActions.maxH:
-                GD.Print($"SmoothIterations = {newValue}");
+                GD.Print($"MaxHeight = {newValue}");
                 Game.MaxHeight = (byte)newValue;
                 break;
         }
