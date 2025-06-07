@@ -8,8 +8,7 @@ public partial class ButtonsForAny : Button {
         Pressed += ButtonPressed;
     }
 
-    private void ButtonPressed() {
-        Game.Instance.GenerateNewWorld();
-        Game.Instance.LoadWorld();
+    private new void ButtonPressed() {
+        Game.Instance.Init();
     }
 }

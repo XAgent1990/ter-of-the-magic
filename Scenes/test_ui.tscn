@@ -104,5 +104,6 @@ action = 6
 
 [node name="Button" type="Button" parent="ColorRect/VBoxContainer"]
 layout_mode = 2
+focus_mode = 0
 text = "ReMakeGameWorld"
 script = ExtResource("2_ponrc")
