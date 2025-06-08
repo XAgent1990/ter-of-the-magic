@@ -1,7 +1,9 @@
 using Godot;
 using System;
+using System.Threading.Tasks;
 using TeroftheMagic.Scripts.Utility;
 using static TeroftheMagic.Scripts.Utility.Functions;
+using TileData = TeroftheMagic.Scripts.Utility.TileData;
 
 namespace TeroftheMagic.Scripts;
 
@@ -38,6 +40,11 @@ public partial class Game : Node2D {
 
     private static bool initGen;
 
+    private const byte treeChance = 10;
+    private const byte minTreeHeight = 7;
+    private const byte maxTreeHeight = 23;
+    private const byte branchChance = 20;
+
     public override void _Ready() {
         // Called every time the node is added to the scene.
         // Initialization here.
@@ -66,13 +73,14 @@ public partial class Game : Node2D {
             for (ushort y = 0; y < world.data.heightMap[x]; y++) {
                 ushort material = GetMaterial(x, y);
                 if (!IsCave(x, y))
-                    world.data.main[x, y] = material;
-                world.data.back[x, y] = material;
+                    world.data.main.SetTileData(x, y, new(TileSetId.main, material));
+                world.data.back.SetTileData(x, y, new(TileSetId.main, material, 1));
             }
         }
         initGen = false;
         SmoothWorld();
         GrowMoss();
+        PlantTrees();
     }
 
     public static void GenerateHeightMap() {
@@ -111,7 +119,7 @@ public partial class Game : Node2D {
         return r > caveThreshold;
     }
 
-    public static void SmoothWorld() {
+    private static void SmoothWorld() {
         WorldLayerData temp = world.data.main.Clone();
         for (int i = 0; i < smoothIterations; i++) {
             for (ushort x = 1; x < world.data.size.X - 1; x++) {
@@ -131,8 +139,8 @@ public partial class Game : Node2D {
         }
     }
 
+    public static byte SurroundingGround(Vector2I pos) => SurroundingGround((ushort)pos.X, (ushort)pos.Y);
     public static byte SurroundingGround(ushort x, ushort y) {
-        Vector2I max = world.data.size;
         // if (IsOnEdge(x, y))
         // 	return 4;
         byte count = 0;
@@ -149,71 +157,191 @@ public partial class Game : Node2D {
         return count;
     }
 
-    public static void GrowMoss() {
-        for (ushort x = 0; x < world.data.size.X; x++) {
-            for (ushort y = 0; y < world.data.heightMap[x]; y++) {
-                if (world.data.main[x, y] == 2 && SurroundingGround(x, y) < 8)
-                    world.data.main[x, y] = 1;
+    private static void GrowMoss() {
+        Vector2I pos = new();
+        for (pos.X = 0; pos.X < world.data.size.X; pos.X++) {
+            for (pos.Y = 0; pos.Y < world.data.heightMap[pos.X]; pos.Y++) {
+                if (world.data.main[pos] == 2 && SurroundingGround(pos) < 8)
+                    world.data.main[pos] = 1;
             }
         }
+    }
+
+    private static void PlantTrees() {
+        for (ushort x = 1; x < world.data.size.X - 1; x++) {
+            Vector2I idPos = new(x, world.data.size.Y - 1);
+            while (world.data.main[idPos] == 0) {
+                idPos.Y--;
+            }
+            idPos.Y++;
+            if (random.Next(100) < treeChance && TryPlantTree(idPos))
+                x += 2;
+        }
+    }
+
+    public static bool TryPlantTree(Vector2I pos) {
+        Vector2I temp = pos;
+        temp.Y--;
+        // Check for Moss ground
+        if (world.data.main[temp.X - 1, temp.Y] != 1 ||
+            world.data.main[temp.X, temp.Y] != 1 ||
+            world.data.main[temp.X + 1, temp.Y] != 1)
+            return false;
+
+        byte height = (byte)random.Next(minTreeHeight, maxTreeHeight + 1);
+        // Check for space
+        for (temp.Y += 1; temp.Y < pos.Y + height; temp.Y++) {
+            if (world.data.main[temp.X - 1, temp.Y] != 0 ||
+                world.data.main[temp.X, temp.Y] != 0 ||
+                world.data.main[temp.X + 1, temp.Y] != 0)
+                return false;
+        }
+
+        PlantTree(pos, height);
+
+        return true;
+    }
+
+    private static void PlantTree(Vector2I pos, byte height) {
+        // Place Stump
+        world.data.main.SetTileData(pos, new(TileSetId.tree, 9));
+
+        // Place Logs
+        bool left, right, lastLeft = false, lastRight = false;
+        for (int y = 1; y < height - 3; y++) {
+            pos.Y++;
+            left = !lastLeft && random.Next(100) < branchChance;
+            right = !lastRight && random.Next(100) < branchChance;
+            lastLeft = left;
+            lastRight = right;
+            if (!left && !right) {
+                world.data.main.SetTileData(pos, new(TileSetId.tree, 6));
+            }
+            else if (left && !right) {
+                world.data.main.SetTileData(pos, new(TileSetId.tree, 3));
+                world.data.main.SetTileData(pos.X - 1, pos.Y, new(TileSetId.tree, 7));
+            }
+            else if (!left && right) {
+                world.data.main.SetTileData(pos, new(TileSetId.tree, 3, 1));
+                world.data.main.SetTileData(pos.X + 1, pos.Y, new(TileSetId.tree, 7, 1));
+            }
+            else if (left && right) {
+                world.data.main.SetTileData(pos, new(TileSetId.tree, 8));
+                world.data.main.SetTileData(pos.X - 1, pos.Y, new(TileSetId.tree, 7));
+                world.data.main.SetTileData(pos.X + 1, pos.Y, new(TileSetId.tree, 7, 1));
+            }
+        }
+
+        // Place Crown
+        pos.Y++;
+        world.data.main.SetTileData(pos, new(TileSetId.tree, 5));
+        world.data.main.SetTileData(pos.X - 1, pos.Y, new(TileSetId.tree, 4));
+        world.data.main.SetTileData(pos.X + 1, pos.Y, new(TileSetId.tree, 4, 1));
+        pos.Y++;
+        world.data.main.SetTileData(pos, new(TileSetId.tree, 2));
+        world.data.main.SetTileData(pos.X - 1, pos.Y, new(TileSetId.tree, 1));
+        world.data.main.SetTileData(pos.X + 1, pos.Y, new(TileSetId.tree, 1, 1));
+        pos.Y++;
+        world.data.main.SetTileData(pos, new(TileSetId.tree, 1, 2));
+        world.data.main.SetTileData(pos.X - 1, pos.Y, new(TileSetId.tree, 4, 2));
+        world.data.main.SetTileData(pos.X + 1, pos.Y, new(TileSetId.tree, 4, 3));
     }
 
     public static void LoadWorld() {
         Vector2I pos = new();
         for (pos.Y = 0; pos.Y < world.data.size.Y; pos.Y++) {
             for (pos.X = 0; pos.X < world.data.size.X; pos.X++) {
-                world.main.SetCell(pos, 1, TileMapIdToCoord(world.data.main[pos]));
-                world.back.SetCell(pos, 1, TileMapIdToCoord(world.data.back[pos]), 1);
+                if (world.data.back[pos] != 0)
+                    UpdateCell(WorldLayer.back, pos);
+                if (world.data.main[pos] != 0)
+                    UpdateCell(WorldLayer.main, pos);
             }
         }
     }
 
     public void SpawnPlayer() {
         Node2D player = GetNode<Node2D>("Player");
-        Vector2 pos = new();
-        Vector2I idPos = new();
-        idPos.X = world.data.size.X / 2;
-        idPos.Y = world.data.size.Y - 1;
+        Vector2I idPos = new(
+            world.data.size.X / 2,
+            world.data.size.Y - 1
+        );
         while (world.data.main[idPos] == 0)
             idPos.Y--;
-        pos = idPos * 16;
+        Vector2 pos = idPos * 16;
         pos.Y = -pos.Y;
         player.Position = pos;
     }
 
     public static void BreakBlock(bool backLayer = false) {
         Vector2I mapPos = world.main.LocalToMap(world.main.GetLocalMousePosition());
-        if (IsOutOfBounds(mapPos) || world.data.main[mapPos] == 5)
+        mapPos.Y *= -1;
+        if (IsOutOfBounds(mapPos) || IsBedrock(mapPos))
             return;
         if (!backLayer) {
             if (world.data.main[mapPos] == 0)
                 return;
+            TileData td = world.data.main.GetTileData(mapPos);
+            if (td.sourceId == TileSetId.tree && (td.id == 2 || td.id == 3 || td.id == 5 || td.id == 6 || td.id == 8 || td.id == 9)) {
+                BreakTree(mapPos);
+                return;
+            }
             world.data.main[mapPos] = 0;
-            world.main.SetCell(mapPos);
+            UpdateCell(WorldLayer.main, mapPos);
+            if (world.data.main.GetTileData(mapPos).sourceId != TileSetId.main)
+                return;
+            mapPos.Y++;
+            if (world.data.main.GetTileData(mapPos).sourceId == TileSetId.tree) {
+                BreakTree(mapPos);
+            }
         }
         else {
             if (world.data.main[mapPos] != 0)
                 return;
             world.data.back[mapPos] = 0;
-            world.back.SetCell(mapPos);
+            UpdateCell(WorldLayer.back, mapPos);
+        }
+    }
+
+    public static async void BreakTree(Vector2I pos) {
+        TileData td = world.data.main.GetTileData(pos);
+        while (!IsOutOfBounds(pos) && td.sourceId == TileSetId.tree && td.id != 0) {
+            Vector2I temp = pos;
+            world.data.main[temp] = 0;
+            UpdateCell(WorldLayer.main, temp);
+            temp.X--;
+            if (world.data.main.GetTileData(temp).sourceId == TileSetId.tree) {
+                world.data.main[temp] = 0;
+                UpdateCell(WorldLayer.main, temp);
+            }
+            temp.X += 2;
+            if (world.data.main.GetTileData(temp).sourceId == TileSetId.tree) {
+                world.data.main[temp] = 0;
+                UpdateCell(WorldLayer.main, temp);
+            }
+            pos.Y++;
+            td = world.data.main.GetTileData(pos);
+            ushort id = world.data.main[pos];
+            if (!(id == 1 || id == 2 || id == 5))
+                await Task.Delay(TimeSpan.FromMilliseconds(25));
         }
     }
 
     public static void PlaceBlock(bool backLayer) {
         Vector2I mapPos = world.main.LocalToMap(world.main.GetLocalMousePosition());
-        if (IsOutOfBounds(mapPos) || world.data.back[mapPos] == 5)
+        mapPos.Y *= -1;
+        if (IsOutOfBounds(mapPos) || IsBedrock(mapPos))
             return;
         if (!backLayer) {
             if (world.data.main[mapPos] != 0)
                 return;
-            world.data.main[mapPos] = 3;
-            world.main.SetCell(mapPos, 1, TileMapIdToCoord(3));
+            world.data.main.SetTileData(mapPos, new(TileSetId.main, 3));
+            UpdateCell(WorldLayer.main, mapPos);
         }
         else {
             if (world.data.back[mapPos] != 0)
                 return;
-            world.data.back[mapPos] = 3;
-            world.back.SetCell(mapPos, 1, TileMapIdToCoord(3), 1);
+            world.data.main.SetTileData(mapPos, new(TileSetId.main, 3, 1));
+            UpdateCell(WorldLayer.back, mapPos);
         }
     }
 }

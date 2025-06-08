@@ -3,6 +3,10 @@ using System;
 
 namespace TeroftheMagic.Scripts.Utility;
 
+public enum WorldLayer { back, main, front }
+
+public enum TileSetId{ main, tree }
+
 public struct WorldData(ushort x, ushort y) {
     public Vector2I size = new(x, y);
     public ushort[] heightMap = new ushort[x];
@@ -18,23 +22,34 @@ public struct World(ushort x, ushort y) {
     public TileMapLayer front;
 }
 
+public struct TileData(TileSetId sourceId, ushort id, byte alt = 0) {
+    public TileSetId sourceId = sourceId;
+    public ushort id = id;
+    public byte alt = alt;
+}
+
 public class WorldLayerData {
 
-    private readonly ushort[,] arr;
+    private readonly TileData[,] arr;
 
-    public WorldLayerData(ushort x, ushort y) => arr = new ushort[x, y];
+    public WorldLayerData(ushort x, ushort y) => arr = new TileData[x, y];
 
-    private WorldLayerData(ushort[,] arr) => this.arr = arr;
+    private WorldLayerData(TileData[,] arr) => this.arr = arr;
+
+    public void SetTileData(Vector2I pos, TileData td) => arr[pos.X, pos.Y] = td;
+    public void SetTileData(int x, int y, TileData td) => arr[x, y] = td;
+    public TileData GetTileData(Vector2I pos) => arr[pos.X, pos.Y];
+    public TileData GetTileData(ushort x, ushort y) => arr[x, y];
 
     public ushort this[Vector2I pos] {
-        get => arr[pos.X, pos.Y];
-        set => arr[pos.X, pos.Y] = value;
+        get => arr[pos.X, pos.Y].id;
+        set => arr[pos.X, pos.Y].id = value;
     }
 
     public ushort this[int x, int y] {
-        get => arr[x, y];
-        set => arr[x, y] = value;
+        get => arr[x, y].id;
+        set => arr[x, y].id = value;
     }
 
-    public WorldLayerData Clone() => new((ushort[,])arr.Clone());
+    public WorldLayerData Clone() => new((TileData[,])arr.Clone());
 }
