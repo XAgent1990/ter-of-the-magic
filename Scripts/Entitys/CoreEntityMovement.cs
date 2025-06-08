@@ -1,8 +1,9 @@
 using Godot;
 using System;
 
-public partial class CoreMovement : CharacterBody2D {
-
+public partial class CoreEntityMovement : CharacterBody2D {
+    //flip image 
+    //set speed
 
 
 
