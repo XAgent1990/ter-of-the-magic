@@ -251,10 +251,8 @@ public partial class Game : Node2D {
         Vector2I pos = new();
         for (pos.Y = 0; pos.Y < world.data.size.Y; pos.Y++) {
             for (pos.X = 0; pos.X < world.data.size.X; pos.X++) {
-                if (world.data.back[pos] != 0)
-                    UpdateCell(WorldLayer.back, pos);
-                if (world.data.main[pos] != 0)
-                    UpdateCell(WorldLayer.main, pos);
+                UpdateCell(WorldLayer.back, pos);
+                UpdateCell(WorldLayer.main, pos);
             }
         }
     }

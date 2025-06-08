@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://dwakc763c1vvr"]
+
+[node name="InventoyCell" type="Control"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 3
+offset_right = 120.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.47007585, 0.47007585, 0.47007585, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="ColorRect"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0.13725491)
+
+[node name="TextureRect" type="TextureRect" parent="ColorRect/ColorRect2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1

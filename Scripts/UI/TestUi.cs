@@ -33,15 +33,14 @@ public partial class TestUi : Control {
         CanPosX.Text = $"Canvas Pos x: [ {vector2.X} ]";
         CanPosY.Text = $"Canvas Pos y: [ {vector2.Y} ]";
 
-
         Vector2I mapPos = world.main.LocalToMap(world.main.GetLocalMousePosition());
         MousePosX.Text = $"Mouse Pos x: [ {mapPos.X} ]";
-        MousePosY.Text = $"Mouse Pos y: [ {mapPos.Y} ]";
+        MousePosY.Text = $"Mouse Pos y: [ {mapPos.Y *= -1} ]";
 
 
         Vector2I playerPos = world.main.LocalToMap(PlayerMovement.PlayerPosition);
         PlayerPosX.Text = $"Player Pos x: [ {playerPos.X} ]";
-        PlayerPosY.Text = $"Player Pos y: [ {playerPos.Y * -1} ]";
+        PlayerPosY.Text = $"Player Pos y: [ {playerPos.Y *= -1} ]";
 
     }
 

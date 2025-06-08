@@ -1,0 +1,198 @@
+[gd_scene load_steps=2 format=3 uid="uid://dclive1vjj1cl"]
+
+[ext_resource type="PackedScene" uid="uid://dwakc763c1vvr" path="res://Prefabs/inventoy_cell.tscn" id="1_eyqil"]
+
+[node name="Inventory" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 600.0
+offset_bottom = -248.0
+grow_vertical = 2
+color = Color(1, 1, 1, 0.4)
+
+[node name="GridContainer" type="GridContainer" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 7.0
+offset_right = -6.0
+offset_bottom = -7.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = 6
+theme_override_constants/v_separation = 6
+columns = 9
+
+[node name="InventoyCell" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell2" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell3" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell4" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell5" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell6" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell7" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell8" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell9" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell10" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell11" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell12" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell13" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell14" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell15" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell16" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell17" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell18" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell19" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell20" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell21" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell22" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell23" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell24" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell25" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell26" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell27" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell28" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell29" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell30" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell31" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell32" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell33" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell34" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell35" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell36" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell37" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell38" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell39" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell40" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell41" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell42" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell43" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell44" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell45" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell46" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell47" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell48" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell49" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell50" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell51" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell52" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell53" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell54" parent="Background/GridContainer" instance=ExtResource("1_eyqil")]
+layout_mode = 2

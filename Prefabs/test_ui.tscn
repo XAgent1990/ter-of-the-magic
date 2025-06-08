@@ -134,3 +134,5 @@ text = "Mouse Pos y: [ 000 ]"
 [node name="CPY" type="Label" parent="BG/VBoxContainer"]
 layout_mode = 2
 text = "Canvas Pos y: [ 000 ]"
+
+[connection signal="pressed" from="BG/VBoxContainer/Button" to="BG/VBoxContainer/Button" method="ButtonPressed"]
