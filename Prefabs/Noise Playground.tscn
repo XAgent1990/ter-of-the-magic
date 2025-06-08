@@ -1,0 +1,62 @@
+[gd_scene load_steps=10 format=3 uid="uid://jaxqlhwf2x64"]
+
+[sub_resource type="Gradient" id="Gradient_qoopm"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.41379312)
+colors = PackedColorArray(0.0944114, 0, 0.6754935, 1, 1, 1, 1, 0)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_261sw"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_xr35j"]
+width = 1024
+height = 1024
+color_ramp = SubResource("Gradient_qoopm")
+noise = SubResource("FastNoiseLite_261sw")
+
+[sub_resource type="Gradient" id="Gradient_3kemr"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.37931034)
+colors = PackedColorArray(0.5019608, 0, 0, 1, 1, 1, 1, 0)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_107m4"]
+noise_type = 2
+seed = 16
+frequency = 0.0206
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0h5xp"]
+width = 1024
+height = 1024
+invert = true
+color_ramp = SubResource("Gradient_3kemr")
+noise = SubResource("FastNoiseLite_107m4")
+
+[sub_resource type="Gradient" id="Gradient_xjfon"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0.15047021, 0.21943574)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 0)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_lqgqb"]
+noise_type = 3
+seed = 69
+frequency = 0.0044
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mh6vy"]
+width = 1024
+height = 1024
+color_ramp = SubResource("Gradient_xjfon")
+noise = SubResource("FastNoiseLite_lqgqb")
+
+[node name="Background" type="Node2D"]
+scale = Vector2(1, -1)
+
+[node name="Caves" type="Sprite2D" parent="."]
+texture = SubResource("NoiseTexture2D_xr35j")
+centered = false
+
+[node name="Ore" type="Sprite2D" parent="."]
+texture = SubResource("NoiseTexture2D_0h5xp")
+centered = false
+
+[node name="idk" type="Sprite2D" parent="."]
+texture = SubResource("NoiseTexture2D_mh6vy")
+centered = false

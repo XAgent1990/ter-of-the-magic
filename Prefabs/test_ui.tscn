@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://bfoceiykrmmhu"]
 
-[ext_resource type="Script" uid="uid://ee4aqadw1sff" path="res://Scripts/ConnectIntSpinBox.cs" id="1_a021g"]
-[ext_resource type="Script" uid="uid://da1bh21cnyqim" path="res://Scripts/TestUi.cs" id="1_ob34c"]
-[ext_resource type="Script" uid="uid://y0280m0kk5ep" path="res://Scripts/ButtonsForAny.cs" id="2_ponrc"]
+[ext_resource type="Script" uid="uid://ee4aqadw1sff" path="res://Scripts/UI/ConnectIntSpinBox.cs" id="1_a021g"]
+[ext_resource type="Script" uid="uid://da1bh21cnyqim" path="res://Scripts/UI/TestUi.cs" id="1_ob34c"]
+[ext_resource type="Script" uid="uid://y0280m0kk5ep" path="res://Scripts/UI/ButtonsForAny.cs" id="2_ponrc"]
 
 [node name="Test-UI" type="Control"]
 layout_mode = 3
