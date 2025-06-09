@@ -30,10 +30,10 @@ public partial class ConnectIntSpinBox : SpinBox {
                 Value = Game.MaxHeight;
                 break;
             case GameActions.mapx:
-                //Value = Game.MaxHeight;
+                Value = Game.WorldWidth;
                 break;
             case GameActions.mapy:
-                //Value = Game.MaxHeight;
+                Value = Game.WorldHeight;
                 break;
         }
 
@@ -72,11 +72,11 @@ public partial class ConnectIntSpinBox : SpinBox {
                 break;
             case GameActions.mapx:
                 Print($"Map X = {newValue}");
-                //Game.
+                Game.WorldWidth = (ushort)newValue;
                 break;
             case GameActions.mapy:
                 Print($"Map Y = {newValue}");
-                //Game.
+                Game.WorldHeight = (ushort)newValue;
                 break;
         }
     }
@@ -118,11 +118,11 @@ public partial class ConnectIntSpinBox : SpinBox {
     }
     public void SetMapSizeX(double newValue) {
         GD.Print($"MapSizeX = {newValue}");
-        Game.MinHeight = (byte)newValue;
+        Game.WorldWidth = (byte)newValue;
     }
     public void SetMapSizeY(double newValue) {
         GD.Print($"MapSizeY = {newValue}");
-        Game.MaxHeight = (byte)newValue;
+        Game.WorldHeight = (byte)newValue;
     }
 }
 

@@ -1,7 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://ciettug7hcnrm"]
+[gd_scene load_steps=6 format=3 uid="uid://ciettug7hcnrm"]
 
 [ext_resource type="Script" uid="uid://cjyaqdmxi64j0" path="res://Scripts/Game.cs" id="1_idj7w"]
-[ext_resource type="TileSet" uid="uid://d3dchveij2chi" path="res://GameAssets/WorldTileSet.tres" id="2_kln2b"]
 [ext_resource type="PackedScene" uid="uid://c366gkf0gv6gc" path="res://Prefabs/player.tscn" id="2_rgh2o"]
 [ext_resource type="Script" uid="uid://ld38cvp7naj6" path="res://Scripts/UI/UIController.cs" id="4_pbw6q"]
 [ext_resource type="PackedScene" uid="uid://bfoceiykrmmhu" path="res://Prefabs/test_ui.tscn" id="4_rgh2o"]
@@ -13,15 +12,14 @@ metadata/_edit_horizontal_guides_ = [-86.0]
 
 [node name="World" type="Node2D" parent="."]
 
-[node name="BackLayer" type="TileMapLayer" parent="World"]
-tile_set = ExtResource("2_kln2b")
+[node name="BackLayer" type="Node2D" parent="World"]
 
-[node name="MainLayer" type="TileMapLayer" parent="World"]
-tile_set = ExtResource("2_kln2b")
+[node name="MainLayer" type="Node2D" parent="World"]
 
-[node name="FrontLayer" type="TileMapLayer" parent="World"]
+[node name="FrontLayer" type="Node2D" parent="World"]
 
 [node name="Player" parent="." instance=ExtResource("2_rgh2o")]
+z_index = 250
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 scale = Vector2(0.5, 0.5)

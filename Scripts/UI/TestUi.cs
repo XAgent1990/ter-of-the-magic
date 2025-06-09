@@ -29,16 +29,18 @@ public partial class TestUi : Control {
     public override void _Process(double delta) {
         base._Process(delta);
 
+        if (!loaded) return;
+
         Vector2 vector2 = GetLocalMousePosition();
         CanPosX.Text = $"Canvas Pos x: [ {vector2.X} ]";
         CanPosY.Text = $"Canvas Pos y: [ {vector2.Y} ]";
 
-        Vector2I mapPos = world.main.LocalToMap(world.main.GetLocalMousePosition());
+        Vector2 mousePos = World.Main.GetLocalMousePosition();
+        Vector2I mapPos = new((int)(mousePos.X / 16), (int)(mousePos.Y / 16));
         MousePosX.Text = $"Mouse Pos x: [ {mapPos.X} ]";
         MousePosY.Text = $"Mouse Pos y: [ {mapPos.Y *= -1} ]";
 
-
-        Vector2I playerPos = world.main.LocalToMap(PlayerMovement.PlayerPosition);
+        Vector2 playerPos = PlayerMovement.PlayerPosition / 16;
         PlayerPosX.Text = $"Player Pos x: [ {playerPos.X} ]";
         PlayerPosY.Text = $"Player Pos y: [ {playerPos.Y *= -1} ]";
 

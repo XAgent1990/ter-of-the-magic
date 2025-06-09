@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://0o7sjwx7705r"]
+
+[ext_resource type="TileSet" uid="uid://d3dchveij2chi" path="res://GameAssets/WorldTileSet.tres" id="1_gck6b"]
+
+[node name="TileMapLayer" type="TileMapLayer"]
+z_index = 200
+tile_set = ExtResource("1_gck6b")
+physics_quadrant_size = 25

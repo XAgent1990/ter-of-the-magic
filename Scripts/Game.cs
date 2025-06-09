@@ -1,26 +1,32 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TeroftheMagic.Scripts.Utility;
 using static TeroftheMagic.Scripts.Utility.Functions;
-using TileData = TeroftheMagic.Scripts.Utility.TileData;
+using TileData = TeroftheMagic.Scripts.TileData;
 
 namespace TeroftheMagic.Scripts;
 
 public partial class Game : Node2D {
     private static Game instance;
     public static Game Instance { get => instance; }
-    public static World world;
+    public static List<Task> GenTasks = new();
+    public static bool loaded = false;
+    private static ushort worldWidth = 2100;
+    public static ushort WorldWidth { get => worldWidth; set => worldWidth = value; }
+    private static ushort worldHeight = 600;
+    public static ushort WorldHeight { get => worldHeight; set => worldHeight = value; }
     private static byte minHeight = 75;
     public static byte MinHeight { get => minHeight; set => minHeight = value; }
     private static byte maxHeight = 85;
     public static byte MaxHeight { get => maxHeight; set => maxHeight = value; }
-    private static byte smoothIterations = 12;
+    private static byte smoothIterations = 0;
     public static byte SmoothIterations { get => smoothIterations; set => smoothIterations = value; }
     private static int seed = 69;
     public static int Seed { get => seed; set => seed = value; }
-    private static Random random;
-    private static readonly FastNoiseLite noise = new();
+    public static Random random;
+    public static readonly FastNoiseLite noise = new();
     private static float heightMod = .5f;
     /// <summary>
     /// Wie die Frequenz einer Sinuskurve
@@ -38,12 +44,13 @@ public partial class Game : Node2D {
     /// </summary>
     public static byte CaveThreshold { get => caveThreshold; set => caveThreshold = value; }
 
-    private static bool initGen;
+    public static bool initGen;
 
     private const byte treeChance = 10;
     private const byte minTreeHeight = 7;
     private const byte maxTreeHeight = 23;
     private const byte branchChance = 20;
+    private System.Diagnostics.Stopwatch s;
 
     public override void _Ready() {
         // Called every time the node is added to the scene.
@@ -51,91 +58,65 @@ public partial class Game : Node2D {
         GD.Print("Hello from C# to Godot :)");
         instance = this;
         noise.NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin;
-        CallDeferred("Init");
+        World.Back = GetNode<Node2D>("World/BackLayer");
+        World.Main = GetNode<Node2D>("World/MainLayer");
+        World.Front = GetNode<Node2D>("World/FrontLayer");
+        Init();
     }
-
     public void Init() {
-        GenerateNewWorld();
-        world.back = GetNode<TileMapLayer>("World/BackLayer");
-        world.main = GetNode<TileMapLayer>("World/MainLayer");
-        world.front = GetNode<TileMapLayer>("World/FrontLayer");
-        LoadWorld();
-        SpawnPlayer();
-    }
-
-    public static void GenerateNewWorld() {
+        s = System.Diagnostics.Stopwatch.StartNew();
+        loaded = false;
         random = new(seed);
         noise.Seed = seed;
-        world = new(1000, 500);
-        GenerateHeightMap();
         initGen = true;
-        for (ushort x = 0; x < world.data.size.X; x++) {
-            for (ushort y = 0; y < world.data.heightMap[x]; y++) {
-                ushort material = GetMaterial(x, y);
-                if (!IsCave(x, y))
-                    world.data.main.SetTileData(x, y, new(TileSetId.main, material));
-                world.data.back.SetTileData(x, y, new(TileSetId.main, material, 1));
-            }
-        }
+        World.New(worldWidth, worldHeight);
+        Task.WaitAll([.. GenTasks]);
+        // foreach (Task task in GenTasks) {
+        //     GD.Print($"Task {task.Id} Status: {task.Status}");
+        // }
+        GenTasks.Clear();
         initGen = false;
+        GD.Print($"Time for after Gen: {s.ElapsedMilliseconds}");
         SmoothWorld();
+        GD.Print($"Time for after Smooth: {s.ElapsedMilliseconds}");
         GrowMoss();
+        GD.Print($"Time for after Moss: {s.ElapsedMilliseconds}");
         PlantTrees();
+        GD.Print($"Time for after Trees: {s.ElapsedMilliseconds}");
+        World.Load();
+        Task.WaitAll([.. GenTasks]);
+        GenTasks.Clear();
+        SpawnPlayer();
+        loaded = true;
+        GD.Print($"Time for after Load: {s.ElapsedMilliseconds}");
     }
 
-    public static void GenerateHeightMap() {
-        for (ushort x = 0; x < world.data.size.X; x++) {
-            world.data.heightMap[x] = (ushort)ValueMap(
-                0,
-                1,
-                PercentToWorldHeight(minHeight),
-                PercentToWorldHeight(maxHeight),
-                noise.GetNoise1D(x * heightMod) + .5f
-            );
+    public override void _Process(double delta) {
+        base._Process(delta);
+        if (!loaded) return;
+        if (s.IsRunning) {
+            GD.Print($"Time for after Frame: {s.ElapsedMilliseconds}");
+            s.Stop();
         }
     }
-
-    public static ushort GetMaterial(ushort x, ushort y) {
-        if (initGen && y < 5)
-            return (ushort)(random.Next(0, 5) >= y ? 5 : 4);
-        else if (y < world.data.heightMap[x] / 4)
-            return 4;
-        else if (y < world.data.heightMap[x] * 3.5f / 4)
-            return 3;
-        else if (y < world.data.heightMap[x])
-            return 2;
-        return 0;
-    }
-
-    public static bool IsCave(ushort x, ushort y) {
-        Vector2I max = world.data.size;
-        if (GetMaterial(x, y) == 5) // Bedrock
-            return false;
-        if (IsOnEdge(x, y) && GetMaterial(x, y) != 2)
-            return false;
-        byte r = (byte)Math.Round((noise.GetNoise2D(x / caveMod, y / caveMod) + .5f) * 100);
-        // float r = random.Next(0, 100);
-        // r /= 1 + y / 600f;
-        return r > caveThreshold;
-    }
-
     private static void SmoothWorld() {
-        WorldLayerData temp = world.data.main.Clone();
+        WorldLayerData temp = WorldData.main.Clone();
+        Vector2I pos = new();
         for (int i = 0; i < smoothIterations; i++) {
-            for (ushort x = 1; x < world.data.size.X - 1; x++) {
-                for (ushort y = 1; y < world.data.heightMap[x]; y++) {
-                    if (world.data.main[x, y] == 5) { // Bedrock
-                        temp[x, y] = 5;
+            for (pos.X = 1; pos.X < WorldData.size.X - 1; pos.X++) {
+                for (pos.Y = 1; pos.Y < WorldData.heightMap[pos.X]; pos.Y++) {
+                    if (WorldData.main[pos].id == 5) { // Bedrock
+                        temp[pos].id = 5;
                         continue;
                     }
-                    temp[x, y] = SurroundingGround(x, y) switch {
+                    temp[pos].id = SurroundingGround(pos) switch {
                         < 4 => 0,
-                        > 4 => GetMaterial(x, y),
-                        _ => world.data.main[x, y],
+                        > 4 => World.GetMaterial(pos),
+                        _ => WorldData.main[pos].id,
                     };
                 }
             }
-            world.data.main = temp.Clone();
+            WorldData.main = temp.Clone();
         }
     }
 
@@ -144,13 +125,14 @@ public partial class Game : Node2D {
         // if (IsOnEdge(x, y))
         // 	return 4;
         byte count = 0;
-        for (int X = x - 1; X <= x + 1; X++) {
-            for (int Y = y - 1; Y <= y + 1; Y++) {
-                if (X == x && Y == y)
+        Vector2I pos = new();
+        for (pos.X = x - 1; pos.X <= x + 1; pos.X++) {
+            for (pos.Y = y - 1; pos.Y <= y + 1; pos.Y++) {
+                if (pos.X == x && pos.Y == y)
                     continue;
-                if (IsOutOfBounds(X, Y))
+                if (IsOutOfBounds(pos))
                     count++;
-                else if (world.data.main[X, Y] != 0)
+                else if (WorldData.main[pos].id != 0)
                     count++;
             }
         }
@@ -159,18 +141,18 @@ public partial class Game : Node2D {
 
     private static void GrowMoss() {
         Vector2I pos = new();
-        for (pos.X = 0; pos.X < world.data.size.X; pos.X++) {
-            for (pos.Y = 0; pos.Y < world.data.heightMap[pos.X]; pos.Y++) {
-                if (world.data.main[pos] == 2 && SurroundingGround(pos) < 8)
-                    world.data.main[pos] = 1;
+        for (pos.X = 0; pos.X < WorldData.size.X; pos.X++) {
+            for (pos.Y = 0; pos.Y < WorldData.heightMap[pos.X]; pos.Y++) {
+                if (WorldData.main[pos].id == 2 && SurroundingGround(pos) < 8)
+                    WorldData.main[pos].id = 1;
             }
         }
     }
 
     private static void PlantTrees() {
-        for (ushort x = 1; x < world.data.size.X - 1; x++) {
-            Vector2I idPos = new(x, world.data.size.Y - 1);
-            while (world.data.main[idPos] == 0) {
+        for (ushort x = 1; x < WorldData.size.X - 2; x++) {
+            Vector2I idPos = new(x, WorldData.size.Y - minTreeHeight);
+            while (WorldData.main[idPos].id == 0) {
                 idPos.Y--;
             }
             idPos.Y++;
@@ -183,17 +165,21 @@ public partial class Game : Node2D {
         Vector2I temp = pos;
         temp.Y--;
         // Check for Moss ground
-        if (world.data.main[temp.X - 1, temp.Y] != 1 ||
-            world.data.main[temp.X, temp.Y] != 1 ||
-            world.data.main[temp.X + 1, temp.Y] != 1)
+        if (WorldData.main[temp + Vector2I.Left].id != 1 ||
+            WorldData.main[temp].id != 1 ||
+            WorldData.main[temp + Vector2I.Right].id != 1)
             return false;
 
         byte height = (byte)random.Next(minTreeHeight, maxTreeHeight + 1);
+        // Check if fits
+        if (pos.Y + height > WorldData.size.Y)
+            return false;
+
         // Check for space
         for (temp.Y += 1; temp.Y < pos.Y + height; temp.Y++) {
-            if (world.data.main[temp.X - 1, temp.Y] != 0 ||
-                world.data.main[temp.X, temp.Y] != 0 ||
-                world.data.main[temp.X + 1, temp.Y] != 0)
+            if (WorldData.main[temp + Vector2I.Left].id != 0 ||
+                WorldData.main[temp].id != 0 ||
+                WorldData.main[temp + Vector2I.Right].id != 0)
                 return false;
         }
 
@@ -204,7 +190,7 @@ public partial class Game : Node2D {
 
     private static void PlantTree(Vector2I pos, byte height) {
         // Place Stump
-        world.data.main.SetTileData(pos, new(TileSetId.tree, 9));
+        WorldData.main[pos] = new(TileSetId.tree, 9);
 
         // Place Logs
         bool left, right, lastLeft = false, lastRight = false;
@@ -215,55 +201,45 @@ public partial class Game : Node2D {
             lastLeft = left;
             lastRight = right;
             if (!left && !right) {
-                world.data.main.SetTileData(pos, new(TileSetId.tree, 6));
+                WorldData.main[pos] = new(TileSetId.tree, 6);
             }
             else if (left && !right) {
-                world.data.main.SetTileData(pos, new(TileSetId.tree, 3));
-                world.data.main.SetTileData(pos.X - 1, pos.Y, new(TileSetId.tree, 7));
+                WorldData.main[pos] = new(TileSetId.tree, 3);
+                WorldData.main[pos + Vector2I.Left] = new(TileSetId.tree, 7);
             }
             else if (!left && right) {
-                world.data.main.SetTileData(pos, new(TileSetId.tree, 3, 1));
-                world.data.main.SetTileData(pos.X + 1, pos.Y, new(TileSetId.tree, 7, 1));
+                WorldData.main[pos] = new(TileSetId.tree, 3, 1);
+                WorldData.main[pos + Vector2I.Right] = new(TileSetId.tree, 7, 1);
             }
             else if (left && right) {
-                world.data.main.SetTileData(pos, new(TileSetId.tree, 8));
-                world.data.main.SetTileData(pos.X - 1, pos.Y, new(TileSetId.tree, 7));
-                world.data.main.SetTileData(pos.X + 1, pos.Y, new(TileSetId.tree, 7, 1));
+                WorldData.main[pos] = new(TileSetId.tree, 8);
+                WorldData.main[pos + Vector2I.Left] = new(TileSetId.tree, 7);
+                WorldData.main[pos + Vector2I.Right] = new(TileSetId.tree, 7, 1);
             }
         }
 
         // Place Crown
         pos.Y++;
-        world.data.main.SetTileData(pos, new(TileSetId.tree, 5));
-        world.data.main.SetTileData(pos.X - 1, pos.Y, new(TileSetId.tree, 4));
-        world.data.main.SetTileData(pos.X + 1, pos.Y, new(TileSetId.tree, 4, 1));
+        WorldData.main[pos] = new(TileSetId.tree, 5);
+        WorldData.main[pos + Vector2I.Left] = new(TileSetId.tree, 4);
+        WorldData.main[pos + Vector2I.Right] = new(TileSetId.tree, 4, 1);
         pos.Y++;
-        world.data.main.SetTileData(pos, new(TileSetId.tree, 2));
-        world.data.main.SetTileData(pos.X - 1, pos.Y, new(TileSetId.tree, 1));
-        world.data.main.SetTileData(pos.X + 1, pos.Y, new(TileSetId.tree, 1, 1));
+        WorldData.main[pos] = new(TileSetId.tree, 2);
+        WorldData.main[pos + Vector2I.Left] = new(TileSetId.tree, 1);
+        WorldData.main[pos + Vector2I.Right] = new(TileSetId.tree, 1, 1);
         pos.Y++;
-        world.data.main.SetTileData(pos, new(TileSetId.tree, 1, 2));
-        world.data.main.SetTileData(pos.X - 1, pos.Y, new(TileSetId.tree, 4, 2));
-        world.data.main.SetTileData(pos.X + 1, pos.Y, new(TileSetId.tree, 4, 3));
-    }
-
-    public static void LoadWorld() {
-        Vector2I pos = new();
-        for (pos.Y = 0; pos.Y < world.data.size.Y; pos.Y++) {
-            for (pos.X = 0; pos.X < world.data.size.X; pos.X++) {
-                UpdateCell(WorldLayer.back, pos);
-                UpdateCell(WorldLayer.main, pos);
-            }
-        }
+        WorldData.main[pos] = new(TileSetId.tree, 1, 2);
+        WorldData.main[pos + Vector2I.Left] = new(TileSetId.tree, 4, 2);
+        WorldData.main[pos + Vector2I.Right] = new(TileSetId.tree, 4, 3);
     }
 
     public void SpawnPlayer() {
         Node2D player = GetNode<Node2D>("Player");
         Vector2I idPos = new(
-            world.data.size.X / 2,
-            world.data.size.Y - 1
+            WorldData.size.X / 2,
+            WorldData.size.Y - 1
         );
-        while (world.data.main[idPos] == 0)
+        while (WorldData.main[idPos].id == 0)
             idPos.Y--;
         Vector2 pos = idPos * 16;
         pos.Y = -pos.Y;
@@ -271,74 +247,75 @@ public partial class Game : Node2D {
     }
 
     public static void BreakBlock(bool backLayer = false) {
-        Vector2I mapPos = world.main.LocalToMap(world.main.GetLocalMousePosition());
+        Vector2 mousePos = World.Main.GetLocalMousePosition();
+        Vector2I mapPos = new((int)(mousePos.X / 16), (int)(mousePos.Y / 16));
         mapPos.Y *= -1;
         if (IsOutOfBounds(mapPos) || IsBedrock(mapPos))
             return;
         if (!backLayer) {
-            if (world.data.main[mapPos] == 0)
+            if (WorldData.main[mapPos].id == 0)
                 return;
-            TileData td = world.data.main.GetTileData(mapPos);
-            if (td.sourceId == TileSetId.tree && (td.id == 2 || td.id == 3 || td.id == 5 || td.id == 6 || td.id == 8 || td.id == 9)) {
+            TileData td = WorldData.main[mapPos];
+            if (td.sourceId == TileSetId.tree && IsWood(mapPos)) {
                 BreakTree(mapPos);
                 return;
             }
-            world.data.main[mapPos] = 0;
+            td.id = 0;
             UpdateCell(WorldLayer.main, mapPos);
-            if (world.data.main.GetTileData(mapPos).sourceId != TileSetId.main)
+            if (td.sourceId != TileSetId.main)
                 return;
             mapPos.Y++;
-            if (world.data.main.GetTileData(mapPos).sourceId == TileSetId.tree) {
+            if (WorldData.main[mapPos].sourceId == TileSetId.tree && IsWood(mapPos)) {
                 BreakTree(mapPos);
             }
         }
         else {
-            if (world.data.main[mapPos] != 0)
+            if (WorldData.main[mapPos].id != 0)
                 return;
-            world.data.back[mapPos] = 0;
+            WorldData.back[mapPos].id = 0;
             UpdateCell(WorldLayer.back, mapPos);
         }
     }
 
     public static async void BreakTree(Vector2I pos) {
-        TileData td = world.data.main.GetTileData(pos);
+        TileData td = WorldData.main[pos];
         while (!IsOutOfBounds(pos) && td.sourceId == TileSetId.tree && td.id != 0) {
             Vector2I temp = pos;
-            world.data.main[temp] = 0;
+            WorldData.main[temp].id = 0;
             UpdateCell(WorldLayer.main, temp);
             temp.X--;
-            if (world.data.main.GetTileData(temp).sourceId == TileSetId.tree) {
-                world.data.main[temp] = 0;
+            if (WorldData.main[temp].sourceId == TileSetId.tree) {
+                WorldData.main[temp].id = 0;
                 UpdateCell(WorldLayer.main, temp);
             }
             temp.X += 2;
-            if (world.data.main.GetTileData(temp).sourceId == TileSetId.tree) {
-                world.data.main[temp] = 0;
+            if (WorldData.main[temp].sourceId == TileSetId.tree) {
+                WorldData.main[temp].id = 0;
                 UpdateCell(WorldLayer.main, temp);
             }
             pos.Y++;
-            td = world.data.main.GetTileData(pos);
-            ushort id = world.data.main[pos];
-            if (!(id == 1 || id == 2 || id == 5))
+            td = WorldData.main[pos];
+            if (!(td.id == 1 || td.id == 2 || td.id == 5))
                 await Task.Delay(TimeSpan.FromMilliseconds(25));
         }
     }
 
     public static void PlaceBlock(bool backLayer) {
-        Vector2I mapPos = world.main.LocalToMap(world.main.GetLocalMousePosition());
+        Vector2 mousePos = World.Main.GetLocalMousePosition();
+        Vector2I mapPos = new((int)(mousePos.X / 16), (int)(mousePos.Y / 16));
         mapPos.Y *= -1;
         if (IsOutOfBounds(mapPos) || IsBedrock(mapPos))
             return;
         if (!backLayer) {
-            if (world.data.main[mapPos] != 0)
+            if (WorldData.main[mapPos].id != 0)
                 return;
-            world.data.main.SetTileData(mapPos, new(TileSetId.main, 3));
+            WorldData.main[mapPos] = new(TileSetId.main, 3);
             UpdateCell(WorldLayer.main, mapPos);
         }
         else {
-            if (world.data.back[mapPos] != 0)
+            if (WorldData.back[mapPos].id != 0)
                 return;
-            world.data.main.SetTileData(mapPos, new(TileSetId.main, 3, 1));
+            WorldData.main[mapPos] = new(TileSetId.main, 3, 1);
             UpdateCell(WorldLayer.back, mapPos);
         }
     }

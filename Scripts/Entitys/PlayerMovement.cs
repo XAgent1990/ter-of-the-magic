@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using static TeroftheMagic.Scripts.Game;
 
 public partial class PlayerMovement : CoreEntityMovement {
     public const float Speed = 300.0f;
@@ -9,6 +10,8 @@ public partial class PlayerMovement : CoreEntityMovement {
 
     public override void _PhysicsProcess(double delta) {
         Vector2 velocity = Velocity;
+
+        if (!loaded) return;
 
         // Add the gravity.
         if (!IsOnFloor()) {
