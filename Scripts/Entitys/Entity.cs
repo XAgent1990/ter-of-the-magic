@@ -11,8 +11,10 @@ public partial class Entity : Node {
     /// Flying
     /// Mass
     /// StepHeight
-    /// Stzate Mashine
+    /// State Mashine
     /// Moves!
     /// Destroyer of blocks
+    /// Inventory
+    /// Shops
     /// 
 }

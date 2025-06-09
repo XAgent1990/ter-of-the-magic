@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://bfoceiykrmmhu"]
+[gd_scene load_steps=5 format=3 uid="uid://bfoceiykrmmhu"]
 
 [ext_resource type="Script" uid="uid://ee4aqadw1sff" path="res://Scripts/UI/ConnectIntSpinBox.cs" id="1_a021g"]
 [ext_resource type="Script" uid="uid://da1bh21cnyqim" path="res://Scripts/UI/TestUi.cs" id="1_ob34c"]
 [ext_resource type="Script" uid="uid://y0280m0kk5ep" path="res://Scripts/UI/ButtonsForAny.cs" id="2_ponrc"]
+[ext_resource type="Theme" uid="uid://hjgbplpdvb0p" path="res://GameAssets/Pixeloid_Theme.tres" id="2_xbsx2"]
 
 [node name="Test-UI" type="Control"]
 layout_mode = 3
@@ -19,7 +20,7 @@ anchors_preset = 11
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -214.0
+offset_left = -239.0
 grow_horizontal = 0
 grow_vertical = 2
 color = Color(0.427493, 0.42749307, 0.42749307, 1)
@@ -34,6 +35,7 @@ grow_vertical = 2
 
 [node name="SpinBox" type="SpinBox" parent="BG/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("2_xbsx2")
 rounded = true
 allow_greater = true
 allow_lesser = true
@@ -43,6 +45,7 @@ script = ExtResource("1_a021g")
 
 [node name="SpinBox2" type="SpinBox" parent="BG/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("2_xbsx2")
 step = 0.10000000000582077
 allow_greater = true
 allow_lesser = true
@@ -53,6 +56,7 @@ action = 1
 
 [node name="SpinBox3" type="SpinBox" parent="BG/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("2_xbsx2")
 step = 0.10000000000582077
 allow_greater = true
 allow_lesser = true
@@ -63,6 +67,7 @@ action = 2
 
 [node name="SpinBox4" type="SpinBox" parent="BG/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("2_xbsx2")
 max_value = 200.0
 rounded = true
 allow_greater = true
@@ -74,17 +79,19 @@ action = 3
 
 [node name="SpinBox5" type="SpinBox" parent="BG/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("2_xbsx2")
 max_value = 50.0
 rounded = true
 allow_greater = true
 allow_lesser = true
 update_on_text_changed = true
-prefix = "SmoothIterations"
+prefix = "Smoothing"
 script = ExtResource("1_a021g")
 action = 4
 
 [node name="SpinBox6" type="SpinBox" parent="BG/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("2_xbsx2")
 max_value = 50.0
 rounded = true
 allow_greater = true
@@ -96,6 +103,7 @@ action = 5
 
 [node name="SpinBox7" type="SpinBox" parent="BG/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("2_xbsx2")
 max_value = 50.0
 rounded = true
 allow_greater = true
@@ -105,34 +113,65 @@ prefix = "maxHeight"
 script = ExtResource("1_a021g")
 action = 6
 
+[node name="SpinBox8" type="SpinBox" parent="BG/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_xbsx2")
+max_value = 50.0
+rounded = true
+allow_greater = true
+allow_lesser = true
+update_on_text_changed = true
+prefix = "Map X"
+script = ExtResource("1_a021g")
+action = 7
+
+[node name="SpinBox9" type="SpinBox" parent="BG/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_xbsx2")
+max_value = 50.0
+rounded = true
+allow_greater = true
+allow_lesser = true
+update_on_text_changed = true
+prefix = "Map Y"
+script = ExtResource("1_a021g")
+action = 8
+
 [node name="Button" type="Button" parent="BG/VBoxContainer"]
 layout_mode = 2
 focus_mode = 0
+theme = ExtResource("2_xbsx2")
 text = "ReMakeGameWorld"
 script = ExtResource("2_ponrc")
 
 [node name="PPX" type="Label" parent="BG/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("2_xbsx2")
 text = "Player Pos x: [ 000 ]"
 
 [node name="MPX" type="Label" parent="BG/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("2_xbsx2")
 text = "Mouse Pos x: [ 000 ]"
 
 [node name="CPX" type="Label" parent="BG/VBoxContainer"]
 layout_mode = 2
-text = "CanvaS Pos x: [ 000 ]"
+theme = ExtResource("2_xbsx2")
+text = "Canvas Pos x: [ 000 ]"
 
 [node name="PPY" type="Label" parent="BG/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("2_xbsx2")
 text = "Player Pos y: [ 000 ]"
 
 [node name="MPY" type="Label" parent="BG/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("2_xbsx2")
 text = "Mouse Pos y: [ 000 ]"
 
 [node name="CPY" type="Label" parent="BG/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("2_xbsx2")
 text = "Canvas Pos y: [ 000 ]"
 
 [connection signal="pressed" from="BG/VBoxContainer/Button" to="BG/VBoxContainer/Button" method="ButtonPressed"]
