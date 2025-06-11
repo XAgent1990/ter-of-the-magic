@@ -50,6 +50,27 @@ public class World {
         return r > CaveThreshold;
     }
 
+    public static void SmoothWorld() {
+        WorldData.SmoothWorld();
+    }
+
+    public static byte SurroundingGround(Vector2I pos) => SurroundingGround((ushort)pos.X, (ushort)pos.Y);
+    public static byte SurroundingGround(ushort x, ushort y) {
+        byte count = 0;
+        Vector2I pos = new();
+        for (pos.X = x - 1; pos.X <= x + 1; pos.X++) {
+            for (pos.Y = y - 1; pos.Y <= y + 1; pos.Y++) {
+                if (pos.X == x && pos.Y == y)
+                    continue;
+                if (IsOutOfBounds(pos))
+                    count++;
+                else if (WorldData.main[pos].id != 0)
+                    count++;
+            }
+        }
+        return count;
+    }
+
     public static void Load() {
         WorldData.Load();
     }
@@ -92,6 +113,10 @@ public class WorldData {
                 noise.GetNoise1D(x * HeightMod) + .5f
             );
         }
+    }
+
+    public static void SmoothWorld() {
+        main.SmoothWorld();
     }
 
     public static void Load() {
@@ -140,6 +165,18 @@ public class WorldLayerData {
             }
         }
     }
+
+    public void SmoothWorld() {
+        ushort cs = WorldData.chunkSize;
+        ushort chunkCX = (ushort)(WorldData.size.X / cs);
+        ushort chunkCY = (ushort)(WorldData.size.Y / cs);
+        for (ushort cx = 0; cx < chunkCX; cx++) {
+            for (ushort cy = 0; cy < chunkCY; cy++) {
+                chunks[cx, cy].SmoothChunk();
+            }
+        }
+    }
+
     public void Load(WorldLayer layer) {
         ushort cs = WorldData.chunkSize;
         ushort chunkCX = (ushort)(WorldData.size.X / cs);
@@ -154,7 +191,7 @@ public class WorldLayerData {
 
 public class WorldChunk(Vector2I origin, WorldLayer layer) {
     public static PackedScene TMLPrefab = GD.Load<PackedScene>("res://Prefabs/TileMapLayer.tscn");
-    private readonly TileData[,] chunk = new TileData[WorldData.chunkSize, WorldData.chunkSize];
+    private TileData[,] chunk = new TileData[WorldData.chunkSize, WorldData.chunkSize];
     public Vector2I origin = origin;
     public WorldLayer layer = layer;
     public TileMapLayer TML;
@@ -192,14 +229,35 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
         }));
     }
 
+    public void SmoothChunk() {
+        GenTasks.Add(Task.Run(() => {
+            TileData[,] temp = new TileData[WorldData.chunkSize, WorldData.chunkSize];
+            Vector2I off = new();
+            for (off.X = 0; off.X < WorldData.chunkSize; off.X++) {
+                for (off.Y = 0; off.Y < WorldData.chunkSize; off.Y++) {
+                    if (chunk[off.X, off.Y].id == 5) { // Bedrock
+                        temp[off.X, off.Y].id = 5;
+                        continue;
+                    }
+                    Vector2I pos = origin + off;
+                    temp[off.X, off.Y].id = World.SurroundingGround(pos) switch {
+                        < 4 => 0,
+                        > 4 => World.GetMaterial(pos),
+                        _ => chunk[off.X, off.Y].id,
+                    };
+                }
+            }
+            chunk = temp.Clone() as TileData[,];
+        }));
+    }
+
     public void Load(WorldLayer layer) {
         TML = TMLPrefab.Instantiate<TileMapLayer>();
-        switch (layer)
-        {
+        switch (layer) {
             case WorldLayer.back:
                 World.Back.AddChild(TML);
                 break;
-                case WorldLayer.main:
+            case WorldLayer.main:
                 World.Main.AddChild(TML);
                 break;
         }
