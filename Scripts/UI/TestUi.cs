@@ -31,11 +31,11 @@ public partial class TestUi : Control {
 
         if (!loaded) return;
 
-        Vector2 vector2 = GetLocalMousePosition();
-        CanPosX.Text = $"Canvas Pos x: [ {vector2.X} ]";
-        CanPosY.Text = $"Canvas Pos y: [ {vector2.Y} ]";
+        Vector2 canvasPos = GetLocalMousePosition();
+        CanPosX.Text = $"Canvas Pos x: [ {canvasPos.X} ]";
+        CanPosY.Text = $"Canvas Pos y: [ {canvasPos.Y} ]";
 
-        Vector2 mousePos = World.Main.GetLocalMousePosition();
+        Vector2 mousePos = World.Main.ToGlobal(World.Main.GetLocalMousePosition());
         Vector2I mapPos = new((int)(mousePos.X / 16), (int)(mousePos.Y / 16));
         MousePosX.Text = $"Mouse Pos x: [ {mapPos.X} ]";
         MousePosY.Text = $"Mouse Pos y: [ {mapPos.Y *= -1} ]";
