@@ -20,7 +20,7 @@ anchors_preset = 11
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -239.0
+offset_left = -280.0
 grow_horizontal = 0
 grow_vertical = 2
 color = Color(0.427493, 0.42749307, 0.42749307, 1)
@@ -173,5 +173,10 @@ text = "Mouse Pos y: [ 000 ]"
 layout_mode = 2
 theme = ExtResource("2_xbsx2")
 text = "Canvas Pos y: [ 000 ]"
+
+[node name="FPS" type="Label" parent="BG/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_xbsx2")
+text = "FPS: [ 000 ]"
 
 [connection signal="pressed" from="BG/VBoxContainer/Button" to="BG/VBoxContainer/Button" method="ButtonPressed"]
