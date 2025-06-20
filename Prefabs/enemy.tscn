@@ -39,11 +39,13 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1dp5w"]
-size = Vector2(11, 17)
+size = Vector2(10, 16)
 
 [node name="Enemy" type="CharacterBody2D"]
+z_index = 249
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+modulate = Color(1, 0.14117648, 0.14117648, 1)
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_ghaa6")
 animation = &"Idle"
@@ -51,5 +53,5 @@ autoplay = "Idle"
 frame_progress = 0.577076
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0.5, -8.5)
+position = Vector2(0, -8)
 shape = SubResource("RectangleShape2D_1dp5w")

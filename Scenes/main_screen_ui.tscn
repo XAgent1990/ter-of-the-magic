@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=3 uid="uid://cbikb5fw5h2y5"]
+
+[ext_resource type="Theme" uid="uid://hjgbplpdvb0p" path="res://GameAssets/Pixeloid_Theme.tres" id="1_u0uqo"]
+[ext_resource type="Script" uid="uid://bwjl7ghuimoe8" path="res://Scripts/UI/MainButton.cs" id="2_wh8yw"]
+
+[node name="Main_Screen_UI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.4506483, 0.4506483, 0.45064825, 1)
+
+[node name="Button" type="Button" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -67.0
+offset_top = -30.0
+offset_right = 67.0
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+theme = ExtResource("1_u0uqo")
+text = "Generate"
+script = ExtResource("2_wh8yw")
+
+[connection signal="button_down" from="ColorRect/Button" to="ColorRect/Button" method="OnButtonPress"]
