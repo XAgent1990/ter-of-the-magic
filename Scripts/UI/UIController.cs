@@ -8,7 +8,7 @@ public partial class UIController : CanvasLayer {
 
     private static bool mouseLeftBlocked, mouseRightBlocked;
 
-    public override void _Process(double delta) {
+    public override void _PhysicsProcess(double delta) {
         base._Process(delta);
 
         if (Input.IsMouseButtonPressed(MouseButton.Left)) {

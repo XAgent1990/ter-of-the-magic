@@ -7,6 +7,7 @@ using TeroftheMagic.Scripts;
 using TeroftheMagic.Scripts.Utility;
 using static TeroftheMagic.Scripts.Game;
 using static TeroftheMagic.Scripts.Utility.Functions;
+using Logger = TeroftheMagic.Scripts.Utility.Logger;
 
 namespace TeroftheMagic.Scripts;
 
@@ -71,7 +72,9 @@ public class World {
 	}
 
 	public static void BreakBlock(WorldLayer layer, Vector2I pos) {
+		Logger.StartTimer("World.BreakBlock");
 		WorldData.TargetLayer(layer).BreakBlock(pos);
+		Logger.StopTimer("World.BreakBlock");
 	}
 
 	public static void Load() {
@@ -189,10 +192,12 @@ public class WorldLayerData {
 	}
 
 	public void BreakBlock(Vector2I pos) {
+		Logger.StartTimer("WorldLayerData.BreakBlock");
 		ushort cs = WorldData.chunkSize;
 		Vector2I cPos = pos / cs;
 		Vector2I cOff = pos % cs;
 		chunks[cPos.X, cPos.Y].BreakBlock(cOff);
+		Logger.StopTimer("WorldLayerData.BreakBlock");
 	}
 
 	public void Load(WorldLayer layer) {
@@ -270,9 +275,11 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 	}
 
 	public void BreakBlock(Vector2I cOff) {
-		GD.Print(origin+cOff);
+		Logger.StartTimer("WorldChunk.BreakBlock");
+		// GD.Print(origin+cOff);
 		chunk[cOff.X, cOff.Y].id = 0;
 		TML.UpdateCell(cOff);
+		Logger.StopTimer("WorldChunk.BreakBlock");
 	}
 
 	public void Load(WorldLayer layer) {

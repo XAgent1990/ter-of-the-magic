@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TeroftheMagic.Scripts.Utility;
 using static TeroftheMagic.Scripts.Utility.Functions;
-using TileData = TeroftheMagic.Scripts.TileData;
+using Logger = TeroftheMagic.Scripts.Utility.Logger;
 
 namespace TeroftheMagic.Scripts;
 
@@ -98,6 +98,8 @@ public partial class Game : Node2D {
 			GD.Print($"Time for after Frame: {s.ElapsedMilliseconds}");
 			s.Stop();
 		}
+		if (Input.IsPhysicalKeyPressed(Key.L))
+			Logger.LogCurrentMax();
 	}
 
 	private static void SmoothWorld() {
@@ -216,6 +218,7 @@ public partial class Game : Node2D {
 	}
 
 	public static void BreakBlock(bool backLayer = false) {
+		Logger.StartTimer("Game.BreakBlock");
 		Vector2 mousePos = World.Main.ToGlobal(World.Main.GetLocalMousePosition());
 		Vector2I mapPos = new((int)(mousePos.X / 16), (int)Math.Ceiling(-mousePos.Y / 16));
 		if (IsOutOfBounds(mapPos) || IsBedrock(mapPos))
@@ -241,29 +244,30 @@ public partial class Game : Node2D {
 				return;
 			World.BreakBlock(WorldLayer.back, mapPos);
 		}
+		Logger.StopTimer("Game.BreakBlock");
 	}
 
 	public static async void BreakTree(Vector2I pos) {
-		TileData td = WorldData.main[pos];
-		while (!IsOutOfBounds(pos) && td.sourceId == TileSetId.tree && td.id != 0) {
-			Vector2I temp = pos;
-			WorldData.main[temp].id = 0;
-			UpdateCell(WorldLayer.main, temp);
-			temp.X--;
-			if (WorldData.main[temp].sourceId == TileSetId.tree) {
-				WorldData.main[temp].id = 0;
-				UpdateCell(WorldLayer.main, temp);
-			}
-			temp.X += 2;
-			if (WorldData.main[temp].sourceId == TileSetId.tree) {
-				WorldData.main[temp].id = 0;
-				UpdateCell(WorldLayer.main, temp);
-			}
-			pos.Y++;
-			td = WorldData.main[pos];
-			if (!(td.id == 1 || td.id == 2 || td.id == 5))
-				await Task.Delay(TimeSpan.FromMilliseconds(25));
-		}
+		// TileData td = WorldData.main[pos];
+		// while (!IsOutOfBounds(pos) && td.sourceId == TileSetId.tree && td.id != 0) {
+		// 	Vector2I temp = pos;
+		// 	WorldData.main[temp].id = 0;
+		// 	UpdateCell(WorldLayer.main, temp);
+		// 	temp.X--;
+		// 	if (WorldData.main[temp].sourceId == TileSetId.tree) {
+		// 		WorldData.main[temp].id = 0;
+		// 		UpdateCell(WorldLayer.main, temp);
+		// 	}
+		// 	temp.X += 2;
+		// 	if (WorldData.main[temp].sourceId == TileSetId.tree) {
+		// 		WorldData.main[temp].id = 0;
+		// 		UpdateCell(WorldLayer.main, temp);
+		// 	}
+		// 	pos.Y++;
+		// 	td = WorldData.main[pos];
+		// 	if (!(td.id == 1 || td.id == 2 || td.id == 5))
+		// 		await Task.Delay(TimeSpan.FromMilliseconds(25));
+		// }
 	}
 
 	public static void PlaceBlock(bool backLayer) {
