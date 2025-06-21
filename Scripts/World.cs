@@ -28,7 +28,7 @@ public class World {
 	public static ushort GetMaterial(Vector2I pos) {
 		if (initGen && pos.Y < 5)
 			return (ushort)(pos.GetHashCode().Mod(5) >= pos.Y ? 5 : 4);
-			// return (ushort)(random.Rand(0, 5) >= pos.Y ? 5 : 4);
+		// return (ushort)(random.Rand(0, 5) >= pos.Y ? 5 : 4);
 		else if (pos.Y < WorldData.heightMap[pos.X] / 4)
 			return 4;
 		else if (pos.Y < WorldData.heightMap[pos.X] * 3.5f / 4)
@@ -70,10 +70,19 @@ public class World {
 		return count;
 	}
 
-	public static void BreakBlock(WorldLayer layer, Vector2I pos) {
+	public static async void BreakBlock(WorldLayer layer, Vector2I pos) {
 		Logger.StartTimer("World.BreakBlock");
 		WorldData.TargetLayer(layer).BreakBlock(pos);
 		Logger.StopTimer("World.BreakBlock");
+		if (layer == WorldLayer.main) {
+			await Task.Delay(TimeSpan.FromMilliseconds(tickMs));
+			Logger.StartTimer("World.UpdateBlocks");
+			WorldData.main.UpdateBlock(new(pos.X - 1, pos.Y));
+			WorldData.main.UpdateBlock(new(pos.X + 1, pos.Y));
+			WorldData.main.UpdateBlock(new(pos.X, pos.Y - 1));
+			WorldData.main.UpdateBlock(new(pos.X, pos.Y + 1));
+			Logger.StopTimer("World.UpdateBlocks");
+		}
 	}
 
 	public static void Load() {
@@ -201,6 +210,15 @@ public class WorldLayerData {
 		Logger.StopTimer("WorldLayerData.BreakBlock");
 	}
 
+	public void UpdateBlock(Vector2I pos) {
+		if (IsOutOfBounds(pos))
+			return;
+		ushort cs = WorldData.chunkSize;
+		Vector2I cPos = pos / cs;
+		Vector2I cOff = pos % cs;
+		chunks[cPos.X, cPos.Y].UpdateBlock(cOff);
+	}
+
 	public void Load(WorldLayer layer) {
 		ushort cs = WorldData.chunkSize;
 		ushort chunkCX = (ushort)(WorldData.size.X / cs);
@@ -281,6 +299,42 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 		chunk[cOff.X, cOff.Y].id = 0;
 		TML.UpdateCell(cOff);
 		Logger.StopTimer("WorldChunk.BreakBlock");
+	}
+
+	public void UpdateBlock(Vector2I cOff) {
+		Vector2I mapPos = origin + cOff;
+		TileData td = chunk[cOff.X, cOff.Y];
+		if (td.id == 0)
+			return;
+		switch (td.sourceId) {
+			case TileSetId.tree:
+				WorldLayerData wld = WorldData.TargetLayer(WorldLayer.main);
+				switch (td.id) {
+					case 2 or 3 or 5 or 6 or 8 or 9:
+						if (wld[new(mapPos.X, mapPos.Y - 1)].id == 0)
+							World.BreakBlock(WorldLayer.main, mapPos);
+						break;
+					default:
+						switch (td.alt) {
+							case 0:
+								if (wld[new(mapPos.X + 1, mapPos.Y)].id == 0)
+									World.BreakBlock(WorldLayer.main, mapPos);
+								break;
+							case 1:
+								if (wld[new(mapPos.X - 1, mapPos.Y)].id == 0)
+									World.BreakBlock(WorldLayer.main, mapPos);
+								break;
+							case 2 or 3:
+								if (wld[new(mapPos.X, mapPos.Y - 1)].id == 0)
+									World.BreakBlock(WorldLayer.main, mapPos);
+								break;
+						}
+						break;
+				}
+				break;
+			default:
+				return;
+		}
 	}
 
 	public void Load(WorldLayer layer) {

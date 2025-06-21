@@ -12,6 +12,7 @@ public partial class Game : Node2D {
 	private static Game instance;
 	public static Game Instance { get => instance; }
 	public static readonly byte ppPerTick = 2;
+	public static readonly byte tickMs = (byte)Math.Round(ppPerTick * 1000f / Engine.PhysicsTicksPerSecond);
 	public static List<Task> GenTasks = new();
 	public static bool loaded = false;
 	private static Vector2I worldChunks = new(1, 1);
@@ -224,53 +225,19 @@ public partial class Game : Node2D {
 		Logger.StartTimer("Game.BreakBlock");
 		Vector2 mousePos = World.Main.ToGlobal(World.Main.GetLocalMousePosition());
 		Vector2I mapPos = new((int)(mousePos.X / 16), (int)Math.Ceiling(-mousePos.Y / 16));
-		if (IsOutOfBounds(mapPos) || IsAir(mapPos) || IsBedrock(mapPos))
+		if (IsOutOfBounds(mapPos) || IsBedrock(mapPos))
 			return;
 		if (!backLayer) {
-			if (WorldData.main[mapPos].id == 0)
+			if (IsAir(mapPos))
 				return;
-			TileData td = WorldData.main[mapPos];
-			if (td.sourceId == TileSetId.tree && IsWood(mapPos)) {
-				BreakTree(mapPos);
-				return;
-			}
 			World.BreakBlock(WorldLayer.main, mapPos);
-			if (td.sourceId != TileSetId.main)
-				return;
-			mapPos.Y++;
-			if (WorldData.main[mapPos].sourceId == TileSetId.tree && IsWood(mapPos)) {
-				BreakTree(mapPos);
-			}
 		}
 		else {
-			if (WorldData.main[mapPos].id != 0)
+			if (!IsAir(mapPos))
 				return;
 			World.BreakBlock(WorldLayer.back, mapPos);
 		}
 		Logger.StopTimer("Game.BreakBlock");
-	}
-
-	public static async void BreakTree(Vector2I pos) {
-		// TileData td = WorldData.main[pos];
-		// while (!IsOutOfBounds(pos) && td.sourceId == TileSetId.tree && td.id != 0) {
-		// 	Vector2I temp = pos;
-		// 	WorldData.main[temp].id = 0;
-		// 	UpdateCell(WorldLayer.main, temp);
-		// 	temp.X--;
-		// 	if (WorldData.main[temp].sourceId == TileSetId.tree) {
-		// 		WorldData.main[temp].id = 0;
-		// 		UpdateCell(WorldLayer.main, temp);
-		// 	}
-		// 	temp.X += 2;
-		// 	if (WorldData.main[temp].sourceId == TileSetId.tree) {
-		// 		WorldData.main[temp].id = 0;
-		// 		UpdateCell(WorldLayer.main, temp);
-		// 	}
-		// 	pos.Y++;
-		// 	td = WorldData.main[pos];
-		// 	if (!(td.id == 1 || td.id == 2 || td.id == 5))
-		// 		await Task.Delay(TimeSpan.FromMilliseconds(25));
-		// }
 	}
 
 	public static void PlaceBlock(bool backLayer) {
