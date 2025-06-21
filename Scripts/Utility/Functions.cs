@@ -14,26 +14,6 @@ public abstract class Functions {
 		};
 	}
 
-	public static void UpdateCell(WorldLayer layer, Vector2I pos) {
-		// switch (layer) {
-		//     case WorldLayer.back:
-		//         World.Back.UpdateCell(pos, WorldData.back[pos]);
-		//         break;
-		//     case WorldLayer.main:
-		//         World.Main.UpdateCell(pos, WorldData.main[pos]);
-		//         break;
-		//     case WorldLayer.front:
-		//         World.Front.UpdateCell(pos, WorldData.front[pos]);
-		//         break;
-		// }
-	}
-
-	public static void UpdateCell(Vector2I pos) {
-		// World.Back.UpdateCell(pos, WorldData.back[pos]);
-		// World.Main.UpdateCell(pos, WorldData.main[pos]);
-		// World.front.UpdateCell(pos, WorldData.front[pos]);
-	}
-
 	public static ushort PercentToWorldHeight(byte percent) => (ushort)(percent * WorldData.size.Y / 100);
 
 	public static bool IsOutOfBounds(Vector2I pos) => IsOutOfBounds(pos.X, pos.Y);

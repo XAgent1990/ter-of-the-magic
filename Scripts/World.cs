@@ -70,19 +70,28 @@ public class World {
 		return count;
 	}
 
-	public static async void BreakBlock(WorldLayer layer, Vector2I pos) {
+	public static void BreakBlock(WorldLayer layer, Vector2I pos) {
 		Logger.StartTimer("World.BreakBlock");
 		WorldData.TargetLayer(layer).BreakBlock(pos);
 		Logger.StopTimer("World.BreakBlock");
-		if (layer == WorldLayer.main) {
-			await Task.Delay(TimeSpan.FromMilliseconds(tickMs));
-			Logger.StartTimer("World.UpdateBlocks");
-			WorldData.main.UpdateBlock(new(pos.X - 1, pos.Y));
-			WorldData.main.UpdateBlock(new(pos.X + 1, pos.Y));
-			WorldData.main.UpdateBlock(new(pos.X, pos.Y - 1));
-			WorldData.main.UpdateBlock(new(pos.X, pos.Y + 1));
-			Logger.StopTimer("World.UpdateBlocks");
-		}
+		if (layer == WorldLayer.main)
+			SendBlockUpdates(pos);
+	}
+
+	public static void PlaceBlock(WorldLayer layer, Vector2I pos, TileData td) {
+		Logger.StartTimer("World.PlaceBlock");
+		WorldData.TargetLayer(layer).PlaceBlock(pos, td);
+		Logger.StopTimer("World.PlaceBlock");
+		if (layer == WorldLayer.main)
+			SendBlockUpdates(pos);
+	}
+
+	public static async void SendBlockUpdates(Vector2I pos) {
+		await Task.Delay(TimeSpan.FromMilliseconds(tickMs));
+		WorldData.main.UpdateBlock(new(pos.X - 1, pos.Y));
+		WorldData.main.UpdateBlock(new(pos.X + 1, pos.Y));
+		WorldData.main.UpdateBlock(new(pos.X, pos.Y - 1));
+		WorldData.main.UpdateBlock(new(pos.X, pos.Y + 1));
 	}
 
 	public static void Load() {
@@ -210,6 +219,15 @@ public class WorldLayerData {
 		Logger.StopTimer("WorldLayerData.BreakBlock");
 	}
 
+	public void PlaceBlock(Vector2I pos, TileData td) {
+		Logger.StartTimer("WorldLayerData.PlaceBlock");
+		ushort cs = WorldData.chunkSize;
+		Vector2I cPos = pos / cs;
+		Vector2I cOff = pos % cs;
+		chunks[cPos.X, cPos.Y].PlaceBlock(cOff, td);
+		Logger.StopTimer("WorldLayerData.PlaceBlock");
+	}
+
 	public void UpdateBlock(Vector2I pos) {
 		if (IsOutOfBounds(pos))
 			return;
@@ -295,10 +313,16 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 
 	public void BreakBlock(Vector2I cOff) {
 		Logger.StartTimer("WorldChunk.BreakBlock");
-		// GD.Print(origin+cOff);
 		chunk[cOff.X, cOff.Y].id = 0;
 		TML.UpdateCell(cOff);
 		Logger.StopTimer("WorldChunk.BreakBlock");
+	}
+
+	public void PlaceBlock(Vector2I cOff, TileData td) {
+		Logger.StartTimer("WorldChunk.PlaceBlock");
+		chunk[cOff.X, cOff.Y] = td;
+		TML.UpdateCell(cOff, td);
+		Logger.StopTimer("WorldChunk.PlaceBlock");
 	}
 
 	public void UpdateBlock(Vector2I cOff) {

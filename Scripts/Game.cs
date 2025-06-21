@@ -241,23 +241,19 @@ public partial class Game : Node2D {
 	}
 
 	public static void PlaceBlock(bool backLayer) {
-		Vector2 mousePos = World.Main.GetLocalMousePosition();
-		Vector2I mapPos = new((int)(mousePos.X / 16), (int)(mousePos.Y / 16));
-
-		mapPos.Y *= -1;
+		Vector2 mousePos = World.Main.ToGlobal(World.Main.GetLocalMousePosition());
+		Vector2I mapPos = new((int)(mousePos.X / 16), (int)Math.Ceiling(-mousePos.Y / 16));
 		if (IsOutOfBounds(mapPos) || IsBedrock(mapPos))
 			return;
 		if (!backLayer) {
 			if (WorldData.main[mapPos].id != 0)
 				return;
-			WorldData.main[mapPos] = new(TileSetId.main, 3);
-			UpdateCell(WorldLayer.main, mapPos);
+			World.PlaceBlock(WorldLayer.main, mapPos, new(TileSetId.main, 3));
 		}
 		else {
 			if (WorldData.back[mapPos].id != 0)
 				return;
-			WorldData.main[mapPos] = new(TileSetId.main, 3, 1);
-			UpdateCell(WorldLayer.back, mapPos);
+			World.PlaceBlock(WorldLayer.back, mapPos, new(TileSetId.main, 3, 1));
 		}
 	}
 }
