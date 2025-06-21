@@ -48,6 +48,7 @@ public abstract class Functions {
 		TileData td = WorldData.main[pos];
 		return td.sourceId == TileSetId.main && td.id == 5;
 	}
+	public static bool IsAir(Vector2I pos) => WorldData.main[pos].id == 0;
 
 	public static float ValueMap(float fromMin, float fromMax, float toMin, float toMax, float value) {
 		value -= fromMin;

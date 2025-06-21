@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Ter of the Magic"
-run/main_scene="uid://cbikb5fw5h2y5"
+run/main_scene="uid://ciettug7hcnrm"
 config/features=PackedStringArray("4.5", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 

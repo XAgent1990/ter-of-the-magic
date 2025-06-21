@@ -19,17 +19,16 @@ public class World {
 	public static Node2D Back;
 	public static Node2D Main;
 	public static Node2D Front;
-	public static void New(ushort x, ushort y) {
-		WorldData.New(x, y);
-		WorldData.Generate();
-	}
-	public static void Clear() {
+	public static void New(Vector2I chunks) {
 		WorldData.Clear();
+		WorldData.New(chunks);
+		WorldData.Generate();
 	}
 
 	public static ushort GetMaterial(Vector2I pos) {
 		if (initGen && pos.Y < 5)
-			return (ushort)(random.Next(0, 5) >= pos.Y ? 5 : 4);
+			return (ushort)(pos.GetHashCode().Mod(5) >= pos.Y ? 5 : 4);
+			// return (ushort)(random.Rand(0, 5) >= pos.Y ? 5 : 4);
 		else if (pos.Y < WorldData.heightMap[pos.X] / 4)
 			return 4;
 		else if (pos.Y < WorldData.heightMap[pos.X] * 3.5f / 4)
@@ -46,7 +45,7 @@ public class World {
 		if (IsOnEdge(pos) && id != 2)
 			return false;
 		byte r = (byte)Math.Round((noise.GetNoise2D(pos.X / CaveMod, pos.Y / CaveMod) + .5f) * 100);
-		// float r = random.Next(0, 100);
+		// float r = random.Rand(0, 100);
 		// r /= 1 + y / 600f;
 		return r > CaveThreshold;
 	}
@@ -98,7 +97,9 @@ public class WorldData {
 		};
 	}
 
-	public static void New(ushort x, ushort y) {
+	public static void New(Vector2I chunks) {
+		ushort x = (ushort)(chunks.X * chunkSize);
+		ushort y = (ushort)(chunks.Y * chunkSize);
 		size = new(x, y);
 		back = new(x, y);
 		main = new(x, y);
@@ -107,8 +108,8 @@ public class WorldData {
 	}
 
 	public static void Clear() {
-		back.Clear();
-		main.Clear();
+		back?.Clear();
+		main?.Clear();
 	}
 
 	public static void Generate() {
@@ -224,7 +225,7 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 	}
 
 	public void Clear() {
-		TML.Clear();
+		TML.QueueFree();
 	}
 
 	public void Generate() {

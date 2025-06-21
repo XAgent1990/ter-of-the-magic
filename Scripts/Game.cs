@@ -11,12 +11,12 @@ namespace TeroftheMagic.Scripts;
 public partial class Game : Node2D {
 	private static Game instance;
 	public static Game Instance { get => instance; }
+	public static readonly byte ppPerTick = 2;
 	public static List<Task> GenTasks = new();
 	public static bool loaded = false;
-	private static ushort worldWidth = 200;
-	public static ushort WorldWidth { get => worldWidth; set => worldWidth = value; }
-	private static ushort worldHeight = 200;
-	public static ushort WorldHeight { get => worldHeight; set => worldHeight = value; }
+	private static Vector2I worldChunks = new(1, 1);
+	public static ushort WorldWidth { get => (ushort)worldChunks.X; set => worldChunks.X = value; }
+	public static ushort WorldHeight { get => (ushort)worldChunks.Y; set => worldChunks.Y = value; }
 	private static byte minHeight = 75;
 	public static byte MinHeight { get => minHeight; set => minHeight = value; }
 	private static byte maxHeight = 85;
@@ -69,7 +69,7 @@ public partial class Game : Node2D {
 		random = new(seed);
 		noise.Seed = seed;
 		initGen = true;
-		World.New(worldWidth, worldHeight);
+		World.New(worldChunks);
 		Task.WaitAll([.. GenTasks]);
 		// foreach (Task task in GenTasks) {
 		//     GD.Print($"Task {task.Id} Status: {task.Status}");
@@ -206,13 +206,16 @@ public partial class Game : Node2D {
 
 	public void SpawnPlayer() {
 		Node2D player = GetNode<Node2D>("Player");
-		Vector2I idPos = new(
+		Vector2I mapPos = new(
 			WorldData.size.X / 2,
 			WorldData.size.Y - 1
 		);
-		while (WorldData.main[idPos].id == 0)
-			idPos.Y--;
-		Vector2 pos = idPos * 16;
+		TileData td = WorldData.main[mapPos];
+		while (td.id == 0 || td.sourceId != TileSetId.main) {
+			mapPos.Y--;
+			td = WorldData.main[mapPos];
+		}
+		Vector2 pos = mapPos * 16;
 		pos.Y = -pos.Y;
 		player.Position = pos;
 	}
@@ -221,7 +224,7 @@ public partial class Game : Node2D {
 		Logger.StartTimer("Game.BreakBlock");
 		Vector2 mousePos = World.Main.ToGlobal(World.Main.GetLocalMousePosition());
 		Vector2I mapPos = new((int)(mousePos.X / 16), (int)Math.Ceiling(-mousePos.Y / 16));
-		if (IsOutOfBounds(mapPos) || IsBedrock(mapPos))
+		if (IsOutOfBounds(mapPos) || IsAir(mapPos) || IsBedrock(mapPos))
 			return;
 		if (!backLayer) {
 			if (WorldData.main[mapPos].id == 0)
