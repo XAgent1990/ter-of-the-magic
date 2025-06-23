@@ -1,19 +1,17 @@
 using Godot;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
-using TeroftheMagic.Scripts;
 using TeroftheMagic.Scripts.Utility;
 using static TeroftheMagic.Scripts.Game;
 using static TeroftheMagic.Scripts.Utility.Functions;
+using static TeroftheMagic.Scripts.Utility.Extensions;
+using static TeroftheMagic.Scripts.Utility.TileUtil;
+using TileData = TeroftheMagic.Scripts.Utility.TileUtil.TileData;
 using Logger = TeroftheMagic.Scripts.Utility.Logger;
 
 namespace TeroftheMagic.Scripts;
 
 public enum WorldLayer { back, main, front }
-
-public enum TileSetId { main, tree }
 
 public class World {
 	public static Node2D Back;
@@ -275,11 +273,11 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 					ushort id = World.GetMaterial(pos);
 					switch (layer) {
 						case WorldLayer.back:
-							chunk[cOff.X, cOff.Y] = new(TileSetId.main, id, 1);
+							chunk[cOff.X, cOff.Y] = new(TileSetId.block, id, 1);
 							break;
 						case WorldLayer.main:
 							if (!World.IsCave(pos))
-								chunk[cOff.X, cOff.Y] = new(TileSetId.main, id);
+								chunk[cOff.X, cOff.Y] = new(TileSetId.block, id);
 							break;
 						default:
 							break;
@@ -295,19 +293,27 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 			Vector2I off = new();
 			for (off.X = 0; off.X < WorldData.chunkSize; off.X++) {
 				for (off.Y = 0; off.Y < WorldData.chunkSize; off.Y++) {
+					TileData td = chunk[off.X, off.Y];
 					if (chunk[off.X, off.Y].id == 5) { // Bedrock
-						temp[off.X, off.Y].id = 5;
+						temp[off.X, off.Y] = td;
 						continue;
 					}
 					Vector2I pos = origin + off;
-					temp[off.X, off.Y].id = World.SurroundingGround(pos) switch {
-						< 4 => 0,
-						> 4 => World.GetMaterial(pos),
-						_ => chunk[off.X, off.Y].id,
-					};
+					temp[off.X, off.Y] = new(
+						TileSetId.block,
+						World.SurroundingGround(pos) switch {
+							< 4 => 0,
+							> 4 => World.GetMaterial(pos),
+							_ => td.id,
+						},
+						td.alt
+					);
 				}
 			}
-			chunk = temp.Clone() as TileData[,];
+			// GD.Print(chunk.AsString());
+			// GD.Print(temp.AsString());
+			chunk = temp;
+			// GD.Print(chunk.AsString());
 		}));
 	}
 
@@ -381,10 +387,4 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 			}
 		}));
 	}
-}
-
-public struct TileData(TileSetId sourceId, ushort id, byte alt = 0) {
-	public TileSetId sourceId = sourceId;
-	public ushort id = id;
-	public byte alt = alt;
 }

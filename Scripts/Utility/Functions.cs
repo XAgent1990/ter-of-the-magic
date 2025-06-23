@@ -1,18 +1,15 @@
 using Godot;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
 using static TeroftheMagic.Scripts.Game;
+using static TeroftheMagic.Scripts.Utility.TileUtil;
+using TileData = TeroftheMagic.Scripts.Utility.TileUtil.TileData;
 
 namespace TeroftheMagic.Scripts.Utility;
 
 public abstract class Functions {
-	public static Vector2I TileMapIdToCoord(ushort id, byte TileMapWidth = 2) => new(--id % TileMapWidth, id / TileMapWidth);
-	public static byte TileMapWidth(TileSetId sourceId) {
-		return sourceId switch {
-			TileSetId.main => 2,
-			TileSetId.tree => 3,
-			_ => 0,
-		};
-	}
 
 	public static ushort PercentToWorldHeight(byte percent) => (ushort)(percent * WorldData.size.Y / 100);
 
@@ -26,7 +23,7 @@ public abstract class Functions {
 	}
 	public static bool IsBedrock(Vector2I pos) {
 		TileData td = WorldData.main[pos];
-		return td.sourceId == TileSetId.main && td.id == 5;
+		return td.sourceId == TileSetId.block && td.id == 5;
 	}
 	public static bool IsAir(Vector2I pos) => WorldData.main[pos].id == 0;
 
@@ -37,4 +34,10 @@ public abstract class Functions {
 		value += toMin;
 		return value;
 	}
+
+	public static void WriteJson(string filePath, object obj) =>
+		File.WriteAllText(filePath, JsonSerializer.Serialize(obj));
+
+	public static T LoadJson<T>(string filePath) =>
+		JsonSerializer.Deserialize<T>(File.ReadAllText(filePath));
 }

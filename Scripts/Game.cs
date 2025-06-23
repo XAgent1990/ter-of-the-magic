@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TeroftheMagic.Scripts.Utility;
 using static TeroftheMagic.Scripts.Utility.Functions;
+using static TeroftheMagic.Scripts.Utility.TileUtil;
+using TileData = TeroftheMagic.Scripts.Utility.TileUtil.TileData;
 using Logger = TeroftheMagic.Scripts.Utility.Logger;
 
 namespace TeroftheMagic.Scripts;
@@ -15,14 +17,14 @@ public partial class Game : Node2D {
 	public static readonly byte tickMs = (byte)Math.Round(ppPerTick * 1000f / Engine.PhysicsTicksPerSecond);
 	public static List<Task> GenTasks = new();
 	public static bool loaded = false;
-	private static Vector2I worldChunks = new(1, 1);
+	private static Vector2I worldChunks = new(5, 2);
 	public static ushort WorldWidth { get => (ushort)worldChunks.X; set => worldChunks.X = value; }
 	public static ushort WorldHeight { get => (ushort)worldChunks.Y; set => worldChunks.Y = value; }
 	private static byte minHeight = 75;
 	public static byte MinHeight { get => minHeight; set => minHeight = value; }
 	private static byte maxHeight = 85;
 	public static byte MaxHeight { get => maxHeight; set => maxHeight = value; }
-	private static byte smoothIterations = 2;
+	private static byte smoothIterations = 3;
 	public static byte SmoothIterations { get => smoothIterations; set => smoothIterations = value; }
 	private static int seed = 69;
 	public static int Seed { get => seed; set => seed = value; }
@@ -64,6 +66,7 @@ public partial class Game : Node2D {
 		World.Front = GetNode<Node2D>("World/FrontLayer");
 		Init();
 	}
+
 	public void Init() {
 		s = System.Diagnostics.Stopwatch.StartNew();
 		loaded = false;
@@ -212,7 +215,7 @@ public partial class Game : Node2D {
 			WorldData.size.Y - 1
 		);
 		TileData td = WorldData.main[mapPos];
-		while (td.id == 0 || td.sourceId != TileSetId.main) {
+		while (td.id == 0 || td.sourceId != TileSetId.block) {
 			mapPos.Y--;
 			td = WorldData.main[mapPos];
 		}
@@ -248,12 +251,12 @@ public partial class Game : Node2D {
 		if (!backLayer) {
 			if (WorldData.main[mapPos].id != 0)
 				return;
-			World.PlaceBlock(WorldLayer.main, mapPos, new(TileSetId.main, 3));
+			World.PlaceBlock(WorldLayer.main, mapPos, new(TileSetId.block, 3));
 		}
 		else {
 			if (WorldData.back[mapPos].id != 0)
 				return;
-			World.PlaceBlock(WorldLayer.back, mapPos, new(TileSetId.main, 3, 1));
+			World.PlaceBlock(WorldLayer.back, mapPos, new(TileSetId.block, 3, 1));
 		}
 	}
 }
