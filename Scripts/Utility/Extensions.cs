@@ -8,10 +8,11 @@ namespace TeroftheMagic.Scripts.Utility;
 
 public static class Extensions {
 
-	public static void UpdateCell(this TileMapLayer tml, Vector2I pos, TileData td = new()) {
+	public static void UpdateCell(this TileMapLayer tml, Vector2I pos) => tml.UpdateCell(pos, new());
+	public static void UpdateCell(this TileMapLayer tml, Vector2I pos, TileData td) {
 		pos.Y *= -1;
-		if (td.id == 0) tml.SetCell(pos);
-		else tml.SetCell(pos, (int)td.sourceId, TileMapIdToCoord(td.id, TileMapWidth(td.sourceId)), td.alt);
+		if (td.ID == 0) tml.SetCell(pos);
+		else tml.SetCell(pos, (int)td.SourceId, TileMapIdToCoord(td.ID, TileMapWidth(td.SourceId)), td.Alt);
 	}
 
 	public static int Mod(this int i, int mod) {
@@ -42,6 +43,16 @@ public static class Extensions {
 					output += arr[i, ii];
 				}
 			}
+		}
+		return output += ']';
+	}
+
+	public static string AsString<T>(this List<T> list) {
+		string output = "[";
+		for (int i = 0; i < list.Count; i++) {
+			if (i != 0)
+				output += ", ";
+			output += list[i];
 		}
 		return output += ']';
 	}

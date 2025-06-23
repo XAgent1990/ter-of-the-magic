@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace TeroftheMagic.Scripts.Utility;
 
@@ -15,12 +16,15 @@ public abstract class TileUtil {
 	public static byte TileMapWidth(TileSetId sourceId) =>
 		(byte)(textures[sourceId].GetWidth() / tilePixelSize);
 
+	[JsonConverter(typeof(JsonStringEnumConverter))]
 	public enum TileSetId { item, block, tree }
 	public struct TileData(TileSetId sourceId, ushort id, byte alt = 0) {
-		public TileSetId sourceId = sourceId;
-		public ushort id = id;
-		public byte alt = alt;
+		public string ItemId { get; set; }
+		[JsonPropertyName("Type")]
+		public TileSetId SourceId { get; set; } = sourceId;
+		public ushort ID { get; set; } = id;
+		public byte Alt { get; set; } = alt;
 		public override readonly string ToString() =>
-			$"{sourceId}:{id}.{alt}";
+			$"{SourceId}:{ID}.{Alt}";
 	}
 }

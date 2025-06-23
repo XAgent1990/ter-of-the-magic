@@ -61,7 +61,7 @@ public class World {
 					continue;
 				if (IsOutOfBounds(off))
 					count++;
-				else if (WorldData.main[off].id != 0)
+				else if (WorldData.main[off].ID != 0)
 					count++;
 			}
 		}
@@ -294,7 +294,7 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 			for (off.X = 0; off.X < WorldData.chunkSize; off.X++) {
 				for (off.Y = 0; off.Y < WorldData.chunkSize; off.Y++) {
 					TileData td = chunk[off.X, off.Y];
-					if (chunk[off.X, off.Y].id == 5) { // Bedrock
+					if (chunk[off.X, off.Y].ID == 5) { // Bedrock
 						temp[off.X, off.Y] = td;
 						continue;
 					}
@@ -304,9 +304,9 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 						World.SurroundingGround(pos) switch {
 							< 4 => 0,
 							> 4 => World.GetMaterial(pos),
-							_ => td.id,
+							_ => td.ID,
 						},
-						td.alt
+						td.Alt
 					);
 				}
 			}
@@ -319,7 +319,7 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 
 	public void BreakBlock(Vector2I cOff) {
 		Logger.StartTimer("WorldChunk.BreakBlock");
-		chunk[cOff.X, cOff.Y].id = 0;
+		chunk[cOff.X, cOff.Y].ID = 0;
 		TML.UpdateCell(cOff);
 		Logger.StopTimer("WorldChunk.BreakBlock");
 	}
@@ -334,28 +334,28 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 	public void UpdateBlock(Vector2I cOff) {
 		Vector2I mapPos = origin + cOff;
 		TileData td = chunk[cOff.X, cOff.Y];
-		if (td.id == 0)
+		if (td.ID == 0)
 			return;
-		switch (td.sourceId) {
+		switch (td.SourceId) {
 			case TileSetId.tree:
 				WorldLayerData wld = WorldData.TargetLayer(WorldLayer.main);
-				switch (td.id) {
+				switch (td.ID) {
 					case 2 or 3 or 5 or 6 or 8 or 9:
-						if (wld[new(mapPos.X, mapPos.Y - 1)].id == 0)
+						if (wld[new(mapPos.X, mapPos.Y - 1)].ID == 0)
 							World.BreakBlock(WorldLayer.main, mapPos);
 						break;
 					default:
-						switch (td.alt) {
+						switch (td.Alt) {
 							case 0:
-								if (wld[new(mapPos.X + 1, mapPos.Y)].id == 0)
+								if (wld[new(mapPos.X + 1, mapPos.Y)].ID == 0)
 									World.BreakBlock(WorldLayer.main, mapPos);
 								break;
 							case 1:
-								if (wld[new(mapPos.X - 1, mapPos.Y)].id == 0)
+								if (wld[new(mapPos.X - 1, mapPos.Y)].ID == 0)
 									World.BreakBlock(WorldLayer.main, mapPos);
 								break;
 							case 2 or 3:
-								if (wld[new(mapPos.X, mapPos.Y - 1)].id == 0)
+								if (wld[new(mapPos.X, mapPos.Y - 1)].ID == 0)
 									World.BreakBlock(WorldLayer.main, mapPos);
 								break;
 						}

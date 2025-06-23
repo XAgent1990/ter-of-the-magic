@@ -1,0 +1,62 @@
+[
+  {
+    "Name": "Moss",
+    "Description": "An overgrown dirt block",
+    "StackSize": 250,
+    "Range": "1..2",
+    "TileData": {
+      "ItemId": "totm:moss",
+      "Type": "block",
+      "ID": 1,
+      "Alt": 0
+    }
+  },
+  {
+    "Name": "Dirt",
+    "Description": "It dirt",
+    "StackSize": 250,
+    "Range": "1..2",
+    "TileData": {
+      "ItemId": "totm:dirt",
+      "Type": "block",
+      "ID": 2,
+      "Alt": 0
+    }
+  },
+  {
+    "Name": "Stone",
+    "Description": "Dwayne Johnson",
+    "StackSize": 250,
+    "Range": "1..2",
+    "TileData": {
+      "ItemId": "totm:stone",
+      "Type": "block",
+      "ID": 3,
+      "Alt": 0
+    }
+  },
+  {
+    "Name": "Deepslate",
+    "Description": "So deep dude",
+    "StackSize": 250,
+    "Range": "1..2",
+    "TileData": {
+      "ItemId": "totm:deepslate",
+      "Type": "block",
+      "ID": 4,
+      "Alt": 0
+    }
+  },
+  {
+    "Name": "Bedrock",
+    "Description": "You ain\u0027t never breaking this",
+    "StackSize": 250,
+    "Range": "1..2",
+    "TileData": {
+      "ItemId": "totm:bedrock",
+      "Type": "block",
+      "ID": 5,
+      "Alt": 0
+    }
+  }
+]

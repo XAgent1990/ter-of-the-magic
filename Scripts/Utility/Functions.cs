@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using static TeroftheMagic.Scripts.Game;
 using static TeroftheMagic.Scripts.Utility.TileUtil;
 using TileData = TeroftheMagic.Scripts.Utility.TileUtil.TileData;
@@ -18,14 +19,14 @@ public abstract class Functions {
 	public static bool IsOnEdge(Vector2I pos) => IsOnEdge(pos.X, pos.Y);
 	public static bool IsOnEdge(int x, int y) => x == 0 || x == WorldData.size.X - 1 || y == 0 || y == WorldData.size.Y - 1;
 	public static bool IsWood(Vector2I pos) {
-		ushort id = WorldData.main[pos].id;
+		ushort id = WorldData.main[pos].ID;
 		return id == 2 || id == 3 || id == 5 || id == 6 || id == 8 || id == 9;
 	}
 	public static bool IsBedrock(Vector2I pos) {
 		TileData td = WorldData.main[pos];
-		return td.sourceId == TileSetId.block && td.id == 5;
+		return td.SourceId == TileSetId.block && td.ID == 5;
 	}
-	public static bool IsAir(Vector2I pos) => WorldData.main[pos].id == 0;
+	public static bool IsAir(Vector2I pos) => WorldData.main[pos].ID == 0;
 
 	public static float ValueMap(float fromMin, float fromMax, float toMin, float toMax, float value) {
 		value -= fromMin;
@@ -35,8 +36,11 @@ public abstract class Functions {
 		return value;
 	}
 
+	static readonly JsonSerializerOptions options = new() {
+		WriteIndented = true
+	};
 	public static void WriteJson(string filePath, object obj) =>
-		File.WriteAllText(filePath, JsonSerializer.Serialize(obj));
+		File.WriteAllText(filePath, JsonSerializer.Serialize(obj, options));
 
 	public static T LoadJson<T>(string filePath) =>
 		JsonSerializer.Deserialize<T>(File.ReadAllText(filePath));

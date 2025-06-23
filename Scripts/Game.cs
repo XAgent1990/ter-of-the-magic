@@ -65,6 +65,7 @@ public partial class Game : Node2D {
 		World.Main = GetNode<Node2D>("World/MainLayer");
 		World.Front = GetNode<Node2D>("World/FrontLayer");
 		Init();
+		string test = Item.singleton.ID;
 	}
 
 	public void Init() {
@@ -118,8 +119,8 @@ public partial class Game : Node2D {
 		Vector2I pos = new();
 		for (pos.X = 0; pos.X < WorldData.size.X; pos.X++) {
 			for (pos.Y = 0; pos.Y < WorldData.heightMap[pos.X]; pos.Y++) {
-				if (WorldData.main[pos].id == 2 && World.SurroundingGround(pos) < 8)
-					WorldData.main[pos].id = 1;
+				if (WorldData.main[pos].ID == 2 && World.SurroundingGround(pos) < 8)
+					WorldData.main[pos].ID = 1;
 			}
 		}
 	}
@@ -127,7 +128,7 @@ public partial class Game : Node2D {
 	private static void PlantTrees() {
 		for (ushort x = 1; x < WorldData.size.X - 2; x++) {
 			Vector2I idPos = new(x, WorldData.size.Y - minTreeHeight);
-			while (WorldData.main[idPos].id == 0) {
+			while (WorldData.main[idPos].ID == 0) {
 				idPos.Y--;
 			}
 			idPos.Y++;
@@ -140,9 +141,9 @@ public partial class Game : Node2D {
 		Vector2I temp = pos;
 		temp.Y--;
 		// Check for Moss ground
-		if (WorldData.main[temp + Vector2I.Left].id != 1 ||
-			WorldData.main[temp].id != 1 ||
-			WorldData.main[temp + Vector2I.Right].id != 1)
+		if (WorldData.main[temp + Vector2I.Left].ID != 1 ||
+			WorldData.main[temp].ID != 1 ||
+			WorldData.main[temp + Vector2I.Right].ID != 1)
 			return false;
 
 		byte height = (byte)random.Next(minTreeHeight, maxTreeHeight + 1);
@@ -152,9 +153,9 @@ public partial class Game : Node2D {
 
 		// Check for space
 		for (temp.Y += 1; temp.Y < pos.Y + height; temp.Y++) {
-			if (WorldData.main[temp + Vector2I.Left].id != 0 ||
-				WorldData.main[temp].id != 0 ||
-				WorldData.main[temp + Vector2I.Right].id != 0)
+			if (WorldData.main[temp + Vector2I.Left].ID != 0 ||
+				WorldData.main[temp].ID != 0 ||
+				WorldData.main[temp + Vector2I.Right].ID != 0)
 				return false;
 		}
 
@@ -215,7 +216,7 @@ public partial class Game : Node2D {
 			WorldData.size.Y - 1
 		);
 		TileData td = WorldData.main[mapPos];
-		while (td.id == 0 || td.sourceId != TileSetId.block) {
+		while (td.ID == 0 || td.SourceId != TileSetId.block) {
 			mapPos.Y--;
 			td = WorldData.main[mapPos];
 		}
@@ -249,12 +250,12 @@ public partial class Game : Node2D {
 		if (IsOutOfBounds(mapPos) || IsBedrock(mapPos))
 			return;
 		if (!backLayer) {
-			if (WorldData.main[mapPos].id != 0)
+			if (WorldData.main[mapPos].ID != 0)
 				return;
 			World.PlaceBlock(WorldLayer.main, mapPos, new(TileSetId.block, 3));
 		}
 		else {
-			if (WorldData.back[mapPos].id != 0)
+			if (WorldData.back[mapPos].ID != 0)
 				return;
 			World.PlaceBlock(WorldLayer.back, mapPos, new(TileSetId.block, 3, 1));
 		}
