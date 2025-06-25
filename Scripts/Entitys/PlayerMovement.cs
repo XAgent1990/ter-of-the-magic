@@ -3,21 +3,30 @@ using System;
 using TeroftheMagic.Scripts;
 using static TeroftheMagic.Scripts.Game;
 
-public partial class PlayerMovement : CoreEntityMovement {
+public partial class PlayerMovement : CharacterBody2D {
 	public const float Speed = 300.0f;
 	public const float JumpVelocity = -400.0f;
+	public const float VerticalOffset = 1f;
+
 
 	public static Vector2 PlayerPosition;
 
-	public void SetPlayerPosition(Vector2 pos) {
-		Position = pos;
-		Velocity = Vector2.Zero;
-	}
+	[Export]
+	public RayCast2D rayRight;
+	[Export]
+	public RayCast2D rayRightFoot;
+
+	[Export]
+	public RayCast2D rayLeft;
+	[Export]
+	public RayCast2D rayLeftFoot;
 
 	public override void _PhysicsProcess(double delta) {
 		Vector2 velocity = Velocity;
 
 		if (!loaded) return;
+
+
 
 		// Add the gravity.
 		if (!IsOnFloor()) {
@@ -39,12 +48,36 @@ public partial class PlayerMovement : CoreEntityMovement {
 			velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
 		}
 
+
+
+		if ((!rayRight.IsColliding() && rayRightFoot.IsColliding() && IsOnFloor() && direction.X > 0) || (!rayLeft.IsColliding() && rayLeftFoot.IsColliding() && IsOnFloor() && direction.X < 0)) {
+			float dir = 0;
+			if (rayRightFoot.IsColliding()) {
+				dir = VerticalOffset;
+			}
+			else {
+				dir = -VerticalOffset;
+			}
+
+			Position = new(Position.X + dir, Position.Y - 16);
+		}
+
+
 		Velocity = velocity;
 		MoveAndSlide();
+
 		if (Position.Y >= 100) {
-			Position = new Vector2(Position.X, WorldData.size.Y * -16.5f);
+			Game.Instance.SpawnPlayer();
 			Velocity = Vector2.Zero;
 		}
 		PlayerPosition = Position;
 	}
+
+
+
+	//if block boarder is near char in tollerance move block up / down
+
+	// new public static void MoveAndSlide() {
+	// 	CharacterBody2D.MoveAndSlide();
+	// }
 }
