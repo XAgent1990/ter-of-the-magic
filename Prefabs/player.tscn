@@ -44,9 +44,13 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cvnsp"]
 size = Vector2(10, 15)
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("rayRight", "rayRightFoot", "rayLeft", "rayLeftFoot")]
 scale = Vector2(2, 2)
 script = ExtResource("1_cvnsp")
+rayRight = NodePath("RayCastRight")
+rayRightFoot = NodePath("RayCastRightFoot")
+rayLeft = NodePath("RayCastLeft")
+rayLeftFoot = NodePath("RayCastLeftFoot")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -12)
@@ -63,3 +67,23 @@ script = ExtResource("3_y5hcb")
 
 [node name="SpellBook" type="Node2D" parent="."]
 script = ExtResource("4_2nftw")
+
+[node name="RayCastRight" type="RayCast2D" parent="."]
+position = Vector2(8, -24)
+target_position = Vector2(0, 15)
+hit_from_inside = true
+
+[node name="RayCastRightFoot" type="RayCast2D" parent="."]
+position = Vector2(6, -4)
+target_position = Vector2(0.75, 0)
+hit_from_inside = true
+
+[node name="RayCastLeft" type="RayCast2D" parent="."]
+position = Vector2(-8, -24)
+target_position = Vector2(0, 15)
+hit_from_inside = true
+
+[node name="RayCastLeftFoot" type="RayCast2D" parent="."]
+position = Vector2(-6, -4)
+target_position = Vector2(-0.75, 0)
+hit_from_inside = true
