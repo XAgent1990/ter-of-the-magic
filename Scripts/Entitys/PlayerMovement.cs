@@ -21,6 +21,15 @@ public partial class PlayerMovement : CharacterBody2D {
 	[Export]
 	public RayCast2D rayLeftFoot;
 
+	public AnimatedSprite2D sprite;
+
+	public override void _Ready() {
+		base._Ready();
+		if (sprite == null) {
+			sprite = GetNode<AnimatedSprite2D>("Sprite");
+		}
+	}
+
 	public override void _PhysicsProcess(double delta) {
 		Vector2 velocity = Velocity;
 
@@ -48,7 +57,22 @@ public partial class PlayerMovement : CharacterBody2D {
 			velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
 		}
 
+		if (direction.X > 0) {
+			//sprite to right
+			sprite.FlipH = false;
+		}
+		if (direction.X < 0) {
+			//sprite to left
+			sprite.FlipH = true;
 
+		}
+
+		if (direction.X == 0) {
+			sprite.Play("Idle");
+		}
+		else {
+			sprite.Play("Run");
+		}
 
 		if ((!rayRight.IsColliding() && rayRightFoot.IsColliding() && IsOnFloor() && direction.X > 0) || (!rayLeft.IsColliding() && rayLeftFoot.IsColliding() && IsOnFloor() && direction.X < 0)) {
 			float dir = 0;
