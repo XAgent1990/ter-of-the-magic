@@ -13,14 +13,22 @@ namespace TeroftheMagic.Scripts;
 
 public enum WorldLayer { back, main, front }
 
-public class World {
+public abstract class World {
 	public static Node2D Back;
 	public static Node2D Main;
 	public static Node2D Front;
+	public static Node2D Entities;
+	public static Node2D Borders;
 	public static void New(Vector2I chunks) {
 		WorldData.Clear();
 		WorldData.New(chunks);
 		WorldData.Generate();
+		SetBorders();
+	}
+
+	public static void SetBorders() {
+		Borders.GetChild<Node2D>(1).Position = new(WorldData.size.X * TilePixelSize, 0);
+		Borders.GetChild<Node2D>(2).Position = new(0, -WorldData.size.Y * TilePixelSize);
 	}
 
 	public static ushort GetMaterial(Vector2I pos) {
@@ -100,6 +108,7 @@ public class World {
 public class WorldData {
 	public static Vector2I size;
 	public const ushort chunkSize = 100;
+	public static float BackLayerTint = .67f;
 	public static ushort[] heightMap;
 	public static WorldLayerData back;
 	public static WorldLayerData main;
@@ -271,17 +280,8 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 					if (pos.Y > WorldData.heightMap[pos.X])
 						continue;
 					ushort id = World.GetMaterial(pos);
-					switch (layer) {
-						case WorldLayer.back:
-							chunk[cOff.X, cOff.Y] = new(TileSetId.block, id, 1);
-							break;
-						case WorldLayer.main:
-							if (!World.IsCave(pos))
-								chunk[cOff.X, cOff.Y] = new(TileSetId.block, id);
-							break;
-						default:
-							break;
-					}
+					if (layer == WorldLayer.back || !World.IsCave(pos))
+						chunk[cOff.X, cOff.Y] = new(TileSetId.block, id);
 				}
 			}
 		}));
@@ -305,8 +305,7 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 							< 4 => 0,
 							> 4 => World.GetMaterial(pos),
 							_ => td.ID,
-						},
-						td.Alt
+						}
 					);
 				}
 			}
@@ -338,32 +337,36 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 			return;
 		switch (td.SourceId) {
 			case TileSetId.tree:
-				WorldLayerData wld = WorldData.TargetLayer(WorldLayer.main);
-				switch (td.ID) {
-					case 2 or 3 or 5 or 6 or 8 or 9:
-						if (wld[new(mapPos.X, mapPos.Y - 1)].ID == 0)
-							World.BreakBlock(WorldLayer.main, mapPos);
-						break;
-					default:
-						switch (td.Alt) {
-							case 0:
-								if (wld[new(mapPos.X + 1, mapPos.Y)].ID == 0)
-									World.BreakBlock(WorldLayer.main, mapPos);
-								break;
-							case 1:
-								if (wld[new(mapPos.X - 1, mapPos.Y)].ID == 0)
-									World.BreakBlock(WorldLayer.main, mapPos);
-								break;
-							case 2 or 3:
-								if (wld[new(mapPos.X, mapPos.Y - 1)].ID == 0)
-									World.BreakBlock(WorldLayer.main, mapPos);
-								break;
-						}
-						break;
-				}
+				UpdateTree(td, mapPos);
 				break;
 			default:
 				return;
+		}
+	}
+
+	private static void UpdateTree(TileData td, Vector2I mapPos) {
+		WorldLayerData wld = WorldData.TargetLayer(WorldLayer.main);
+		switch (td.ID) {
+			case 2 or 3 or 5 or 6 or 8 or 9:
+				if (wld[new(mapPos.X, mapPos.Y - 1)].ID == 0)
+					World.BreakBlock(WorldLayer.main, mapPos);
+				break;
+			default:
+				switch (td.Alt) {
+					case 0:
+						if (wld[new(mapPos.X + 1, mapPos.Y)].ID == 0)
+							World.BreakBlock(WorldLayer.main, mapPos);
+						break;
+					case 1:
+						if (wld[new(mapPos.X - 1, mapPos.Y)].ID == 0)
+							World.BreakBlock(WorldLayer.main, mapPos);
+						break;
+					case 2 or 3:
+						if (wld[new(mapPos.X, mapPos.Y - 1)].ID == 0)
+							World.BreakBlock(WorldLayer.main, mapPos);
+						break;
+				}
+				break;
 		}
 	}
 
@@ -371,6 +374,9 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 		TML = TMLPrefab.Instantiate<TileMapLayer>();
 		switch (layer) {
 			case WorldLayer.back:
+				TML.CollisionEnabled = false;
+				float blt = WorldData.BackLayerTint;
+				TML.Modulate = new(blt, blt, blt);
 				World.Back.AddChild(TML);
 				break;
 			case WorldLayer.main:

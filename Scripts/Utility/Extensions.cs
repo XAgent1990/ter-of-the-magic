@@ -12,7 +12,7 @@ public static class Extensions {
 	public static void UpdateCell(this TileMapLayer tml, Vector2I pos, TileData td) {
 		pos.Y *= -1;
 		if (td.ID == 0) tml.SetCell(pos);
-		else tml.SetCell(pos, (int)td.SourceId, TileMapIdToCoord(td.ID, TileMapWidth(td.SourceId)), td.Alt);
+		else tml.SetCell(pos, (int)td.SourceId, TileMapIdToCoord(td.SourceId, td.ID), td.Alt);
 	}
 
 	public static int Mod(this int i, int mod) {

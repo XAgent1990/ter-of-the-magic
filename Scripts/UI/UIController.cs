@@ -21,7 +21,7 @@ public partial class UIController : CanvasLayer {
 		if (Input.IsMouseButtonPressed(MouseButton.Left)) {
 			if (!mouseLeftBlocked && !mouseRightBlocked) {
 				mouseLeftBlocked = !Input.IsPhysicalKeyPressed(Key.Shift);
-				BreakBlock(Input.IsPhysicalKeyPressed(Key.Ctrl));
+				BreakBlock(Input.IsPhysicalKeyPressed(Key.Ctrl) ? WorldLayer.back : WorldLayer.main);
 				return;
 			}
 		}
@@ -30,7 +30,7 @@ public partial class UIController : CanvasLayer {
 		if (Input.IsMouseButtonPressed(MouseButton.Right)) {
 			if (!mouseLeftBlocked && !mouseRightBlocked) {
 				mouseRightBlocked = !Input.IsPhysicalKeyPressed(Key.Shift);
-				PlaceBlock(Input.IsPhysicalKeyPressed(Key.Ctrl));
+				PlaceBlock(Input.IsPhysicalKeyPressed(Key.Ctrl) ? WorldLayer.back : WorldLayer.main);
 			}
 		}
 		else

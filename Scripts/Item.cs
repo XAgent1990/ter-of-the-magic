@@ -17,12 +17,6 @@ public class Item {
 	public string Description { get; set; }
 	public byte StackSize { get; set; }
 	public TileData TileData { get; set; }
-	public static Item singleton = new() {
-		TileData = new(TileUtil.TileSetId.block, 1, 1) { ItemId = "testid" },
-		Name = "derp",
-		Description = "hello!",
-		StackSize = 11
-	};
 
 	private static readonly List<Item> Registry = LoadJson<List<Item>>("Data/ItemRegistry.json");
 	static Item() {
@@ -40,27 +34,30 @@ public class Item {
 }
 
 public struct ItemStack {
-	public ItemStack() {
-	}
-	private byte count = 0;
+	private byte count;
 	public byte Count {
 		readonly get => count;
 		set {
-			if (value > item.StackSize)
+			if (value > Item.StackSize)
 				throw new StackSizeViolation("Tried to set count too large");
 			if (value < 0)
 				throw new StackSizeViolation("Tried to set negative count");
 			count = value;
 		}
 	}
-	public Item item;
+
+	public ItemStack(Item item, byte count = 1) {
+		if (count == 0) return;
+		Item = item;
+		Count = count;
+	}
+	public Item Item { get; set; }
 }
 
 public class Drops {
 	public float Chance { get; set; }
-	private struct Drop {
+	protected struct Drop {
 		byte Weight { get; set; }
 		string ID { get; set; }
-
 	}
 }

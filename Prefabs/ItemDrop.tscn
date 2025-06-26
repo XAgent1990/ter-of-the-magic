@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://dq2jnar0gbw7o"]
+
+[ext_resource type="Texture2D" uid="uid://bpxlk1rxlrmir" path="res://Assets/DropHighlight.png" id="1_753xi"]
+[ext_resource type="Script" uid="uid://ceov3qbtx0c7w" path="res://Scripts/ItemDrop.cs" id="1_bd0g0"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_753xi"]
+radius = 8.0
+
+[node name="ItemDrop" type="RigidBody2D" node_paths=PackedStringArray("ItemSprite")]
+z_index = 240
+collision_layer = 8
+mass = 1000.0
+center_of_mass_mode = 1
+center_of_mass = Vector2(0, 8)
+can_sleep = false
+lock_rotation = true
+script = ExtResource("1_bd0g0")
+ItemSprite = NodePath("ItemSprite")
+
+[node name="ItemSprite" type="Sprite2D" parent="."]
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="HighlightSprite" type="Sprite2D" parent="ItemSprite"]
+z_index = -1
+position = Vector2(0, -16)
+texture = ExtResource("1_753xi")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5707964
+shape = SubResource("CircleShape2D_753xi")

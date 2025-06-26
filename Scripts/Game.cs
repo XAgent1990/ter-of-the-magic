@@ -64,8 +64,9 @@ public partial class Game : Node2D {
 		World.Back = GetNode<Node2D>("World/BackLayer");
 		World.Main = GetNode<Node2D>("World/MainLayer");
 		World.Front = GetNode<Node2D>("World/FrontLayer");
+		World.Entities = GetNode<Node2D>("World/Entities");
+		World.Borders = GetNode<Node2D>("World/Borders");
 		Init();
-		string test = Item.singleton.ID;
 	}
 
 	public void Init() {
@@ -92,6 +93,7 @@ public partial class Game : Node2D {
 		Task.WaitAll([.. GenTasks]);
 		GenTasks.Clear();
 		SpawnPlayer();
+		ItemDrop.Spawn(new(Item.Get("totm:bedrock"), 1), GetPlayer().Position);
 		loaded = true;
 		GD.Print($"Time for after Load: {s.ElapsedMilliseconds}");
 	}
@@ -209,8 +211,10 @@ public partial class Game : Node2D {
 		WorldData.main[pos + Vector2I.Right] = new(TileSetId.tree, 4, 3);
 	}
 
+	public Node2D GetPlayer() => GetNode<Node2D>("World/Entities/Player");
+
 	public void SpawnPlayer() {
-		Node2D player = GetNode<Node2D>("Player");
+		Node2D player = GetPlayer();
 		Vector2I mapPos = new(
 			WorldData.size.X / 2,
 			WorldData.size.Y - 1
@@ -225,39 +229,23 @@ public partial class Game : Node2D {
 		player.Position = pos;
 	}
 
-	public static void BreakBlock(bool backLayer = false) {
+	public static void BreakBlock(WorldLayer layer) {
 		Logger.StartTimer("Game.BreakBlock");
 		Vector2 mousePos = World.Main.ToGlobal(World.Main.GetLocalMousePosition());
 		Vector2I mapPos = new((int)(mousePos.X / 16), (int)Math.Ceiling(-mousePos.Y / 16));
-		if (IsOutOfBounds(mapPos) || IsBedrock(mapPos))
+		if (IsOutOfBounds(mapPos) || IsUnbreakable(layer, mapPos))
 			return;
-		if (!backLayer) {
-			if (IsAir(mapPos))
-				return;
-			World.BreakBlock(WorldLayer.main, mapPos);
-		}
-		else {
-			if (!IsAir(mapPos))
-				return;
-			World.BreakBlock(WorldLayer.back, mapPos);
-		}
+		if (layer == WorldLayer.back && !IsAir(WorldLayer.main, mapPos))
+			return;
+		World.BreakBlock(layer, mapPos);
 		Logger.StopTimer("Game.BreakBlock");
 	}
 
-	public static void PlaceBlock(bool backLayer) {
+	public static void PlaceBlock(WorldLayer layer) {
 		Vector2 mousePos = World.Main.ToGlobal(World.Main.GetLocalMousePosition());
 		Vector2I mapPos = new((int)(mousePos.X / 16), (int)Math.Ceiling(-mousePos.Y / 16));
-		if (IsOutOfBounds(mapPos) || IsBedrock(mapPos))
+		if (IsOutOfBounds(mapPos) || !IsAir(layer, mapPos))
 			return;
-		if (!backLayer) {
-			if (WorldData.main[mapPos].ID != 0)
-				return;
-			World.PlaceBlock(WorldLayer.main, mapPos, new(TileSetId.block, 3));
-		}
-		else {
-			if (WorldData.back[mapPos].ID != 0)
-				return;
-			World.PlaceBlock(WorldLayer.back, mapPos, new(TileSetId.block, 3, 1));
-		}
+		World.PlaceBlock(layer, mapPos, new(TileSetId.block, 3));
 	}
 }

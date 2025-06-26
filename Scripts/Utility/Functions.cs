@@ -22,11 +22,14 @@ public abstract class Functions {
 		ushort id = WorldData.main[pos].ID;
 		return id == 2 || id == 3 || id == 5 || id == 6 || id == 8 || id == 9;
 	}
-	public static bool IsBedrock(Vector2I pos) {
-		TileData td = WorldData.main[pos];
+	public static bool IsBedrock(WorldLayer layer, Vector2I pos) {
+		TileData td = WorldData.TargetLayer(layer)[pos];
 		return td.SourceId == TileSetId.block && td.ID == 5;
 	}
-	public static bool IsAir(Vector2I pos) => WorldData.main[pos].ID == 0;
+	public static bool IsAir(WorldLayer layer, Vector2I pos) => WorldData.TargetLayer(layer)[pos].ID == 0;
+
+	public static bool IsUnbreakable(WorldLayer layer, Vector2I pos) =>
+		IsBedrock(layer, pos) || IsAir(layer, pos);
 
 	public static float ValueMap(float fromMin, float fromMax, float toMin, float toMax, float value) {
 		value -= fromMin;
