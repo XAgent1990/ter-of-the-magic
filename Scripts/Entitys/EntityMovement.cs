@@ -11,9 +11,18 @@ public partial class EntityMovement : CharacterBody2D {
 	//state mashine
 	//flip image
 
+
+	//instructions for moveing etc.
+	//set of actions
+
+	//path generrated for whole group of types?
+
 	public AStar2D aStar2D = new();
 
-	private List<Vector2> pointsForLineDebug;
+	private bool WalkLeft = true;
+	long value = 0;
+
+	//private List<Vector2> pointsForLineDebug;
 	public override void _Ready() {
 		base._Ready();
 
@@ -21,7 +30,7 @@ public partial class EntityMovement : CharacterBody2D {
 
 		ushort[] heightMap = WorldData.heightMap;
 
-		pointsForLineDebug = new();
+		//pointsForLineDebug = new();
 
 		for (ushort i = 0; i < heightMap.Length; i++) {
 			// Vector2 pos = new Vector2(i * 16, heightMap[i] * -16);
@@ -37,9 +46,9 @@ public partial class EntityMovement : CharacterBody2D {
 			// pos local to global + to center of block
 			Vector2 newPos = pos - Position + new Vector2(8, 8);
 
-			pointsForLineDebug.Add(newPos);
+			//pointsForLineDebug.Add(pos);
 
-			aStar2D.AddPoint(i, newPos);
+			aStar2D.AddPoint(i, pos);
 			if (i > 0) {
 				aStar2D.ConnectPoints(i - 1, i);
 			}
@@ -72,10 +81,38 @@ public partial class EntityMovement : CharacterBody2D {
 
 		//aStar2D.AddPoint();
 		//aStar2D.ConnectPoints
+
+		if (WalkLeft) {
+			value = aStar2D.GetPointCount() - 1;
+		}
+		else {
+			value = 0;
+		}
 	}
+
+
+	public override void _PhysicsProcess(double delta) {
+		base._PhysicsProcess(delta);
+
+		if (WalkLeft) {
+			Position = aStar2D.GetPointPosition(value--);
+			if (value < 0) {
+				value = aStar2D.GetPointCount() - 1;
+			}
+		}
+		else {
+			Position = aStar2D.GetPointPosition(value++);
+			if (value > aStar2D.GetPointCount() - 1) {
+				value = 0;
+			}
+		}
+
+
+	}
+
 
 	public override void _Draw() {
 		base._Draw();
-		DrawPolyline(pointsForLineDebug.ToArray(), Color.Color8(255, 0, 0));
+		//DrawPolyline(pointsForLineDebug.ToArray(), Color.Color8(255, 0, 0));
 	}
 }

@@ -13,6 +13,9 @@ public partial class SpellBook : Node2D {
 	public override void _Process(double delta) {
 		//base._Process(delta);
 		if (Input.IsActionJustPressed("MouseClickMiddle")) {
+			if (Input.IsActionPressed("Ctrl")) {
+				_teleport.OnUse(GlobalPosition, GlobalPosition - GetGlobalMousePosition());
+			}
 			// _spell.OnUse(GlobalPosition, GlobalPosition - GetGlobalMousePosition());
 			// pos + (dir * -1
 			_teleport.Teleportation(GetParent<Node2D>(), GlobalPosition + (GlobalPosition - GetGlobalMousePosition()) * -1);
