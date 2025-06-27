@@ -18,10 +18,7 @@ public abstract class Functions {
 	public static bool IsOutOfBounds(int x, int y) => x < 0 || x >= WorldData.size.X || y < 0 || y >= WorldData.size.Y;
 	public static bool IsOnEdge(Vector2I pos) => IsOnEdge(pos.X, pos.Y);
 	public static bool IsOnEdge(int x, int y) => x == 0 || x == WorldData.size.X - 1 || y == 0 || y == WorldData.size.Y - 1;
-	public static bool IsWood(Vector2I pos) {
-		ushort id = Item.Get(WorldData.main[pos].ID).TileSetData.ID;
-		return id == 2 || id == 3 || id == 5 || id == 6 || id == 8 || id == 9;
-	}
+	public static bool IsWood(Vector2I pos) => WorldData.main[pos].ID == "totm:log";
 	public static bool IsBedrock(WorldLayer layer, Vector2I pos) =>
 		WorldData.TargetLayer(layer)[pos].ID == Block.Bedrock;
 	public static bool IsAir(WorldLayer layer, Vector2I pos) =>

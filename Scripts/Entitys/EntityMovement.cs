@@ -36,8 +36,10 @@ public partial class EntityMovement : CharacterBody2D {
 			// Vector2 pos = new Vector2(i * 16, heightMap[i] * -16);
 			Vector2I mapPos = new(i, heightMap[i]);
 			// TileSetData td = Item.Get(WorldData.main[mapPos].ID).TileSetData;
-			while (WorldData.main[mapPos].ID == Block.Air || Item.Get(WorldData.main[mapPos].ID).TileSetData.SourceId != TileSetId.block) {
+			BlockData bd = WorldData.main[mapPos];
+			while (bd.ID == Block.Air || Item.Get(bd.ID).GetTileSetData(bd.Variant).SourceId != TileSetId.block) {
 				mapPos.Y--;
+				bd = WorldData.main[mapPos];
 				// td = WorldData.main[mapPos];
 			}
 

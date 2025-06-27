@@ -34,6 +34,13 @@ public class Item {
 			throw new NotAnItem($"No Item with id '{id}'");
 	}
 
+	public TileSetData GetTileSetData(string variant = "") {
+		if (variant != "" && VariantTileSetData.TryGetValue(variant, out TileSetData td))
+			return td;
+		else
+			return TileSetData;
+	}
+
 	public override string ToString() => Name;
 }
 

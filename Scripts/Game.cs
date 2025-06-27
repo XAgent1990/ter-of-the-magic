@@ -16,14 +16,14 @@ public partial class Game : Node2D {
 	public static readonly byte tickMs = (byte)Math.Round(ppPerTick * 1000f / Engine.PhysicsTicksPerSecond);
 	public static List<Task> GenTasks = new();
 	public static bool loaded = false;
-	private static Vector2I worldChunks = new(1, 1);
+	private static Vector2I worldChunks = new(5, 2);
 	public static ushort WorldWidth { get => (ushort)worldChunks.X; set => worldChunks.X = value; }
 	public static ushort WorldHeight { get => (ushort)worldChunks.Y; set => worldChunks.Y = value; }
 	private static byte minHeight = 75;
 	public static byte MinHeight { get => minHeight; set => minHeight = value; }
 	private static byte maxHeight = 85;
 	public static byte MaxHeight { get => maxHeight; set => maxHeight = value; }
-	private static byte smoothIterations = 3;
+	private static byte smoothIterations = 0;
 	public static byte SmoothIterations { get => smoothIterations; set => smoothIterations = value; }
 	private static int seed = 69;
 	public static int Seed { get => seed; set => seed = value; }
@@ -53,6 +53,11 @@ public partial class Game : Node2D {
 	private const byte maxTreeHeight = 23;
 	private const byte branchChance = 20;
 	private System.Diagnostics.Stopwatch s;
+	public static Vector2I Up = Vector2I.Down;
+	public static Vector2I Down = Vector2I.Up;
+	public static Vector2I Left = Vector2I.Left;
+	public static Vector2I Right = Vector2I.Right;
+
 
 	public override void _Ready() {
 		// Called every time the node is added to the scene.

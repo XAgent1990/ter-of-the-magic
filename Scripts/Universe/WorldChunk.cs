@@ -3,7 +3,6 @@ using System;
 using System.Threading.Tasks;
 using TeroftheMagic.Scripts.Utility;
 using static TeroftheMagic.Scripts.Game;
-using static Godot.Vector2I;
 using static TeroftheMagic.Scripts.Utility.Functions;
 using static TeroftheMagic.Scripts.Utility.Extensions;
 using static TeroftheMagic.Scripts.Utility.TileUtil;
@@ -32,11 +31,14 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 			for (cOff.X = 0; cOff.X < WorldData.chunkSize; cOff.X++) {
 				for (cOff.Y = 0; cOff.Y < WorldData.chunkSize; cOff.Y++) {
 					Vector2I pos = origin + cOff;
-					if (pos.Y > WorldData.heightMap[pos.X])
+					if (pos.Y > WorldData.heightMap[pos.X]) {
+						chunk[cOff.X, cOff.Y] = new(Block.Air);
 						continue;
-					string id = World.GetMaterial(pos);
+					}
 					if (layer == WorldLayer.back || !World.IsCave(pos))
-						chunk[cOff.X, cOff.Y] = new(id);
+						chunk[cOff.X, cOff.Y] = new(World.GetMaterial(pos));
+					else
+						chunk[cOff.X, cOff.Y] = new(Block.Air);
 				}
 			}
 		}));
@@ -78,7 +80,7 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 	public void PlaceBlock(Vector2I cOff, BlockData bd) {
 		Logger.StartTimer("WorldChunk.PlaceBlock");
 		chunk[cOff.X, cOff.Y] = bd;
-		TML.UpdateCell(cOff, Item.Get(bd.ID).TileSetData);
+		TML.UpdateCell(cOff, Item.Get(bd.ID).GetTileSetData(bd.Variant));
 		Logger.StopTimer("WorldChunk.PlaceBlock");
 	}
 
@@ -126,7 +128,7 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 							World.BreakBlock(WorldLayer.main, mapPos);
 						break;
 					case "right" or "topright" or "bottomright":
-						if (wld[new(mapPos.X, mapPos.Y - 1)].ID == Block.Air)
+						if (wld[mapPos + Left].ID == Block.Air)
 							World.BreakBlock(WorldLayer.main, mapPos);
 						break;
 				}
@@ -135,8 +137,8 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 	}
 
 	public void Load(WorldLayer layer) {
-		if(layer == WorldLayer.main)
-			GD.Print(chunk.AsString());
+		// if (layer == WorldLayer.main)
+		// 	GD.Print(chunk.AsString());
 		TML = TMLPrefab.Instantiate<TileMapLayer>();
 		switch (layer) {
 			case WorldLayer.back:
@@ -154,7 +156,9 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 			Vector2I pos = new();
 			for (pos.X = 0; pos.X < WorldData.chunkSize; pos.X++) {
 				for (pos.Y = 0; pos.Y < WorldData.chunkSize; pos.Y++) {
-					TML.UpdateCell(pos, Item.Get(chunk[pos.X, pos.Y].ID).TileSetData);
+					// GD.Print($"{pos.X},{pos.Y}: {chunk[pos.X, pos.Y].ID}");
+					BlockData bd = chunk[pos.X, pos.Y];
+					TML.UpdateCell(pos, Item.Get(bd.ID).GetTileSetData(bd.Variant));
 				}
 			}
 		}));
