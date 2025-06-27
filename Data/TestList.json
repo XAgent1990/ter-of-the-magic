@@ -170,7 +170,19 @@
         "Alt": 0
       }
     },
-    "ItemDrops": []
+    "ItemDrops": [
+      {
+        "Chance": 1,
+        "Items": [
+          {
+            "Weight": 1,
+            "ID": "totm:wood",
+            "Count": 1
+          }
+        ],
+        "TotalWeight": 1
+      }
+    ]
   },
   {
     "ID": "totm:branch",
@@ -261,5 +273,18 @@
         "TotalWeight": 1
       }
     ]
+  },
+  {
+    "ID": "totm:wood",
+    "Name": "Wood",
+    "Description": "Woooood",
+    "StackSize": 250,
+    "TileSetData": {
+      "Type": "item",
+      "ID": 1,
+      "Alt": 0
+    },
+    "VariantTileSetData": {},
+    "ItemDrops": []
   }
 ]

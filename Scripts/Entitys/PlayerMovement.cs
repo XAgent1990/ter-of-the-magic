@@ -74,7 +74,7 @@ public partial class PlayerMovement : CharacterBody2D {
 			sprite.Play("Run");
 		}
 
-		if ((!rayRight.IsColliding() && rayRightFoot.IsColliding() && IsOnFloor() && direction.X > 0) || (!rayLeft.IsColliding() && rayLeftFoot.IsColliding() && IsOnFloor() && direction.X < 0)) {
+		if (((!rayRight.IsColliding() && rayRightFoot.IsColliding() && direction.X > 0) || (!rayLeft.IsColliding() && rayLeftFoot.IsColliding() && direction.X < 0)) && IsOnFloor()) {
 			float dir = 0;
 			if (rayRightFoot.IsColliding()) {
 				dir = VerticalOffset;
