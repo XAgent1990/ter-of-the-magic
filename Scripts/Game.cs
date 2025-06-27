@@ -23,7 +23,7 @@ public partial class Game : Node2D {
 	public static byte MinHeight { get => minHeight; set => minHeight = value; }
 	private static byte maxHeight = 85;
 	public static byte MaxHeight { get => maxHeight; set => maxHeight = value; }
-	private static byte smoothIterations = 0;
+	private static byte smoothIterations = 5;
 	public static byte SmoothIterations { get => smoothIterations; set => smoothIterations = value; }
 	private static int seed = 69;
 	public static int Seed { get => seed; set => seed = value; }
@@ -97,7 +97,7 @@ public partial class Game : Node2D {
 		World.Load();
 		Task.WaitAll([.. GenTasks]);
 		GenTasks.Clear();
-		ItemDrop.Spawn(new(Item.Get("totm:bedrock"), 1), GetPlayer().Position);
+		// ItemDrop.Spawn(new(Item.Get("totm:bedrock"), 1), GetPlayer().Position);
 		loaded = true;
 		GD.Print($"Time for after Load: {s.ElapsedMilliseconds}");
 	}

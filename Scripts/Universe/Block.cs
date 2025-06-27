@@ -14,10 +14,10 @@ public class Block : Item {
 	public static TileSetId GetType(string id, string variant = "") => Get(id).GetTileSetData(variant).SourceId;
 }
 
-public struct BlockData(string id, string variant = "") {
+public class BlockData(string id, string variant = "") {
 	public string ID { get; set; } = id;
 	public string Variant { get; set; } = variant;
-	public override readonly string ToString() => $"{ID}:{Variant}";
+	public override string ToString() => $"{ID}:{Variant}";
 	// Maybe add a random variant ID here?
 	// So like same variant, just slightly different texture
 }

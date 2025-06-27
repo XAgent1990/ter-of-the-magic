@@ -99,4 +99,13 @@ public class WorldLayerData {
 			}
 		}
 	}
+
+	public Vector2 GetWorldPosition(Vector2I mapPos) {
+		if (IsOutOfBounds(mapPos))
+			return Vector2.Zero;
+		ushort cs = WorldData.chunkSize;
+		Vector2I cPos = mapPos / cs;
+		Vector2I cOff = mapPos % cs;
+		return chunks[cPos.X, cPos.Y].GetWorldPosition(cOff);
+	}
 }

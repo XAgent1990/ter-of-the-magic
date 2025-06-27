@@ -38,6 +38,11 @@ public class WorldData {
 	}
 
 	public static void Clear() {
+		foreach (Node node in World.Entities?.GetChildren()) {
+			if (node.Name == "Player")
+				continue;
+			node.QueueFree();
+		}
 		back?.Clear();
 		main?.Clear();
 	}

@@ -45,7 +45,8 @@
             "ID": "totm:dirt",
             "Count": 1
           }
-        ]
+        ],
+        "TotalWeight": 1
       }
     ]
   },
@@ -69,7 +70,8 @@
             "ID": "totm:dirt",
             "Count": 1
           }
-        ]
+        ],
+        "TotalWeight": 1
       }
     ]
   },
@@ -93,7 +95,8 @@
             "ID": "totm:stone",
             "Count": 1
           }
-        ]
+        ],
+        "TotalWeight": 1
       }
     ]
   },
@@ -117,7 +120,8 @@
             "ID": "totm:deepslate",
             "Count": 1
           }
-        ]
+        ],
+        "TotalWeight": 1
       }
     ]
   },
@@ -253,7 +257,8 @@
             "ID": "totm:leaves",
             "Count": 1
           }
-        ]
+        ],
+        "TotalWeight": 1
       }
     ]
   }

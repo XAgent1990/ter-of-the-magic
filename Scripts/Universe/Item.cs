@@ -41,6 +41,26 @@ public class Item {
 			return TileSetData;
 	}
 
+	public List<ItemStack> GetItemDrops() {
+		List<ItemStack> IS = [];
+		foreach (Drops drops in ItemDrops) {
+			if (Random.Shared.NextDouble() >= drops.Chance)
+				continue;
+			int targetWeight = Random.Shared.Next(drops.TotalWeight);
+			foreach (Drops.Drop drop in drops.Items) {
+				if (drop.Weight <= targetWeight) {
+					targetWeight -= drop.Weight;
+					continue;
+				}
+				else {
+					IS.Add(new(Get(drop.ID), drop.Count));
+					break;
+				}
+			}
+		}
+		return IS;
+	}
+
 	public override string ToString() => Name;
 }
 
@@ -68,8 +88,19 @@ public struct ItemStack {
 public class Drops {
 	public float Chance { get; set; } = 1;
 	public List<Drop> Items { get; set; }
+	private int totalWeight = -1;
+	public int TotalWeight {
+		get {
+			if (totalWeight == -1) {
+				totalWeight = 0;
+				foreach (Drop drop in Items)
+					totalWeight += drop.Weight;
+			}
+			return totalWeight;
+		}
+	}
 	public struct Drop {
-		public Drop() {}
+		public Drop() { }
 		public byte Weight { get; set; } = 1;
 		public string ID { get; set; }
 		public byte Count { get; set; } = 1;

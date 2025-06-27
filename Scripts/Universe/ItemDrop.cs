@@ -21,17 +21,19 @@ public partial class ItemDrop : RigidBody2D {
 		}
 	}
 	private static readonly PackedScene Prefab = GD.Load<PackedScene>("res://Prefabs/ItemDrop.tscn");
-	private const float jumpHeight = 5 * TileUtil.TilePixelSize;
+	private const float jumpHeight = 10 * TileUtil.TilePixelSize;
 	private double bobCounter = 0;
 	private const float bobSpeed = 3.5f;
 	private const float bobHeight = 2;
 
 	private ItemDrop() { }
 
-	public static ItemDrop Spawn(ItemStack itemStack, Vector2 pos) {
+	public static ItemDrop Spawn(ItemStack itemStack, Vector2I mapPos) {
 		ItemDrop itemDrop = Prefab.Instantiate<ItemDrop>();
-		itemDrop.Position = pos;
-		itemDrop.LinearVelocity = new((float)Random.Shared.NextDouble() * jumpHeight, jumpHeight);
+		itemDrop.Position = World.GetWorldPosition(mapPos);
+		// itemDrop.Position = new(mapPos.X + .5f, -mapPos.Y + .5f);
+		// itemDrop.Position *= TileUtil.TilePixelSize;
+		itemDrop.LinearVelocity = new((float)(Random.Shared.NextDouble() - .5d) * jumpHeight, -jumpHeight);
 		itemDrop.ItemStack = itemStack;
 		World.Entities.AddChild(itemDrop);
 		return itemDrop;

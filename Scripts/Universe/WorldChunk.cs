@@ -72,7 +72,10 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 
 	public void BreakBlock(Vector2I cOff) {
 		Logger.StartTimer("WorldChunk.BreakBlock");
-		chunk[cOff.X, cOff.Y].ID = Block.Air;
+		BlockData bd = chunk[cOff.X, cOff.Y];
+		foreach (ItemStack IS in Item.Get(bd.ID).GetItemDrops())
+			ItemDrop.Spawn(IS, origin + cOff);
+		bd.ID = Block.Air;
 		TML.UpdateCell(cOff);
 		Logger.StopTimer("WorldChunk.BreakBlock");
 	}
@@ -163,5 +166,12 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 				}
 			}
 		}));
+	}
+
+	public Vector2 GetWorldPosition(Vector2I cPos) {
+		cPos.Y--;
+		Vector2 v = TML.MapToLocal(cPos);
+		v.Y *= -1;
+		return TML.ToGlobal(v);
 	}
 }

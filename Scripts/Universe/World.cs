@@ -101,4 +101,6 @@ public abstract class World {
 	public static void Load() {
 		WorldData.Load();
 	}
+
+	public static Vector2 GetWorldPosition(Vector2I mapPos) => WorldData.main.GetWorldPosition(mapPos);
 }
