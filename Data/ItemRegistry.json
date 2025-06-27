@@ -239,7 +239,7 @@
         "StackSize": 250,
         "TileSetData": {
             "Type": "item",
-            "ID": 1,
+            "ID": 3,
             "Alt": 0
         },
         "VariantTileSetData": {},
