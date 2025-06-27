@@ -1,51 +1,186 @@
 [{
+    "ID":"totm:error",
+    "Name":"Error",
+    "Description":"Something's wrong...",
+    "StackSize":0,
+    "TileData":{
+        "Type":"block",
+        "ID":0,
+        "Alt":0
+    },
+    "VariantTileData":{},
+    "ItemDrops":[]
+},{
+    "ID":"totm:air",
+    "Name":"Air",
+    "Description":"Wooooo",
+    "StackSize":0,
+    "TileData":{
+        "Type":"block",
+        "ID":0,
+        "Alt":0
+    },
+    "VariantTileData":{},
+    "ItemDrops":[]
+},{
+    "ID":"totm:moss",
     "Name":"Moss",
     "Description":"An overgrown dirt block",
     "StackSize":250,
     "TileData":{
-        "ItemId":"totm:moss",
-        "Type": "block",
-        "ID":1,
-        "Alt":0
-    }
+        "Type":"block",
+        "ID":1
+    },
+    "VariantTileData":{},
+    "ItemDrops":[{
+        "Items":[{"ID":"totm:dirt"}]
+    }]
 },{
+    "ID":"totm:dirt",
     "Name":"Dirt",
     "Description":"It dirt",
     "StackSize":250,
     "TileData":{
-        "ItemId":"totm:dirt",
-        "Type": "block",
-        "ID":2,
-        "Alt":0
-    }
+        "Type":"block",
+        "ID":2
+    },
+    "VariantTileData":{},
+    "ItemDrops":[{
+        "Items":[{"ID":"totm:dirt"}]
+    }]
 },{
+    "ID":"totm:stone",
     "Name":"Stone",
     "Description":"Dwayne Johnson",
     "StackSize":250,
     "TileData":{
-        "ItemId":"totm:stone",
-        "Type": "block",
-        "ID":3,
-        "Alt":0
-    }
+        "Type":"block",
+        "ID":3
+    },
+    "VariantTileData":{},
+    "ItemDrops":[{
+        "Items":[{"ID":"totm:stone"}]
+    }]
 },{
+    "ID":"totm:deepslate",
     "Name":"Deepslate",
     "Description":"So deep dude",
     "StackSize":250,
     "TileData":{
-        "ItemId":"totm:deepslate",
-        "Type": "block",
-        "ID":4,
-        "Alt":0
-    }
+        "Type":"block",
+        "ID":4
+    },
+    "VariantTileData":{},
+    "ItemDrops":[{
+        "Items":[{"ID":"totm:deepslate"}]
+    }]
 },{
+    "ID":"totm:bedrock",
     "Name":"Bedrock",
     "Description":"You ain't never breaking this",
     "StackSize":250,
     "TileData":{
-        "ItemId":"totm:bedrock",
-        "Type": "block",
-        "ID":5,
-        "Alt":0
-    }
+        "Type":"block",
+        "ID":5
+    },
+    "VariantTileData":{},
+    "ItemDrops":[]
+},{
+    "ID":"totm:log",
+    "Name":"Log",
+    "Description":"Ich und mein Holz",
+    "StackSize":0,
+    "TileData":{
+        "Type":"tree",
+        "ID":6
+    },
+    "VariantTileData":{
+        "stump":{
+            "Type":"tree",
+            "ID":9
+        },
+        "left":{
+            "Type":"tree",
+            "ID":3
+        },
+        "right":{
+            "Type":"tree",
+            "ID":3,
+            "Alt":1
+        },
+        "both":{
+            "Type":"tree",
+            "ID":8
+        }
+    },
+    "ItemDrops":[]
+},{
+    "ID":"totm:branch",
+    "Name":"Branch",
+    "Description":"Hang in there buddy",
+    "StackSize":0,
+    "TileData":{},
+    "VariantTileData":{
+        "left":{
+            "Type":"tree",
+            "ID":3
+        },
+        "right":{
+            "Type":"tree",
+            "ID":3,
+            "Alt":1
+        }
+    },
+    "ItemDrops":[]
+},{
+    "ID":"totm:leaves",
+    "Name":"Leaves",
+    "Description":"Leaf me alone",
+    "StackSize":250,
+    "TileData":{
+        "Type":"tree",
+        "ID":2
+    },
+    "VariantTileData":{
+        "top":{
+            "Type":"tree",
+            "ID":1,
+            "Alt":2
+        },
+        "topright":{
+            "Type":"tree",
+            "ID":4,
+            "Alt":3
+        },
+        "right":{
+            "Type":"tree",
+            "ID":3,
+            "Alt":1
+        },
+        "bottomright":{
+            "Type":"tree",
+            "ID":1,
+            "Alt":1
+        },
+        "bottom":{
+            "Type":"tree",
+            "ID":5
+        },
+        "bottomleft":{
+            "Type":"tree",
+            "ID":4
+        },
+        "left":{
+            "Type":"tree",
+            "ID":1
+        },
+        "topleft":{
+            "Type":"tree",
+            "ID":4,
+            "Alt":2
+        }
+    },
+    "ItemDrops":[{
+        "Items":[{"ID":"totm:leaves"}]
+    }]
 }]

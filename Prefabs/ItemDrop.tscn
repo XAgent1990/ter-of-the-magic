@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dq2jnar0gbw7o"]
 
 [ext_resource type="Texture2D" uid="uid://bpxlk1rxlrmir" path="res://Assets/DropHighlight.png" id="1_753xi"]
-[ext_resource type="Script" uid="uid://ceov3qbtx0c7w" path="res://Scripts/ItemDrop.cs" id="1_bd0g0"]
+[ext_resource type="Script" uid="uid://ceov3qbtx0c7w" path="res://Scripts/Universe/ItemDrop.cs" id="1_bd0g0"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_753xi"]
 radius = 8.0

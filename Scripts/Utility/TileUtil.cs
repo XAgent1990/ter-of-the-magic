@@ -20,17 +20,22 @@ public abstract class TileUtil {
 
 	[JsonConverter(typeof(JsonStringEnumConverter))]
 	public enum TileSetId { item, block, tree }
-	public struct TileData(TileSetId sourceId, ushort id, byte alt = 0) {
-		public string ItemId { get; set; }
+	public struct TileSetData(TileSetId sourceId, ushort id, byte alt = 0) {
 		[JsonPropertyName("Type")]
 		public TileSetId SourceId { get; set; } = sourceId;
 		public ushort ID { get; set; } = id;
 		public byte Alt { get; set; } = alt;
+		public static bool operator ==(TileSetData left, TileSetData right) =>
+			left.SourceId == right.SourceId && left.ID == right.ID && left.Alt == right.Alt;
+		public static bool operator !=(TileSetData left, TileSetData right) => !(left == right);
 		public override readonly string ToString() =>
 			$"{SourceId}:{ID}.{Alt}";
+
+		public override readonly bool Equals(object obj) => throw new NotImplementedException();
+		public override readonly int GetHashCode() => throw new NotImplementedException();
 	}
 
-	public static bool TryTileDataToSprite(TileData td, out CompressedTexture2D texture, out Vector2I pos) {
+	public static bool TryTileSetDataToSprite(TileSetData td, out CompressedTexture2D texture, out Vector2I pos) {
 		pos = TilePixelSize * TileMapIdToCoord(td.SourceId, td.ID);
 		return textures.TryGetValue(td.SourceId, out texture);
 	}

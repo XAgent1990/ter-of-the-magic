@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using TeroftheMagic.Scripts.Universe;
 using static TeroftheMagic.Scripts.Game;
 using static TeroftheMagic.Scripts.Utility.TileUtil;
-using TileData = TeroftheMagic.Scripts.Utility.TileUtil.TileData;
 
 namespace TeroftheMagic.Scripts.Utility;
 
@@ -19,14 +19,13 @@ public abstract class Functions {
 	public static bool IsOnEdge(Vector2I pos) => IsOnEdge(pos.X, pos.Y);
 	public static bool IsOnEdge(int x, int y) => x == 0 || x == WorldData.size.X - 1 || y == 0 || y == WorldData.size.Y - 1;
 	public static bool IsWood(Vector2I pos) {
-		ushort id = WorldData.main[pos].ID;
+		ushort id = Item.Get(WorldData.main[pos].ID).TileSetData.ID;
 		return id == 2 || id == 3 || id == 5 || id == 6 || id == 8 || id == 9;
 	}
-	public static bool IsBedrock(WorldLayer layer, Vector2I pos) {
-		TileData td = WorldData.TargetLayer(layer)[pos];
-		return td.SourceId == TileSetId.block && td.ID == 5;
-	}
-	public static bool IsAir(WorldLayer layer, Vector2I pos) => WorldData.TargetLayer(layer)[pos].ID == 0;
+	public static bool IsBedrock(WorldLayer layer, Vector2I pos) =>
+		WorldData.TargetLayer(layer)[pos].ID == Block.Bedrock;
+	public static bool IsAir(WorldLayer layer, Vector2I pos) =>
+		WorldData.TargetLayer(layer)[pos].ID == Block.Air;
 
 	public static bool IsUnbreakable(WorldLayer layer, Vector2I pos) =>
 		IsBedrock(layer, pos) || IsAir(layer, pos);

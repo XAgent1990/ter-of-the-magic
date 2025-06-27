@@ -1,57 +1,247 @@
 [
   {
+    "ID": "totm:error",
+    "Name": "Error",
+    "Description": "Something\u0027s wrong...",
+    "StackSize": 0,
+    "TileSetData": {
+      "Type": "item",
+      "ID": 0,
+      "Alt": 0
+    },
+    "VariantTileSetData": {
+      "test": {
+        "Type": "block",
+        "ID": 1,
+        "Alt": 0
+      }
+    },
+    "ItemDrops": []
+  },
+  {
+    "ID": "totm:air",
+    "Name": "Air",
+    "Description": "Wooooo",
+    "StackSize": 0,
+    "TileSetData": {
+      "Type": "item",
+      "ID": 0,
+      "Alt": 0
+    },
+    "VariantTileSetData": {
+      "test": {
+        "Type": "block",
+        "ID": 1,
+        "Alt": 0
+      }
+    },
+    "ItemDrops": []
+  },
+  {
+    "ID": "totm:moss",
     "Name": "Moss",
     "Description": "An overgrown dirt block",
     "StackSize": 250,
-    "TileData": {
-      "ItemId": "totm:moss",
-      "Type": "block",
-      "ID": 1,
+    "TileSetData": {
+      "Type": "item",
+      "ID": 0,
       "Alt": 0
-    }
+    },
+    "VariantTileSetData": {
+      "test": {
+        "Type": "block",
+        "ID": 1,
+        "Alt": 0
+      }
+    },
+    "ItemDrops": [
+      {
+        "Chance": 1,
+        "Items": [
+          {
+            "Weight": 1,
+            "ID": "totm:dirt",
+            "Count": 1
+          }
+        ]
+      }
+    ]
   },
   {
+    "ID": "totm:dirt",
     "Name": "Dirt",
     "Description": "It dirt",
     "StackSize": 250,
-    "TileData": {
-      "ItemId": "totm:dirt",
-      "Type": "block",
-      "ID": 2,
+    "TileSetData": {
+      "Type": "item",
+      "ID": 0,
       "Alt": 0
-    }
+    },
+    "VariantTileSetData": {
+      "test": {
+        "Type": "block",
+        "ID": 1,
+        "Alt": 0
+      }
+    },
+    "ItemDrops": [
+      {
+        "Chance": 1,
+        "Items": [
+          {
+            "Weight": 1,
+            "ID": "totm:dirt",
+            "Count": 1
+          }
+        ]
+      }
+    ]
   },
   {
+    "ID": "totm:stone",
     "Name": "Stone",
     "Description": "Dwayne Johnson",
     "StackSize": 250,
-    "TileData": {
-      "ItemId": "totm:stone",
-      "Type": "block",
-      "ID": 3,
+    "TileSetData": {
+      "Type": "item",
+      "ID": 0,
       "Alt": 0
-    }
+    },
+    "VariantTileSetData": {
+      "test": {
+        "Type": "block",
+        "ID": 1,
+        "Alt": 0
+      }
+    },
+    "ItemDrops": [
+      {
+        "Chance": 1,
+        "Items": [
+          {
+            "Weight": 1,
+            "ID": "totm:stone",
+            "Count": 1
+          }
+        ]
+      }
+    ]
   },
   {
+    "ID": "totm:deepslate",
     "Name": "Deepslate",
     "Description": "So deep dude",
     "StackSize": 250,
-    "TileData": {
-      "ItemId": "totm:deepslate",
-      "Type": "block",
-      "ID": 4,
+    "TileSetData": {
+      "Type": "item",
+      "ID": 0,
       "Alt": 0
-    }
+    },
+    "VariantTileSetData": {
+      "test": {
+        "Type": "block",
+        "ID": 1,
+        "Alt": 0
+      }
+    },
+    "ItemDrops": [
+      {
+        "Chance": 1,
+        "Items": [
+          {
+            "Weight": 1,
+            "ID": "totm:deepslate",
+            "Count": 1
+          }
+        ]
+      }
+    ]
   },
   {
+    "ID": "totm:bedrock",
     "Name": "Bedrock",
     "Description": "You ain\u0027t never breaking this",
     "StackSize": 250,
-    "TileData": {
-      "ItemId": "totm:bedrock",
-      "Type": "block",
-      "ID": 5,
+    "TileSetData": {
+      "Type": "item",
+      "ID": 0,
       "Alt": 0
-    }
+    },
+    "VariantTileSetData": {
+      "test": {
+        "Type": "block",
+        "ID": 1,
+        "Alt": 0
+      }
+    },
+    "ItemDrops": []
+  },
+  {
+    "ID": "totm:log",
+    "Name": "Log",
+    "Description": "Ich und mein Holz",
+    "StackSize": 0,
+    "TileSetData": {
+      "Type": "item",
+      "ID": 0,
+      "Alt": 0
+    },
+    "VariantTileSetData": {
+      "test": {
+        "Type": "block",
+        "ID": 1,
+        "Alt": 0
+      }
+    },
+    "ItemDrops": []
+  },
+  {
+    "ID": "totm:branch",
+    "Name": "Branch",
+    "Description": "Hang in there buddy",
+    "StackSize": 0,
+    "TileSetData": {
+      "Type": "item",
+      "ID": 0,
+      "Alt": 0
+    },
+    "VariantTileSetData": {
+      "test": {
+        "Type": "block",
+        "ID": 1,
+        "Alt": 0
+      }
+    },
+    "ItemDrops": []
+  },
+  {
+    "ID": "totm:leaves",
+    "Name": "Leaves",
+    "Description": "Leaf me alone",
+    "StackSize": 250,
+    "TileSetData": {
+      "Type": "item",
+      "ID": 0,
+      "Alt": 0
+    },
+    "VariantTileSetData": {
+      "test": {
+        "Type": "block",
+        "ID": 1,
+        "Alt": 0
+      }
+    },
+    "ItemDrops": [
+      {
+        "Chance": 1,
+        "Items": [
+          {
+            "Weight": 1,
+            "ID": "totm:leaves",
+            "Count": 1
+          }
+        ]
+      }
+    ]
   }
 ]

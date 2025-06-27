@@ -4,19 +4,23 @@ using System.Collections.Generic;
 using TeroftheMagic.Scripts.Utility;
 using static TeroftheMagic.Scripts.Utility.Functions;
 using static TeroftheMagic.Scripts.Utility.Exceptions;
-using TileData = TeroftheMagic.Scripts.Utility.TileUtil.TileData;
-using System.Text.Json.Serialization;
+using static TeroftheMagic.Scripts.Utility.TileUtil;
 
-namespace TeroftheMagic.Scripts;
+namespace TeroftheMagic.Scripts.Universe;
 
 public class Item {
-	public Item() { }
-	[JsonIgnore]
-	public string ID { get => TileData.ItemId; }
+	public Item() {
+		VariantTileSetData = [];
+		VariantTileSetData.Add("test", new(TileSetId.block, 1, 0));
+	}
+	// public static Item singleton = new();
+	public string ID { get; set; }
 	public string Name { get; set; }
 	public string Description { get; set; }
 	public byte StackSize { get; set; }
-	public TileData TileData { get; set; }
+	public TileSetData TileSetData { get; set; }
+	public Dictionary<string, TileSetData> VariantTileSetData { get; set; }
+	public List<Drops> ItemDrops { get; set; }
 
 	private static readonly List<Item> Registry = LoadJson<List<Item>>("Data/ItemRegistry.json");
 	static Item() {
@@ -55,9 +59,12 @@ public struct ItemStack {
 }
 
 public class Drops {
-	public float Chance { get; set; }
-	protected struct Drop {
-		byte Weight { get; set; }
-		string ID { get; set; }
+	public float Chance { get; set; } = 1;
+	public List<Drop> Items { get; set; }
+	public struct Drop {
+		public Drop() {}
+		public byte Weight { get; set; } = 1;
+		public string ID { get; set; }
+		public byte Count { get; set; } = 1;
 	}
 }

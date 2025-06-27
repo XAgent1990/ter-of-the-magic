@@ -2,8 +2,8 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using TeroftheMagic.Scripts;
+using TeroftheMagic.Scripts.Universe;
 using static TeroftheMagic.Scripts.Utility.TileUtil;
-using TileData = TeroftheMagic.Scripts.Utility.TileUtil.TileData;
 
 public partial class EntityMovement : CharacterBody2D {
 	//Move Left right up down jump
@@ -35,10 +35,10 @@ public partial class EntityMovement : CharacterBody2D {
 		for (ushort i = 0; i < heightMap.Length; i++) {
 			// Vector2 pos = new Vector2(i * 16, heightMap[i] * -16);
 			Vector2I mapPos = new(i, heightMap[i]);
-			TileData td = WorldData.main[mapPos];
-			while (td.ID == 0 || td.SourceId != TileSetId.block) {
+			// TileSetData td = Item.Get(WorldData.main[mapPos].ID).TileSetData;
+			while (WorldData.main[mapPos].ID == Block.Air || Item.Get(WorldData.main[mapPos].ID).TileSetData.SourceId != TileSetId.block) {
 				mapPos.Y--;
-				td = WorldData.main[mapPos];
+				// td = WorldData.main[mapPos];
 			}
 
 			//Calc Position

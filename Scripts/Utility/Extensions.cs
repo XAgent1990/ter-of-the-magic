@@ -2,14 +2,14 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using static TeroftheMagic.Scripts.Utility.TileUtil;
-using TileData = TeroftheMagic.Scripts.Utility.TileUtil.TileData;
+using TileSetData = TeroftheMagic.Scripts.Utility.TileUtil.TileSetData;
 
 namespace TeroftheMagic.Scripts.Utility;
 
 public static class Extensions {
 
 	public static void UpdateCell(this TileMapLayer tml, Vector2I pos) => tml.UpdateCell(pos, new());
-	public static void UpdateCell(this TileMapLayer tml, Vector2I pos, TileData td) {
+	public static void UpdateCell(this TileMapLayer tml, Vector2I pos, TileSetData td) {
 		pos.Y *= -1;
 		if (td.ID == 0) tml.SetCell(pos);
 		else tml.SetCell(pos, (int)td.SourceId, TileMapIdToCoord(td.SourceId, td.ID), td.Alt);
