@@ -92,10 +92,10 @@ public abstract class World {
 
 	public static async void SendBlockUpdates(Vector2I pos) {
 		await Task.Delay(TimeSpan.FromMilliseconds(tickMs));
-		WorldData.main.UpdateBlock(new(pos.X - 1, pos.Y));
-		WorldData.main.UpdateBlock(new(pos.X + 1, pos.Y));
-		WorldData.main.UpdateBlock(new(pos.X, pos.Y - 1));
-		WorldData.main.UpdateBlock(new(pos.X, pos.Y + 1));
+		WorldData.main.UpdateBlock(pos + Down);
+		WorldData.main.UpdateBlock(pos + Left);
+		WorldData.main.UpdateBlock(pos + Right);
+		WorldData.main.UpdateBlock(pos + Up);
 	}
 
 	public static void Load() {

@@ -89,7 +89,7 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 		BlockData bd = chunk[cOff.X, cOff.Y];
 		if (bd.ID == Block.Air)
 			return;
-		switch (Block.GetType(bd.ID)) {
+		switch (Block.GetType(bd.ID, bd.Variant)) {
 			case TileSetId.tree:
 				UpdateTree(bd, mapPos);
 				break;
@@ -100,6 +100,7 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 
 	private static void UpdateTree(BlockData bd, Vector2I mapPos) {
 		WorldLayerData wld = WorldData.TargetLayer(WorldLayer.main);
+		// GD.Print("Update " + bd.ID);
 		switch (bd.ID) {
 			case "totm:log":
 				if (wld[mapPos + Down].ID == Block.Air)
