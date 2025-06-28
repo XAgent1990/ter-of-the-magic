@@ -1,6 +1,8 @@
 using Godot;
 using System;
+using System.Security.Cryptography.X509Certificates;
 using TeroftheMagic.Scripts;
+using TeroftheMagic.Scripts.Utility;
 using static TeroftheMagic.Scripts.Game;
 
 public partial class PlayerMovement : CharacterBody2D {
@@ -41,6 +43,8 @@ public partial class PlayerMovement : CharacterBody2D {
 		if (!IsOnFloor()) {
 			velocity += GetGravity() * (float)delta;
 		}
+
+
 
 		// Handle Jump.
 		if (Input.IsActionJustPressed("ui_accept") && IsOnFloor()) {
@@ -83,7 +87,7 @@ public partial class PlayerMovement : CharacterBody2D {
 				dir = -VerticalOffset;
 			}
 
-			Position = new(Position.X + dir, Position.Y - 16);
+			Position = new(Position.X + dir, Position.Y - TileUtil.TilePixelSize);
 		}
 
 
@@ -96,7 +100,6 @@ public partial class PlayerMovement : CharacterBody2D {
 		}
 		PlayerPosition = Position;
 	}
-
 
 
 	//if block boarder is near char in tollerance move block up / down

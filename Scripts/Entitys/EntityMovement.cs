@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using TeroftheMagic.Scripts;
 using TeroftheMagic.Scripts.Universe;
+using TeroftheMagic.Scripts.Utility;
 using static TeroftheMagic.Scripts.Utility.TileUtil;
 
 public partial class EntityMovement : CharacterBody2D {
@@ -44,9 +45,9 @@ public partial class EntityMovement : CharacterBody2D {
 			}
 
 			//Calc Position
-			Vector2 pos = new Vector2(mapPos.X * 16, (mapPos.Y + 1) * -16);
+			Vector2 pos = new Vector2(mapPos.X * TilePixelSize, (mapPos.Y + 1) * -TilePixelSize);
 			// pos local to global + to center of block
-			Vector2 newPos = pos - Position + new Vector2(8, 8);
+			Vector2 newPos = pos - Position + new Vector2(TilePixelSize / 2, TilePixelSize / 2);
 
 			//pointsForLineDebug.Add(pos);
 
@@ -95,6 +96,13 @@ public partial class EntityMovement : CharacterBody2D {
 
 	public override void _PhysicsProcess(double delta) {
 		base._PhysicsProcess(delta);
+
+		if (aStar2D.GetPointCount() == 0) {
+			return;
+		}
+
+
+		//add timer for slower movement or lerping or somthin
 
 		if (WalkLeft) {
 			Position = aStar2D.GetPointPosition(value--);

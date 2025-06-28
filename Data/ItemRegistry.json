@@ -244,5 +244,18 @@
         },
         "VariantTileSetData": {},
         "ItemDrops": []
+    },
+    {
+        "ID": "totm:mana",
+        "Name": "Mana",
+        "Description": "MAGIC",
+        "StackSize": 99,
+        "TileSetData": {
+            "Type": "item",
+            "ID": 4,
+            "Alt": 0
+        },
+        "VariantTileSetData": {},
+        "ItemDrops": []
     }
 ]
