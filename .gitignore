@@ -2,4 +2,4 @@
 .godot/
 /android/
 log.txt
-Data/TestList.json
+TestList.json
