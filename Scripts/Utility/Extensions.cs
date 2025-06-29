@@ -56,4 +56,9 @@ public static class Extensions {
 		}
 		return output += ']';
 	}
+
+	public static void SetActive(this Node node, bool active) =>
+		node.ProcessMode = active ? Node.ProcessModeEnum.Inherit : Node.ProcessModeEnum.Disabled;
+
+	public static bool IsActive(this Node node) => node.CanProcess();
 }

@@ -53,7 +53,15 @@ public class Item {
 					continue;
 				}
 				else {
-					IS.Add(new(Get(drop.ID), drop.Count));
+					if (drop.Count <= 0) break;
+					Item item = Get(drop.ID);
+					if (item.StackSize <= 0) break;
+					ushort totalCount = drop.Count;
+					while (totalCount > item.StackSize) {
+						IS.Add(new(item, item.StackSize));
+						totalCount -= item.StackSize;
+					}
+					IS.Add(new(item, (byte)totalCount));
 					break;
 				}
 			}
@@ -77,18 +85,23 @@ public struct ItemStack {
 		}
 	}
 
+	public bool IsFull { get => Count == Item.StackSize; }
+
 	public ItemStack(Item item, byte count = 1) {
 		if (count == 0) return;
+		if (item.StackSize <= 0)
+			throw new StackSizeViolation("Tried to create ItemStack with zero stack size Item");
 		Item = item;
 		Count = count;
 	}
 	public Item Item { get; set; }
 }
 
-public class Drops {
+public struct Drops() {
 	public float Chance { get; set; } = 1;
 	public List<Drop> Items { get; set; }
 	private int totalWeight = -1;
+
 	public int TotalWeight {
 		get {
 			if (totalWeight == -1) {
@@ -103,6 +116,6 @@ public class Drops {
 		public Drop() { }
 		public byte Weight { get; set; } = 1;
 		public string ID { get; set; }
-		public byte Count { get; set; } = 1;
+		public ushort Count { get; set; } = 1;
 	}
 }

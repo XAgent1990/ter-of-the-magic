@@ -1,12 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://dq2jnar0gbw7o"]
+[gd_scene load_steps=6 format=3 uid="uid://dq2jnar0gbw7o"]
 
 [ext_resource type="Texture2D" uid="uid://bpxlk1rxlrmir" path="res://Assets/DropHighlight.png" id="1_753xi"]
 [ext_resource type="Script" uid="uid://ceov3qbtx0c7w" path="res://Scripts/Universe/ItemDrop.cs" id="1_bd0g0"]
+[ext_resource type="Texture2D" uid="uid://d1oaqe3ssr6ik" path="res://Assets/BlockTileSet.png" id="2_bd0g0"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_753xi"]
 radius = 8.0
 
-[node name="ItemDrop" type="RigidBody2D" node_paths=PackedStringArray("ItemSprite")]
+[sub_resource type="CircleShape2D" id="CircleShape2D_tarru"]
+radius = 24.0
+
+[node name="ItemDrop" type="RigidBody2D" node_paths=PackedStringArray("ItemSprite", "FusionArea")]
 z_index = 240
 collision_layer = 8
 mass = 1000.0
@@ -16,8 +20,24 @@ can_sleep = false
 lock_rotation = true
 script = ExtResource("1_bd0g0")
 ItemSprite = NodePath("ItemSprite")
+FusionArea = NodePath("Area2D")
+
+[node name="ItemColliderShape" type="CollisionShape2D" parent="."]
+rotation = 1.5707964
+shape = SubResource("CircleShape2D_753xi")
+
+[node name="Area2D" type="Area2D" parent="."]
+process_mode = 4
+collision_layer = 0
+collision_mask = 8
+input_pickable = false
+monitorable = false
+
+[node name="FusionAreaShape" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_tarru")
 
 [node name="ItemSprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_bd0g0")
 region_enabled = true
 region_rect = Rect2(0, 0, 16, 16)
 
@@ -25,7 +45,3 @@ region_rect = Rect2(0, 0, 16, 16)
 z_index = -1
 position = Vector2(0, -16)
 texture = ExtResource("1_753xi")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-rotation = 1.5707964
-shape = SubResource("CircleShape2D_753xi")
