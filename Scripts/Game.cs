@@ -86,27 +86,32 @@ public partial class Game : Node2D {
 		// }
 		GenTasks.Clear();
 		initGen = false;
-		GD.Print($"Time for after Gen: {s.ElapsedMilliseconds}");
+		GD.Print($"Time for Gen: {s.ElapsedMilliseconds}ms");
+		s.Restart();
 		SmoothWorld();
-		GD.Print($"Time for after Smooth: {s.ElapsedMilliseconds}");
+		GD.Print($"Time for Smooth: {s.ElapsedMilliseconds}ms");
+		s.Restart();
 		GrowMoss();
-		GD.Print($"Time for after Moss: {s.ElapsedMilliseconds}");
+		GD.Print($"Time for Moss: {s.ElapsedMilliseconds}ms");
+		s.Restart();
 		SpawnPlayer();
 		PlantTrees();
-		GD.Print($"Time for after Trees: {s.ElapsedMilliseconds}");
+		GD.Print($"Time for Trees: {s.ElapsedMilliseconds}ms");
+		s.Restart();
 		World.Load();
 		Task.WaitAll([.. GenTasks]);
 		GenTasks.Clear();
 		// ItemDrop.Spawn(new(Item.Get("totm:bedrock"), 1), GetPlayer().Position);
 		loaded = true;
-		GD.Print($"Time for after Load: {s.ElapsedMilliseconds}");
+		GD.Print($"Time for Load: {s.ElapsedMilliseconds}ms");
+		s.Restart();
 	}
 
 	public override void _Process(double delta) {
 		base._Process(delta);
 		if (!loaded) return;
 		if (s.IsRunning) {
-			GD.Print($"Time for after Frame: {s.ElapsedMilliseconds}");
+			GD.Print($"Time for Frame: {s.ElapsedMilliseconds}ms");
 			s.Stop();
 		}
 		if (Input.IsPhysicalKeyPressed(Key.L))
