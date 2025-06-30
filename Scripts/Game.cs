@@ -2,7 +2,9 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TeroftheMagic.Scripts.Interactables;
 using TeroftheMagic.Scripts.Universe;
+using TeroftheMagic.Scripts.Utility;
 using static TeroftheMagic.Scripts.Utility.Functions;
 using static TeroftheMagic.Scripts.Utility.TileUtil;
 using Logger = TeroftheMagic.Scripts.Utility.Logger;
@@ -10,13 +12,16 @@ using Logger = TeroftheMagic.Scripts.Utility.Logger;
 namespace TeroftheMagic.Scripts;
 
 public partial class Game : Node2D {
-	private static Game instance;
-	public static Game Instance { get => instance; }
+	public static Game Instance { get; private set; }
+	[Export] private CharacterBody2D player;
+	public static CharacterBody2D Player { get => Instance.player; }
+	[Export] private Inventory playerInventory;
+	public static Inventory PlayerInventory { get => Instance.playerInventory; }
 	public static readonly byte ppPerTick = 2;
 	public static readonly byte tickMs = (byte)Math.Round(ppPerTick * 1000f / Engine.PhysicsTicksPerSecond);
-	public static List<Task> GenTasks = new();
+	public static List<Task> GenTasks = [];
 	public static bool loaded = false;
-	private static Vector2I worldChunks = new(5, 2);
+	private static Vector2I worldChunks = new(5, 1);
 	public static ushort WorldWidth { get => (ushort)worldChunks.X; set => worldChunks.X = value; }
 	public static ushort WorldHeight { get => (ushort)worldChunks.Y; set => worldChunks.Y = value; }
 	private static byte minHeight = 75;
@@ -63,7 +68,7 @@ public partial class Game : Node2D {
 		// Called every time the node is added to the scene.
 		// Initialization here.
 		GD.Print("Hello from C# to Godot :)");
-		instance = this;
+		Instance = this;
 		noise.NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin;
 		World.Back = GetNode<Node2D>("World/BackLayer");
 		World.Main = GetNode<Node2D>("World/MainLayer");
@@ -101,7 +106,6 @@ public partial class Game : Node2D {
 		World.Load();
 		Task.WaitAll([.. GenTasks]);
 		GenTasks.Clear();
-		// ItemDrop.Spawn(new(Item.Get("totm:bedrock"), 1), GetPlayer().Position);
 		loaded = true;
 		GD.Print($"Time for Load: {s.ElapsedMilliseconds}ms");
 		s.Restart();
@@ -116,6 +120,8 @@ public partial class Game : Node2D {
 		}
 		if (Input.IsPhysicalKeyPressed(Key.L))
 			Logger.LogCurrentMax();
+		if (Input.IsActionJustPressed("ToggleInventory"))
+			PlayerInventory.Visible = !PlayerInventory.Visible;
 	}
 
 	private static void SmoothWorld() {

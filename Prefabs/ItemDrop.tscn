@@ -13,7 +13,6 @@ radius = 24.0
 [node name="ItemDrop" type="RigidBody2D" node_paths=PackedStringArray("ItemSprite", "FusionArea")]
 z_index = 240
 collision_layer = 8
-mass = 1000.0
 center_of_mass_mode = 1
 center_of_mass = Vector2(0, 8)
 can_sleep = false

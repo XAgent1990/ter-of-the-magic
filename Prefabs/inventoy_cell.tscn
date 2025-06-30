@@ -1,12 +1,24 @@
-[gd_scene format=3 uid="uid://dwakc763c1vvr"]
+[gd_scene load_steps=5 format=3 uid="uid://dwakc763c1vvr"]
 
-[node name="InventoyCell" type="Control"]
-custom_minimum_size = Vector2(60, 60)
+[ext_resource type="Script" uid="uid://dgbdr1at2kt0i" path="res://Scripts/Interactables/InventoryCell.cs" id="1_upp2x"]
+[ext_resource type="Texture2D" uid="uid://d1oaqe3ssr6ik" path="res://Assets/BlockTileSet.png" id="2_ct837"]
+[ext_resource type="Theme" uid="uid://hjgbplpdvb0p" path="res://GameAssets/Pixeloid_Theme.tres" id="3_svgwm"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_upp2x"]
+atlas = ExtResource("2_ct837")
+region = Rect2(0, 16, 16, 16)
+
+[node name="InventoyCell" type="Control" node_paths=PackedStringArray("Texture", "CountLabel")]
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 3
+anchors_preset = 0
 offset_right = 120.0
 offset_bottom = 120.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_upp2x")
+Texture = NodePath("ColorRect/ColorRect2/Icon")
+CountLabel = NodePath("ColorRect/ColorRect2/Count")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 custom_minimum_size = Vector2(60, 60)
@@ -32,11 +44,29 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(1, 1, 1, 0.13725491)
 
-[node name="TextureRect" type="TextureRect" parent="ColorRect/ColorRect2"]
+[node name="Icon" type="TextureRect" parent="ColorRect/ColorRect2"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+texture = SubResource("AtlasTexture_upp2x")
 expand_mode = 1
+
+[node name="Count" type="Label" parent="ColorRect/ColorRect2"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -24.0
+offset_top = -23.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("3_svgwm")
+theme_override_colors/font_color = Color(1, 0.32156864, 1, 1)
+theme_override_font_sizes/font_size = 36
+horizontal_alignment = 2
+vertical_alignment = 2

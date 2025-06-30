@@ -8,8 +8,10 @@
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_pbw6q"]
 
-[node name="Game" type="Node2D"]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("player", "playerInventory")]
 script = ExtResource("1_idj7w")
+player = NodePath("World/Entities/Player")
+playerInventory = NodePath("CanvasLayer/Inventory")
 metadata/_edit_horizontal_guides_ = [-86.0]
 
 [node name="BackgroundParallax" type="Parallax2D" parent="."]
@@ -50,11 +52,10 @@ script = ExtResource("4_pbw6q")
 [node name="Test-UI" parent="CanvasLayer" instance=ExtResource("4_rgh2o")]
 anchors_preset = 11
 anchor_left = 1.0
+offset_left = 1.0
+offset_right = 1.0
 grow_horizontal = 0
 
 [node name="Inventory" parent="CanvasLayer" instance=ExtResource("6_v1gob")]
 visible = false
-anchors_preset = 9
-anchor_right = 0.0
-grow_horizontal = 1
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.75, 0.75)

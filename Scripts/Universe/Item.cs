@@ -85,6 +85,9 @@ public struct ItemStack {
 		}
 	}
 
+	public string ID { get => Item is not null ? Item.ID : ""; }
+	public byte StackSize { get => Item.StackSize; }
+
 	public bool IsFull { get => Count == Item.StackSize; }
 
 	public ItemStack(Item item, byte count = 1) {

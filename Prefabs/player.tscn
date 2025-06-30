@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c366gkf0gv6gc"]
+[gd_scene load_steps=8 format=3 uid="uid://c366gkf0gv6gc"]
 
 [ext_resource type="Script" uid="uid://bwq8k4uft4wt7" path="res://Scripts/Entitys/PlayerMovement.cs" id="1_cvnsp"]
 [ext_resource type="Texture2D" uid="uid://i4y2jpv6qfkh" path="res://Assets/Main Char File.png" id="3_knrd4"]
@@ -27,6 +27,10 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cvnsp"]
 size = Vector2(20, 46)
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2nftw"]
+radius = 30.0
+height = 76.0
+
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("rayRight", "rayRightFoot", "rayLeft", "rayLeftFoot")]
 collision_layer = 2
 script = ExtResource("1_cvnsp")
@@ -45,8 +49,9 @@ autoplay = "Idle"
 position = Vector2(0, -23)
 shape = SubResource("RectangleShape2D_cvnsp")
 
-[node name="PlayerData" type="Node2D" parent="."]
+[node name="PlayerData" type="Node2D" parent="." node_paths=PackedStringArray("PickupArea")]
 script = ExtResource("3_y5hcb")
+PickupArea = NodePath("../PickupArea")
 
 [node name="SpellBook" type="Node2D" parent="."]
 script = ExtResource("4_2nftw")
@@ -70,3 +75,12 @@ hit_from_inside = true
 position = Vector2(-12, -8)
 target_position = Vector2(-1.5, 0)
 hit_from_inside = true
+
+[node name="PickupArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+monitorable = false
+
+[node name="PickupShape" type="CollisionShape2D" parent="PickupArea"]
+position = Vector2(0, -23)
+shape = SubResource("CapsuleShape2D_2nftw")

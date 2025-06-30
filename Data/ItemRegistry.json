@@ -224,6 +224,7 @@
         },
         "ItemDrops": [
             {
+                "Chance": 0.1,
                 "Items": [
                     {
                         "ID": "totm:leaves"

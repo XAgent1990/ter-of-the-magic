@@ -22,7 +22,7 @@ public partial class ItemDrop : RigidBody2D {
 			itemStack = value;
 		}
 	}
-	public string ID { get => ItemStack.Item.ID; }
+	public string ID { get => ItemStack.ID; }
 	public byte Count {
 		get => ItemStack.Count;
 		set => itemStack.Count = value;
@@ -116,7 +116,6 @@ public partial class ItemDrop : RigidBody2D {
 		else {
 			other.Count -= (byte)(StackSize - Count);
 			Count = StackSize;
-			FusionArea.SetActive(false);
 			areaTimer = areaCooldown;
 		}
 	}
