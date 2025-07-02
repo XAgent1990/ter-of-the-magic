@@ -46,8 +46,8 @@ public partial class EntityMovement : CharacterBody2D {
 
 			//Calc Position
 			Vector2 pos = new Vector2(mapPos.X * TilePixelSize, (mapPos.Y + 1) * -TilePixelSize);
-			// pos local to global + to center of block
-			Vector2 newPos = pos - Position + new Vector2(TilePixelSize / 2, TilePixelSize / 2);
+			// pos local to global + to center of block (parent is the enemy so not that useful) 
+			// Vector2 newPos = pos - Position + new Vector2(TilePixelSize / 2, TilePixelSize / 2);
 
 			//pointsForLineDebug.Add(pos);
 

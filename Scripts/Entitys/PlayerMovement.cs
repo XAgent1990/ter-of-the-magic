@@ -25,6 +25,8 @@ public partial class PlayerMovement : CharacterBody2D {
 
 	public AnimatedSprite2D sprite;
 
+	private bool JumpAnimation = false;
+
 	public override void _Ready() {
 		base._Ready();
 		if (sprite == null) {
@@ -45,17 +47,21 @@ public partial class PlayerMovement : CharacterBody2D {
 		}
 
 
-
+		if (JumpAnimation && IsOnFloor()) {
+			JumpAnimation = false;
+		}
 		// Handle Jump.
 		if (Input.IsActionJustPressed("ui_accept") && IsOnFloor()) {
+			JumpAnimation = true;
 			velocity.Y = JumpVelocity;
 		}
+
 
 		// Get the input direction and handle the movement/deceleration.
 		// As good practice, you should replace UI actions with custom gameplay actions.
 		Vector2 direction = Input.GetVector("Left", "Right", "Up", "Down");
 		if (direction != Vector2.Zero) {
-			velocity.X = direction.X * Speed;
+			velocity.X = direction.Normalized().X * Speed;
 		}
 		else {
 			velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
@@ -73,6 +79,9 @@ public partial class PlayerMovement : CharacterBody2D {
 
 		if (direction.X == 0) {
 			sprite.Play("Idle");
+		}
+		else if (JumpAnimation) {
+			sprite.Play("Jump");
 		}
 		else {
 			sprite.Play("Run");
