@@ -9,7 +9,7 @@ namespace TeroftheMagic.Scripts.Interactables;
 public partial class Inventory : Control {
 	private Node Container;
 	public int SlotCount { get => Container.GetChildCount(); }
-	private List<InventoryCell> slots = [];
+	private readonly List<InventoryCell> slots = [];
 	public List<InventoryCell> Slots {
 		get {
 			if (!(slots?.Count > 0)) {

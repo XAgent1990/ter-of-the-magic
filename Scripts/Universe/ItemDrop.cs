@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Diagnostics;
 using TeroftheMagic.Scripts.Utility;
+using Logger = TeroftheMagic.Scripts.Utility.Logger;
 
 namespace TeroftheMagic.Scripts.Universe;
 
@@ -44,13 +45,19 @@ public partial class ItemDrop : RigidBody2D {
 	}
 
 	public static ItemDrop Spawn(ItemStack itemStack, Vector2I mapPos) {
+		Logger.StartTimer("ItemDrop.Spawn.Instantiate");
 		ItemDrop itemDrop = Prefab.Instantiate<ItemDrop>();
+		Logger.StopTimer("ItemDrop.Spawn.Instantiate");
+		Logger.StartTimer("ItemDrop.Spawn.GetWorldPosition");
 		itemDrop.Position = World.GetWorldPosition(mapPos);
+		Logger.StopTimer("ItemDrop.Spawn.GetWorldPosition");
 		// itemDrop.Position = new(mapPos.X + .5f, -mapPos.Y + .5f);
 		// itemDrop.Position *= TileUtil.TilePixelSize;
 		itemDrop.LinearVelocity = new((float)(Random.Shared.NextDouble() - .5d) * jumpHeight, -jumpHeight);
 		itemDrop.ItemStack = itemStack;
+		Logger.StartTimer("ItemDrop.Spawn.AddChild");
 		World.Entities.AddChild(itemDrop);
+		Logger.StopTimer("ItemDrop.Spawn.AddChild");
 		return itemDrop;
 	}
 

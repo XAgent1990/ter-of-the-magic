@@ -7,6 +7,7 @@ using static TeroftheMagic.Scripts.Utility.Functions;
 using static TeroftheMagic.Scripts.Utility.Extensions;
 using static TeroftheMagic.Scripts.Utility.TileUtil;
 using Logger = TeroftheMagic.Scripts.Utility.Logger;
+using System.Collections.Generic;
 
 namespace TeroftheMagic.Scripts.Universe;
 
@@ -73,12 +74,34 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 	public void BreakBlock(Vector2I cOff) {
 		Logger.StartTimer("WorldChunk.BreakBlock");
 		BlockData bd = chunk[cOff.X, cOff.Y];
-		foreach (ItemStack IS in Item.Get(bd.ID).GetItemDrops())
+		Logger.StartTimer("WorldChunk.BreakBlock.GetItem");
+		Item item = Item.Get(bd.ID);
+		Logger.StopTimer("WorldChunk.BreakBlock.GetItem");
+		Logger.StartTimer("WorldChunk.BreakBlock.GetItemDrops");
+		List<ItemStack> drops = item.GetItemDrops();
+		Logger.StopTimer("WorldChunk.BreakBlock.GetItemDrops");
+		Logger.StartTimer("WorldChunk.BreakBlock.SpawnItemStacks");
+		foreach (ItemStack IS in drops)
 			ItemDrop.Spawn(IS, origin + cOff);
+		Logger.StopTimer("WorldChunk.BreakBlock.SpawnItemStacks");
 		bd.ID = Block.Air;
+		Logger.StartTimer("TileMapLayer.UpdateCell");
 		TML.UpdateCell(cOff);
+		Logger.StopTimer("TileMapLayer.UpdateCell");
 		Logger.StopTimer("WorldChunk.BreakBlock");
 	}
+
+	// public void BreakBlock(Vector2I cOff) {
+	// 	Logger.StartTimer("WorldChunk.BreakBlock");
+	// 	BlockData bd = chunk[cOff.X, cOff.Y];
+	// 	foreach (ItemStack IS in Item.Get(bd.ID).GetItemDrops())
+	// 		ItemDrop.Spawn(IS, origin + cOff);
+	// 	bd.ID = Block.Air;
+	// 	Logger.StartTimer("TileMapLayer.UpdateCell");
+	// 	TML.UpdateCell(cOff);
+	// 	Logger.StopTimer("TileMapLayer.UpdateCell");
+	// 	Logger.StopTimer("WorldChunk.BreakBlock");
+	// }
 
 	public void PlaceBlock(Vector2I cOff, BlockData bd) {
 		Logger.StartTimer("WorldChunk.PlaceBlock");
@@ -144,6 +167,7 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 		// if (layer == WorldLayer.main)
 		// 	GD.Print(chunk.AsString());
 		TML = TMLPrefab.Instantiate<TileMapLayer>();
+		((TileMapLayerController)TML).Chunk = this;
 		switch (layer) {
 			case WorldLayer.back:
 				TML.CollisionEnabled = false;

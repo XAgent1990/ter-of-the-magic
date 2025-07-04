@@ -1,12 +1,19 @@
-[gd_scene load_steps=7 format=3 uid="uid://ciettug7hcnrm"]
+[gd_scene load_steps=11 format=3 uid="uid://ciettug7hcnrm"]
 
 [ext_resource type="Script" uid="uid://cjyaqdmxi64j0" path="res://Scripts/Game.cs" id="1_idj7w"]
 [ext_resource type="PackedScene" uid="uid://c366gkf0gv6gc" path="res://Prefabs/player.tscn" id="2_rgh2o"]
 [ext_resource type="Script" uid="uid://ld38cvp7naj6" path="res://Scripts/UI/UIController.cs" id="4_pbw6q"]
 [ext_resource type="PackedScene" uid="uid://bfoceiykrmmhu" path="res://Prefabs/test_ui.tscn" id="4_rgh2o"]
+[ext_resource type="Script" uid="uid://dswqdqivpj11r" path="res://Scripts/UI/MouseController.cs" id="6_50glp"]
 [ext_resource type="PackedScene" uid="uid://dclive1vjj1cl" path="res://Prefabs/Inventory.tscn" id="6_v1gob"]
+[ext_resource type="Texture2D" uid="uid://d1oaqe3ssr6ik" path="res://Assets/BlockTileSet.png" id="7_vy5pj"]
+[ext_resource type="Theme" uid="uid://hjgbplpdvb0p" path="res://GameAssets/Pixeloid_Theme.tres" id="8_bmxlf"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_pbw6q"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4kpch"]
+atlas = ExtResource("7_vy5pj")
+region = Rect2(0, 16, 16, 16)
 
 [node name="Game" type="Node2D" node_paths=PackedStringArray("player", "playerInventory")]
 script = ExtResource("1_idj7w")
@@ -59,3 +66,35 @@ grow_horizontal = 0
 [node name="Inventory" parent="CanvasLayer" instance=ExtResource("6_v1gob")]
 visible = false
 scale = Vector2(0.75, 0.75)
+
+[node name="Mouse" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("Texture", "CountLabel")]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("6_50glp")
+Texture = NodePath("MarginContainer/ItemIcon")
+CountLabel = NodePath("MarginContainer/ItemCount")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Mouse"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 20.0
+offset_right = 50.0
+offset_bottom = 60.0
+
+[node name="ItemIcon" type="TextureRect" parent="CanvasLayer/Mouse/MarginContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = SubResource("AtlasTexture_4kpch")
+expand_mode = 1
+
+[node name="ItemCount" type="Label" parent="CanvasLayer/Mouse/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme = ExtResource("8_bmxlf")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+horizontal_alignment = 2
+vertical_alignment = 2

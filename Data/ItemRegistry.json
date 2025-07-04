@@ -32,8 +32,7 @@
         "StackSize": 250,
         "TileSetData": {
             "Type": "block",
-            "ID": 1
-        },
+            "ID": 1        },
         "VariantTileSetData": {},
         "ItemDrops": [
             {

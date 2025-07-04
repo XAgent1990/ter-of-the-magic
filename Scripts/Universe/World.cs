@@ -102,5 +102,7 @@ public abstract class World {
 		WorldData.Load();
 	}
 
-	public static Vector2 GetWorldPosition(Vector2I mapPos) => WorldData.main.GetWorldPosition(mapPos);
+	public static Vector2 GetWorldPosition(Vector2I mapPos) =>
+		new Vector2(mapPos.X + .5f, -mapPos.Y + .5f) * TilePixelSizeV;
+	// public static Vector2 GetWorldPosition(Vector2I mapPos) => WorldData.main.GetWorldPosition(mapPos);
 }

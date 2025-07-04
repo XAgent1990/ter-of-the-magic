@@ -21,7 +21,7 @@ public partial class Game : Node2D {
 	public static readonly byte tickMs = (byte)Math.Round(ppPerTick * 1000f / Engine.PhysicsTicksPerSecond);
 	public static List<Task> GenTasks = [];
 	public static bool loaded = false;
-	private static Vector2I worldChunks = new(5, 1);
+	private static Vector2I worldChunks = new(1, 1);
 	public static ushort WorldWidth { get => (ushort)worldChunks.X; set => worldChunks.X = value; }
 	public static ushort WorldHeight { get => (ushort)worldChunks.Y; set => worldChunks.Y = value; }
 	private static byte minHeight = 75;

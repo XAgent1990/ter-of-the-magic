@@ -16,6 +16,8 @@ offset_right = 120.0
 offset_bottom = 120.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+mouse_behavior_recursive = 1
 script = ExtResource("1_upp2x")
 Texture = NodePath("ColorRect/ColorRect2/Icon")
 CountLabel = NodePath("ColorRect/ColorRect2/Count")
@@ -28,6 +30,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+mouse_behavior_recursive = 1
 color = Color(0.47007585, 0.47007585, 0.47007585, 1)
 
 [node name="ColorRect2" type="ColorRect" parent="ColorRect"]
@@ -42,6 +46,8 @@ offset_right = -5.0
 offset_bottom = -5.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+mouse_behavior_recursive = 1
 color = Color(1, 1, 1, 0.13725491)
 
 [node name="Icon" type="TextureRect" parent="ColorRect/ColorRect2"]
@@ -51,6 +57,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 0
+mouse_behavior_recursive = 2
+mouse_force_pass_scroll_events = false
+mouse_default_cursor_shape = 7
 texture = SubResource("AtlasTexture_upp2x")
 expand_mode = 1
 
@@ -66,7 +76,7 @@ offset_top = -23.0
 grow_horizontal = 0
 grow_vertical = 0
 theme = ExtResource("3_svgwm")
-theme_override_colors/font_color = Color(1, 0.32156864, 1, 1)
+theme_override_constants/outline_size = 8
 theme_override_font_sizes/font_size = 36
 horizontal_alignment = 2
 vertical_alignment = 2
