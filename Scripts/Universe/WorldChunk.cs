@@ -81,8 +81,8 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 		List<ItemStack> drops = item.GetItemDrops();
 		Logger.StopTimer("WorldChunk.BreakBlock.GetItemDrops");
 		Logger.StartTimer("WorldChunk.BreakBlock.SpawnItemStacks");
-		foreach (ItemStack IS in drops)
-			ItemDrop.Spawn(IS, origin + cOff);
+		// foreach (ItemStack IS in drops)
+		// 	ItemDrop.Spawn(IS, origin + cOff);
 		Logger.StopTimer("WorldChunk.BreakBlock.SpawnItemStacks");
 		bd.ID = Block.Air;
 		Logger.StartTimer("TileMapLayer.UpdateCell");
@@ -179,7 +179,7 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 				World.Main.AddChild(TML);
 				break;
 		}
-		TML.Position = new(origin.X * 16, origin.Y * -16);
+		TML.Position = new(origin.X * TilePixelSize, origin.Y * -TilePixelSize + TilePixelSize);
 		GenTasks.Add(Task.Run(() => {
 			Vector2I pos = new();
 			for (pos.X = 0; pos.X < WorldData.chunkSize; pos.X++) {

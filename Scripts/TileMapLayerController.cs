@@ -10,9 +10,25 @@ public partial class TileMapLayerController : TileMapLayer {
 
 	private enum ActiveButton { Left, Right }
 	private static ActiveButton activeButton;
-	private static byte ppCounter = 0;
+	private Vector2I center = Vector2I.Zero;
+	private Vector2I Center {
+		get {
+			if (center == Vector2.Zero)
+				center = Chunk.origin + WorldData.chunkSizeV / 2;
+			return center;
+		}
+	}
 
 	private static bool left, right, shift, ctrl, held, blocked;
+
+	private static readonly byte ttu = 12;
+	private byte ppCounter = ttu;
+
+	public override void _Ready() {
+		base._Ready();
+
+		center = Chunk.origin + WorldData.chunkSizeV / 2;
+	}
 
 	public override void _Input(InputEvent @event) {
 		base._Input(@event);
@@ -24,6 +40,7 @@ public partial class TileMapLayerController : TileMapLayer {
 			ctrl = mouseButton.CtrlPressed;
 
 			if (mouseButton.IsPressed() && !held) {
+				if (!left && !right) return;
 				activeButton = left ? ActiveButton.Left : ActiveButton.Right;
 				held = true;
 			}
@@ -37,6 +54,16 @@ public partial class TileMapLayerController : TileMapLayer {
 
 	public override void _PhysicsProcess(double delta) {
 		base._Process(delta);
+
+		ppCounter++;
+		if (ppCounter >= ttu) {
+			Vector2 pos = Game.Player.Position;
+			pos.Y *= -1;
+			float distance = (pos / TileUtil.TilePixelSizeV - Center).Length();
+			GD.Print($"center: {Center}, distance:{distance}");
+			Enabled = distance <= Game.RenderDistance;
+			ppCounter -= ttu;
+		}
 
 		if (blocked) return;
 
@@ -65,30 +92,6 @@ public partial class TileMapLayerController : TileMapLayer {
 			if (!shift)
 				blocked = true;
 		}
-
-		// ppCounter++;
-		// if (ppCounter >= ppPerTick)
-		// 	ppCounter -= ppPerTick;
-		// else
-		// 	return;
-
-		// if (Input.IsMouseButtonPressed(MouseButton.Left)) {
-		// 	if (!mouseLeftBlocked && !mouseRightBlocked) {
-		// 		mouseLeftBlocked = !Input.IsPhysicalKeyPressed(Key.Shift);
-		// 		BreakBlock(Input.IsPhysicalKeyPressed(Key.Ctrl) ? WorldLayer.back : WorldLayer.main);
-		// 		return;
-		// 	}
-		// }
-		// else
-		// 	mouseLeftBlocked = false;
-		// if (Input.IsMouseButtonPressed(MouseButton.Right)) {
-		// 	if (!mouseLeftBlocked && !mouseRightBlocked) {
-		// 		mouseRightBlocked = !Input.IsPhysicalKeyPressed(Key.Shift);
-		// 		PlaceBlock(Input.IsPhysicalKeyPressed(Key.Ctrl) ? WorldLayer.back : WorldLayer.main);
-		// 	}
-		// }
-		// else
-		// 	mouseRightBlocked = false;
 	}
 
 }

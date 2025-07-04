@@ -10,7 +10,7 @@ public static class Extensions {
 
 	public static void UpdateCell(this TileMapLayer tml, Vector2I pos) => tml.UpdateCell(pos, new());
 	public static void UpdateCell(this TileMapLayer tml, Vector2I pos, TileSetData td) {
-		pos.Y *= -1;
+		pos.Y = -pos.Y - 1;
 		if (td.ID == 0) tml.SetCell(pos);
 		else tml.SetCell(pos, (int)td.SourceId, TileMapIdToCoord(td.SourceId, td.ID), td.Alt);
 	}

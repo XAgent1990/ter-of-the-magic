@@ -12,7 +12,7 @@ namespace TeroftheMagic.Scripts.Universe;
 
 public class WorldData {
 	public static Vector2I size;
-	public const ushort chunkSize = 100;
+	public const ushort chunkSize = 20;
 	public static readonly Vector2I chunkSizeV = new(chunkSize, chunkSize);
 	public static float BackLayerTint = .67f;
 	public static ushort[] heightMap;

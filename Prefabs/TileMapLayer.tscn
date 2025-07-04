@@ -7,6 +7,6 @@
 z_index = 200
 tile_set = ExtResource("1_gck6b")
 occlusion_enabled = false
-rendering_quadrant_size = 25
-physics_quadrant_size = 25
+rendering_quadrant_size = 20
+physics_quadrant_size = 20
 script = ExtResource("2_dgni1")
