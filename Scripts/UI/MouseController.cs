@@ -2,10 +2,91 @@ using Godot;
 using System;
 using TeroftheMagic.Scripts.Universe;
 using static TeroftheMagic.Scripts.Utility.TileUtil;
+using static TeroftheMagic.Scripts.Universe.World;
+using static TeroftheMagic.Scripts.Utility.Functions;
+using TeroftheMagic.Scripts.Utility;
 
 namespace TeroftheMagic.Scripts.UI;
 
 public partial class MouseController : Control {
+	private enum ActiveButton { Left, Right }
+	private static ActiveButton activeButton;
+
+	private static bool left, right, shift, ctrl, held, blocked;
+
+	private static readonly byte ttu = 12;
+	private byte ppCounter = ttu;
+
+	public override void _UnhandledInput(InputEvent @event) {
+		base._UnhandledInput(@event);
+
+		if (@event is InputEventMouseButton mouseButton) {
+			left = (mouseButton.ButtonMask & MouseButtonMask.Left) == MouseButtonMask.Left;
+			right = (mouseButton.ButtonMask & MouseButtonMask.Right) == MouseButtonMask.Right;
+			shift = mouseButton.ShiftPressed;
+			ctrl = mouseButton.CtrlPressed;
+
+			if (mouseButton.IsPressed() && !held) {
+				if (!left && !right) return;
+				activeButton = left ? ActiveButton.Left : ActiveButton.Right;
+				held = true;
+			}
+			else if (mouseButton.IsReleased() && !(left || right))
+				held = blocked = false;
+
+			GetViewport().SetInputAsHandled();
+		}
+	}
+
+
+	public override void _PhysicsProcess(double delta) {
+		base._Process(delta);
+
+		if (blocked) return;
+
+		if (held) {
+			Vector2 mousePos = Main.GetLocalMousePosition();
+			Vector2I mapPos = new((int)mousePos.X / TilePixelSize, (int)Math.Ceiling(-mousePos.Y / TilePixelSize));
+			WorldLayer layer = ctrl ? WorldLayer.back : WorldLayer.main;
+			if (Count > 0) {
+				switch (activeButton) {
+					case ActiveButton.Left:
+						ItemStack = ItemStack.Use(layer, mapPos);
+						blocked = !shift || Count == 0;
+						break;
+					case ActiveButton.Right:
+						Drop();
+						break;
+				}
+			}
+			else {
+				if (IsOutOfBounds(mapPos))
+					return;
+				switch (activeButton) {
+					case ActiveButton.Left:
+						if (IsUnbreakable(layer, mapPos) || layer == WorldLayer.back && !IsAir(WorldLayer.main, mapPos))
+							return;
+						BreakBlock(layer, mapPos);
+						break;
+					case ActiveButton.Right:
+						if (IsAir(WorldLayer.main, mapPos))
+							return;
+						Interact(mapPos);
+						break;
+				}
+				if (!shift)
+					blocked = true;
+			}
+		}
+	}
+
+	public void Drop() {
+		ItemDrop.Spawn(ItemStack, Game.Player.Position).Dropped = true;
+		Count = 0;
+	}
+
+
+
 	private MouseController() { }
 	public static MouseController Instance { get; private set; }
 	private static Viewport Viewport;
@@ -20,9 +101,11 @@ public partial class MouseController : Control {
 			itemStack.Count = value;
 			if (value > 0)
 				CountLabel.Text = value.ToString();
-			else
+			else {
 				CountLabel.Text = "";
-			Instance.Visible = value > 0;
+				ItemStack = new();
+			}
+			Visible = value > 0;
 		}
 	}
 	public byte StackSize { get => itemStack.StackSize; }
@@ -31,12 +114,13 @@ public partial class MouseController : Control {
 	public ItemStack ItemStack {
 		get => itemStack;
 		set {
-			if (TryTileSetDataToSprite(value.Item.GetTileSetData(), out CompressedTexture2D texture, out Vector2I pos))
+			if (value.Count > 0 && TryTileSetDataToSprite(value.Item.GetTileSetData(), out CompressedTexture2D texture, out Vector2I pos))
 				SetTexture(texture, pos);
 			else
 				SetTexture(null, Vector2I.Zero);
-			if (itemStack.Count > 0)
-				CountLabel.Text = itemStack.Count.ToString();
+			if (value.Count > 0) {
+				CountLabel.Text = value.Count.ToString();
+			}
 			else
 				CountLabel.Text = "";
 			Instance.Visible = value.Count != 0;

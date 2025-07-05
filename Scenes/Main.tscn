@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://ciettug7hcnrm"]
+[gd_scene load_steps=12 format=3 uid="uid://ciettug7hcnrm"]
 
 [ext_resource type="Script" uid="uid://cjyaqdmxi64j0" path="res://Scripts/Game.cs" id="1_idj7w"]
 [ext_resource type="PackedScene" uid="uid://c366gkf0gv6gc" path="res://Prefabs/player.tscn" id="2_rgh2o"]
+[ext_resource type="Script" uid="uid://hcbvqpwbjycn" path="res://Scripts/Utility/AudioManager.cs" id="3_vy5pj"]
 [ext_resource type="Script" uid="uid://ld38cvp7naj6" path="res://Scripts/UI/UIController.cs" id="4_pbw6q"]
 [ext_resource type="PackedScene" uid="uid://bfoceiykrmmhu" path="res://Prefabs/test_ui.tscn" id="4_rgh2o"]
 [ext_resource type="Script" uid="uid://dswqdqivpj11r" path="res://Scripts/UI/MouseController.cs" id="6_50glp"]
@@ -52,6 +53,9 @@ z_index = 250
 
 [node name="Camera2D" type="Camera2D" parent="World/Entities/Player"]
 scale = Vector2(0.5, 0.5)
+
+[node name="AudioPlayer" type="AudioStreamPlayer" parent="."]
+script = ExtResource("3_vy5pj")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 script = ExtResource("4_pbw6q")

@@ -5,15 +5,13 @@ using TeroftheMagic.Scripts.Utility;
 using static TeroftheMagic.Scripts.Utility.Functions;
 using static TeroftheMagic.Scripts.Utility.Exceptions;
 using static TeroftheMagic.Scripts.Utility.TileUtil;
+using System.Diagnostics;
+using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 
 namespace TeroftheMagic.Scripts.Universe;
 
-public class Item {
-	public Item() {
-		VariantTileSetData = [];
-		VariantTileSetData.Add("test", new(TileSetId.block, 1, 0));
-	}
-	// public static Item singleton = new();
+public interface IItem {
 	public string ID { get; set; }
 	public string Name { get; set; }
 	public string Description { get; set; }
@@ -21,6 +19,26 @@ public class Item {
 	public TileSetData TileSetData { get; set; }
 	public Dictionary<string, TileSetData> VariantTileSetData { get; set; }
 	public List<Drops> ItemDrops { get; set; }
+	public TileSetData GetTileSetData(string variant = "");
+	public List<ItemStack> GetItemDrops();
+	public bool TryUse(Vector2I mapPos);
+}
+
+[JsonDerivedType(typeof(Item), "item")]
+[JsonDerivedType(typeof(Block), "block")]
+public class Item : IItem {
+	public string ID { get; set; }
+	public string Name { get; set; }
+	public string Description { get; set; }
+	public byte StackSize { get; set; }
+	public TileSetData TileSetData { get; set; }
+	public Dictionary<string, TileSetData> VariantTileSetData { get; set; }
+	public List<Drops> ItemDrops { get; set; }
+	public Item() {
+		VariantTileSetData = [];
+		VariantTileSetData.Add("test", new(TileSetId.block, 1, 0));
+	}
+	// public static Item singleton = new();
 
 	private static readonly List<Item> Registry = LoadJson<List<Item>>("Data/ItemRegistry.json");
 	static Item() {
@@ -28,8 +46,12 @@ public class Item {
 		WriteJson("Data/TestList.json", Registry);
 	}
 	public static Item Get(string id) {
-		if (Registry.TryFind(item => item.ID == id, out Item item))
-			return item;
+		if (Registry.TryFind(item => item.ID == id, out Item item)) {
+			return item.GetTileSetData().SourceId switch {
+				TileSetId.block => (Block)item,
+				_ => item,
+			};
+		}
 		else
 			throw new NotAnItem($"No Item with id '{id}'");
 	}
@@ -69,6 +91,7 @@ public class Item {
 		return IS;
 	}
 
+	public bool TryUse(Vector2I mapPos) { return false; }
 	public override string ToString() => Name;
 }
 
@@ -90,7 +113,7 @@ public struct ItemStack {
 
 	public bool IsFull { get => Count == Item.StackSize; }
 
-	public ItemStack(Item item, byte count = 1) {
+	public ItemStack(Item item = null, byte count = 0) {
 		if (count == 0) return;
 		if (item.StackSize <= 0)
 			throw new StackSizeViolation("Tried to create ItemStack with zero stack size Item");
@@ -98,6 +121,23 @@ public struct ItemStack {
 		Count = count;
 	}
 	public Item Item { get; set; }
+
+	public ItemStack Use(WorldLayer layer, Vector2I mapPos) {
+		if (Item is Block block) {
+			if (IsAir(layer, mapPos)) {
+				World.PlaceBlock(layer, mapPos, new(block.ID));
+				Count--;
+			}
+			// else
+			// 	AudioManager.PlayAudio("MeepMerp");
+		}
+		else if (Item is Item item) {
+			if (!item.TryUse(mapPos)) {
+				AudioManager.PlayAudio("MeepMerp");
+			}
+		}
+		return this;
+	}
 }
 
 public struct Drops() {

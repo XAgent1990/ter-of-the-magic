@@ -8,10 +8,10 @@ namespace TeroftheMagic.Scripts.Utility;
 
 public static class Extensions {
 
-	public static void UpdateCell(this TileMapLayer tml, Vector2I pos) => tml.UpdateCell(pos, new());
+	public static void UpdateCell(this TileMapLayer tml, Vector2I pos) => tml.UpdateCell(pos, new(TileSetId.block, 6));
 	public static void UpdateCell(this TileMapLayer tml, Vector2I pos, TileSetData td) {
 		pos.Y = -pos.Y - 1;
-		if (td.ID == 0) tml.SetCell(pos);
+		if (td.ID <= 0) tml.SetCell(pos);
 		else tml.SetCell(pos, (int)td.SourceId, TileMapIdToCoord(td.SourceId, td.ID), td.Alt);
 	}
 
@@ -61,4 +61,9 @@ public static class Extensions {
 		node.ProcessMode = active ? Node.ProcessModeEnum.Inherit : Node.ProcessModeEnum.Disabled;
 
 	public static bool IsActive(this Node node) => node.CanProcess();
+
+	public static AudioStreamPlayer PutStream(this AudioStreamPlayer ASP, AudioStream AS) {
+		ASP.Stream = AS;
+		return ASP;
+	}
 }

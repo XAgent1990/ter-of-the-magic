@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using TeroftheMagic.Scripts.UI;
 using TeroftheMagic.Scripts.Universe;
 using static TeroftheMagic.Scripts.Utility.TileUtil;
 
@@ -17,8 +18,10 @@ public partial class InventoryCell : Control {
 			itemStack.Count = value;
 			if (itemStack.Count > 0)
 				CountLabel.Text = value.ToString();
-			else
+			else {
 				CountLabel.Text = "";
+				ItemStack = new();
+			}
 		}
 	}
 	public byte StackSize { get => itemStack.StackSize; }
@@ -26,7 +29,7 @@ public partial class InventoryCell : Control {
 	public ItemStack ItemStack {
 		get => itemStack;
 		set {
-			if (TryTileSetDataToSprite(value.Item.GetTileSetData(), out CompressedTexture2D texture, out Vector2I pos))
+			if (value.Count > 0 && TryTileSetDataToSprite(value.Item.GetTileSetData(), out CompressedTexture2D texture, out Vector2I pos))
 				SetTexture(texture, pos);
 			else
 				SetTexture(null, Vector2I.Zero);
@@ -43,6 +46,8 @@ public partial class InventoryCell : Control {
 
 		Texture.Texture = new AtlasTexture();
 		AtlasTexture = (AtlasTexture)Texture.Texture;
+		MouseEntered += OnEnter;
+		MouseExited += OnExit;
 	}
 
 	private void SetTexture(CompressedTexture2D texture, Vector2I pos) {
@@ -51,4 +56,23 @@ public partial class InventoryCell : Control {
 		if (texture is not null)
 			AtlasTexture.Region = new(pos, TilePixelSizeV);
 	}
+
+	private bool Hovered { get; set; }
+
+	public override void _Input(InputEvent @event) {
+		base._Input(@event);
+
+		if (!Visible || !Hovered) return;
+
+		if (@event is InputEventMouseButton mouseButton) {
+			if (mouseButton.ButtonMask == MouseButtonMask.Left) {
+				(MouseController.Instance.ItemStack, ItemStack) = (ItemStack, MouseController.Instance.ItemStack);
+				GetViewport().SetInputAsHandled();
+			}
+		}
+	}
+
+	private void OnEnter() => Hovered = true;
+
+	private void OnExit() => Hovered = false;
 }

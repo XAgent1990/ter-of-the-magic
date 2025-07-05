@@ -12,7 +12,7 @@ namespace TeroftheMagic.Scripts.Universe;
 
 public enum WorldLayer { back, main, front }
 
-public abstract class World {
+public partial class World : Node2D {
 	public static Node2D Back;
 	public static Node2D Main;
 	public static Node2D Front;
@@ -74,21 +74,23 @@ public abstract class World {
 		return count;
 	}
 
-	public static void BreakBlock(WorldLayer layer, Vector2I pos) {
+	public static void BreakBlock(WorldLayer layer, Vector2I mapPos) {
 		Logger.StartTimer("World.BreakBlock");
-		WorldData.TargetLayer(layer).BreakBlock(pos);
+		WorldData.TargetLayer(layer).BreakBlock(mapPos);
 		Logger.StopTimer("World.BreakBlock");
 		if (layer == WorldLayer.main)
-			SendBlockUpdates(pos);
+			SendBlockUpdates(mapPos);
 	}
 
-	public static void PlaceBlock(WorldLayer layer, Vector2I pos, BlockData bd) {
+	public static void PlaceBlock(WorldLayer layer, Vector2I mapPos, BlockData bd) {
 		Logger.StartTimer("World.PlaceBlock");
-		WorldData.TargetLayer(layer).PlaceBlock(pos, bd);
+		WorldData.TargetLayer(layer).PlaceBlock(mapPos, bd);
 		Logger.StopTimer("World.PlaceBlock");
 		if (layer == WorldLayer.main)
-			SendBlockUpdates(pos);
+			SendBlockUpdates(mapPos);
 	}
+
+	public static void Interact(Vector2I mapPos) {}
 
 	public static async void SendBlockUpdates(Vector2I pos) {
 		await Task.Delay(TimeSpan.FromMilliseconds(tickMs));
@@ -102,7 +104,7 @@ public abstract class World {
 		WorldData.Load();
 	}
 
-	public static Vector2 GetWorldPosition(Vector2I mapPos) =>
+	public static Vector2 GetPosition(Vector2I mapPos) =>
 		new Vector2(mapPos.X + .5f, -mapPos.Y + .5f) * TilePixelSizeV;
 	// public static Vector2 GetWorldPosition(Vector2I mapPos) => WorldData.main.GetWorldPosition(mapPos);
 }

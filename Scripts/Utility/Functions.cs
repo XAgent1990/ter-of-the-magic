@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 using TeroftheMagic.Scripts.Universe;
 using static TeroftheMagic.Scripts.Game;
 using static TeroftheMagic.Scripts.Utility.TileUtil;

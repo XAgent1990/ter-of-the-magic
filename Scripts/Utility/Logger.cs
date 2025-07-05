@@ -18,6 +18,9 @@ public partial class Logger {
 			ft = new();
 		}
 		ft.msCurrent = (int)sw.ElapsedMilliseconds;
+		if (ft.callsTimer == 0)
+			ft.callsTimer = ft.msCurrent;
+		ft.callsCurrent++;
 		logFunctions[path] = ft;
 	}
 
@@ -26,6 +29,12 @@ public partial class Logger {
 			long delta = sw.ElapsedMilliseconds - ft.msCurrent;
 			if (ft.msMax < delta) {
 				ft.msMax = (int)delta;
+			}
+			if (sw.ElapsedMilliseconds - ft.callsTimer >= 1000) {
+				ft.callsTimer = 0;
+				if (ft.callsCurrent > ft.callsMax)
+					ft.callsMax = ft.callsCurrent;
+				ft.callsCurrent = 0;
 			}
 			logFunctions[path] = ft;
 		}
@@ -49,7 +58,7 @@ public partial class Logger {
 		// }
 		foreach (string path in logFunctions.Keys) {
 			if (logFunctions.TryGetValue(path, out FunctionTime ft)) {
-				AddText(fs, $"[{DateTime.Now}][{path}]: {ft.msMax}ms\r\n");
+				AddText(fs, $"[{DateTime.Now}][{path}]: {ft.msMax}ms | {ft.callsMax}/s\r\n");
 			}
 		}
 
@@ -72,5 +81,8 @@ public partial class Logger {
 	private struct FunctionTime() {
 		public int msMax = 0;
 		public int msCurrent = 0;
+		public int callsMax = 0;
+		public int callsCurrent = 0;
+		public double callsTimer = 0;
 	}
 }

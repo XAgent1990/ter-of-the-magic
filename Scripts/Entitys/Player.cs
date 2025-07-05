@@ -16,6 +16,7 @@ public partial class Player : Entity {
 		init();
 
 		PickupArea.BodyEntered += OnEnter;
+		PickupArea.BodyExited += OnExit;
 	}
 
 	public void init() {
@@ -27,13 +28,20 @@ public partial class Player : Entity {
 	}
 
 	private void OnEnter(Node2D body) {
-		if (body is not ItemDrop)
+		if (body is not ItemDrop itemDrop)
 			return;
-		ItemDrop itemDrop = (ItemDrop)body;
+		if (itemDrop.Dropped) return;
 		if (Game.PlayerInventory.TryAdd(itemDrop.ItemStack, out byte remaining))
 			itemDrop.QueueFree();
 		else
 			itemDrop.Count = remaining;
+	}
+
+	private void OnExit(Node2D body) {
+		if (body is not ItemDrop)
+			return;
+		ItemDrop itemDrop = (ItemDrop)body;
+		itemDrop.Dropped = false;
 	}
 }
 

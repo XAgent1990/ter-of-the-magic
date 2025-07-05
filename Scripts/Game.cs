@@ -21,7 +21,7 @@ public partial class Game : Node2D {
 	public static readonly byte tickMs = (byte)Math.Round(ppPerTick * 1000f / Engine.PhysicsTicksPerSecond);
 	public static List<Task> GenTasks = [];
 	public static bool loaded = false;
-	private static Vector2I worldChunks = new(5, 5);
+	private static Vector2I worldChunks = new(50, 12);
 	public static ushort WorldWidth { get => (ushort)worldChunks.X; set => worldChunks.X = value; }
 	public static ushort WorldHeight { get => (ushort)worldChunks.Y; set => worldChunks.Y = value; }
 	private static byte minHeight = 75;
@@ -63,7 +63,7 @@ public partial class Game : Node2D {
 	public static Vector2I Left = Vector2I.Left;
 	public static Vector2I Right = Vector2I.Right;
 
-	public static ushort RenderDistance = 50;
+	public static ushort RenderDistance = 90;
 
 
 	public override void _Ready() {
@@ -241,25 +241,5 @@ public partial class Game : Node2D {
 		Vector2 pos = mapPos * 16;
 		pos.Y = -pos.Y;
 		player.Position = pos;
-	}
-
-	public static void BreakBlock(WorldLayer layer) {
-		Logger.StartTimer("Game.BreakBlock");
-		Vector2 mousePos = World.Main.ToGlobal(World.Main.GetLocalMousePosition());
-		Vector2I mapPos = new((int)(mousePos.X / 16), (int)Math.Ceiling(-mousePos.Y / 16));
-		if (IsOutOfBounds(mapPos) || IsUnbreakable(layer, mapPos))
-			return;
-		if (layer == WorldLayer.back && !IsAir(WorldLayer.main, mapPos))
-			return;
-		World.BreakBlock(layer, mapPos);
-		Logger.StopTimer("Game.BreakBlock");
-	}
-
-	public static void PlaceBlock(WorldLayer layer) {
-		Vector2 mousePos = World.Main.ToGlobal(World.Main.GetLocalMousePosition());
-		Vector2I mapPos = new((int)(mousePos.X / 16), (int)Math.Ceiling(-mousePos.Y / 16));
-		if (IsOutOfBounds(mapPos) || !IsAir(layer, mapPos))
-			return;
-		World.PlaceBlock(layer, mapPos, new("totm:stone"));
 	}
 }

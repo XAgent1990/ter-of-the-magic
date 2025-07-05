@@ -37,6 +37,8 @@ public partial class ItemDrop : RigidBody2D {
 	private const double areaCooldown = 1;
 	private double areaTimer = areaCooldown;
 	private bool IsStationary { get => LinearVelocity.Length() < .1f; }
+	public bool IsResting { get => FusionArea.IsActive(); }
+	public bool Dropped { get; set; } = false;
 	// private static byte idCounter = 0;
 	// private byte id;
 
@@ -44,22 +46,24 @@ public partial class ItemDrop : RigidBody2D {
 		// id = idCounter++;
 	}
 
-	public static ItemDrop Spawn(ItemStack itemStack, Vector2I mapPos) {
+	public static ItemDrop Spawn(ItemStack itemStack, Vector2 pos) {
 		Logger.StartTimer("ItemDrop.Spawn.Instantiate");
 		ItemDrop itemDrop = Prefab.Instantiate<ItemDrop>();
 		Logger.StopTimer("ItemDrop.Spawn.Instantiate");
 		Logger.StartTimer("ItemDrop.Spawn.GetWorldPosition");
-		itemDrop.Position = World.GetWorldPosition(mapPos);
+		itemDrop.Position = pos;
 		Logger.StopTimer("ItemDrop.Spawn.GetWorldPosition");
-		// itemDrop.Position = new(mapPos.X + .5f, -mapPos.Y + .5f);
-		// itemDrop.Position *= TileUtil.TilePixelSize;
 		itemDrop.LinearVelocity = new((float)(Random.Shared.NextDouble() - .5d) * jumpHeight, -jumpHeight);
 		itemDrop.ItemStack = itemStack;
 		Logger.StartTimer("ItemDrop.Spawn.AddChild");
-		World.Entities.AddChild(itemDrop);
+		// World.Entities.AddChild(itemDrop);
+		World.Entities.CallDeferred("add_child", itemDrop);
 		Logger.StopTimer("ItemDrop.Spawn.AddChild");
 		return itemDrop;
 	}
+
+	public static ItemDrop Spawn(ItemStack itemStack, Vector2I mapPos) =>
+		Spawn(itemStack, World.GetPosition(mapPos));
 
 	public override void _Ready() {
 		base._Ready();
@@ -109,10 +113,9 @@ public partial class ItemDrop : RigidBody2D {
 		if (body == this)
 			return;
 		// GD.Print($"{id}: Different Body");
-		if (body is not ItemDrop)
+		if (body is not ItemDrop other)
 			return;
 		// GD.Print($"{id}: Body is an ItemDrop");
-		ItemDrop other = (ItemDrop)body;
 		if (other.ID != ID)
 			return;
 		if (other.Count + Count <= StackSize) {

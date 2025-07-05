@@ -72,23 +72,25 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 	}
 
 	public void BreakBlock(Vector2I cOff) {
-		Logger.StartTimer("WorldChunk.BreakBlock");
-		BlockData bd = chunk[cOff.X, cOff.Y];
-		Logger.StartTimer("WorldChunk.BreakBlock.GetItem");
-		Item item = Item.Get(bd.ID);
-		Logger.StopTimer("WorldChunk.BreakBlock.GetItem");
-		Logger.StartTimer("WorldChunk.BreakBlock.GetItemDrops");
-		List<ItemStack> drops = item.GetItemDrops();
-		Logger.StopTimer("WorldChunk.BreakBlock.GetItemDrops");
-		Logger.StartTimer("WorldChunk.BreakBlock.SpawnItemStacks");
-		// foreach (ItemStack IS in drops)
-		// 	ItemDrop.Spawn(IS, origin + cOff);
-		Logger.StopTimer("WorldChunk.BreakBlock.SpawnItemStacks");
-		bd.ID = Block.Air;
-		Logger.StartTimer("TileMapLayer.UpdateCell");
-		TML.UpdateCell(cOff);
-		Logger.StopTimer("TileMapLayer.UpdateCell");
-		Logger.StopTimer("WorldChunk.BreakBlock");
+		Task.Run(() => {
+			Logger.StartTimer("WorldChunk.BreakBlock");
+			BlockData bd = chunk[cOff.X, cOff.Y];
+			Logger.StartTimer("WorldChunk.BreakBlock.GetItem");
+			IItem item = Item.Get(bd.ID);
+			Logger.StopTimer("WorldChunk.BreakBlock.GetItem");
+			Logger.StartTimer("WorldChunk.BreakBlock.GetItemDrops");
+			List<ItemStack> drops = item.GetItemDrops();
+			Logger.StopTimer("WorldChunk.BreakBlock.GetItemDrops");
+			Logger.StartTimer("WorldChunk.BreakBlock.SpawnItemStacks");
+			foreach (ItemStack IS in drops)
+				ItemDrop.Spawn(IS, origin + cOff);
+			Logger.StopTimer("WorldChunk.BreakBlock.SpawnItemStacks");
+			bd.ID = Block.Air;
+			Logger.StartTimer("TileMapLayer.UpdateCell");
+			TML.UpdateCell(cOff);
+			Logger.StopTimer("TileMapLayer.UpdateCell");
+			Logger.StopTimer("WorldChunk.BreakBlock");
+		});
 	}
 
 	// public void BreakBlock(Vector2I cOff) {
