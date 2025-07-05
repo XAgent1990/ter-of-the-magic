@@ -98,7 +98,7 @@ public class Item : IItem {
 public struct ItemStack {
 	private byte count;
 	public byte Count {
-		readonly get => count;
+		get => count;
 		set {
 			if (value > Item.StackSize)
 				throw new StackSizeViolation("Tried to set count too large");

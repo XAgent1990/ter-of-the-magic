@@ -15,9 +15,10 @@ public partial class InventoryCell : Control {
 	public byte Count {
 		get => itemStack.Count;
 		set {
-			itemStack.Count = value;
-			if (itemStack.Count > 0)
+			if (value > 0) {
 				CountLabel.Text = value.ToString();
+				itemStack.Count = value;
+			}
 			else {
 				CountLabel.Text = "";
 				ItemStack = new();
@@ -29,15 +30,15 @@ public partial class InventoryCell : Control {
 	public ItemStack ItemStack {
 		get => itemStack;
 		set {
-			if (value.Count > 0 && TryTileSetDataToSprite(value.Item.GetTileSetData(), out CompressedTexture2D texture, out Vector2I pos))
+			if (value.Count > 0 && TryTileSetDataToSprite(value.Item.GetTileSetData(), out CompressedTexture2D texture, out Vector2I pos)) {
 				SetTexture(texture, pos);
-			else
+				CountLabel.Text = value.Count.ToString();
+			}
+			else {
 				SetTexture(null, Vector2I.Zero);
-			itemStack = value;
-			if (itemStack.Count > 0)
-				CountLabel.Text = itemStack.Count.ToString();
-			else
 				CountLabel.Text = "";
+			}
+			itemStack = value;
 		}
 	}
 
@@ -65,8 +66,46 @@ public partial class InventoryCell : Control {
 		if (!Visible || !Hovered) return;
 
 		if (@event is InputEventMouseButton mouseButton) {
+			MouseController MC = MouseController.Instance;
 			if (mouseButton.ButtonMask == MouseButtonMask.Left) {
-				(MouseController.Instance.ItemStack, ItemStack) = (ItemStack, MouseController.Instance.ItemStack);
+				if (MC.ID != ID)
+					(MC.ItemStack, ItemStack) = (ItemStack, MC.ItemStack);
+				else if (ID != ""){
+					if (Count + MC.Count <= StackSize) {
+						Count += MC.Count;
+						MC.ItemStack = new();
+					}
+					else {
+						MC.Count -= (byte)(StackSize - Count);
+						Count = StackSize;
+					}
+				}
+				GetViewport().SetInputAsHandled();
+			}
+			else if (mouseButton.ButtonMask == MouseButtonMask.Right) {
+				if (MC.Count == 0) {
+					if (Count > 0) {
+						byte half = (byte)Mathf.Ceil(Count / 2.0f);
+						MC.ItemStack = new(Item.Get(ID), half);
+						Count -= half;
+					}
+				}
+				else if (Count == 0) {
+					byte half = (byte)Mathf.Ceil(MC.Count / 2.0f);
+					ItemStack = new(Item.Get(MC.ID), half);
+					MC.Count -= half;
+				}
+				else if (MC.ID == ID) {
+					byte half = (byte)Mathf.Ceil(MC.Count / 2.0f);
+					if (Count + half <= StackSize) {
+						Count += half;
+						MC.Count -= half;
+					}
+					else {
+						MC.Count -= (byte)(StackSize - Count);
+						Count = StackSize;
+					}
+				}
 				GetViewport().SetInputAsHandled();
 			}
 		}

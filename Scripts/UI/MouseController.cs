@@ -85,6 +85,13 @@ public partial class MouseController : Control {
 		Count = 0;
 	}
 
+	public void Update() {
+		if (Count == 0)
+			ItemStack = new();
+		else
+			CountLabel.Text = Count.ToString();
+	}
+
 
 
 	private MouseController() { }
@@ -98,9 +105,10 @@ public partial class MouseController : Control {
 	public byte Count {
 		get => itemStack.Count;
 		set {
-			itemStack.Count = value;
-			if (value > 0)
+			if (value > 0) {
 				CountLabel.Text = value.ToString();
+				itemStack.Count = value;
+			}
 			else {
 				CountLabel.Text = "";
 				ItemStack = new();
@@ -114,15 +122,14 @@ public partial class MouseController : Control {
 	public ItemStack ItemStack {
 		get => itemStack;
 		set {
-			if (value.Count > 0 && TryTileSetDataToSprite(value.Item.GetTileSetData(), out CompressedTexture2D texture, out Vector2I pos))
+			if (value.Count > 0 && TryTileSetDataToSprite(value.Item.GetTileSetData(), out CompressedTexture2D texture, out Vector2I pos)) {
 				SetTexture(texture, pos);
-			else
-				SetTexture(null, Vector2I.Zero);
-			if (value.Count > 0) {
 				CountLabel.Text = value.Count.ToString();
 			}
-			else
+			else {
+				SetTexture(null, Vector2I.Zero);
 				CountLabel.Text = "";
+			}
 			Instance.Visible = value.Count != 0;
 			itemStack = value;
 		}
