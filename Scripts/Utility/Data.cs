@@ -3,6 +3,7 @@ using System;
 using System.Runtime.Serialization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using TeroftheMagic.Scripts.Universe;
 
 namespace TeroftheMagic.Scripts.Utility;
 
@@ -21,4 +22,8 @@ public class RangeIJsonConverter : JsonConverter<RangeI> {
 
 	public override void Write(Utf8JsonWriter writer, RangeI value, JsonSerializerOptions options) =>
 		writer.WriteStringValue($"{value.From}..{value.To}");
+}
+
+public interface IEntity {
+	public Vector2I MapPos { get => World.GetMapPosition(((Node2D)this).GlobalPosition); }
 }

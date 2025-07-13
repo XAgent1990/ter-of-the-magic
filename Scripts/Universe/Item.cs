@@ -11,22 +11,9 @@ using System.Text.Json.Serialization.Metadata;
 
 namespace TeroftheMagic.Scripts.Universe;
 
-public interface IItem {
-	public string ID { get; set; }
-	public string Name { get; set; }
-	public string Description { get; set; }
-	public byte StackSize { get; set; }
-	public TileSetData TileSetData { get; set; }
-	public Dictionary<string, TileSetData> VariantTileSetData { get; set; }
-	public List<Drops> ItemDrops { get; set; }
-	public TileSetData GetTileSetData(string variant = "");
-	public List<ItemStack> GetItemDrops();
-	public bool TryUse(Vector2I mapPos);
-}
-
 [JsonDerivedType(typeof(Item), "item")]
 [JsonDerivedType(typeof(Block), "block")]
-public class Item : IItem {
+public class Item {
 	public string ID { get; set; }
 	public string Name { get; set; }
 	public string Description { get; set; }

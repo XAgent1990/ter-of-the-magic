@@ -6,7 +6,7 @@ using Logger = TeroftheMagic.Scripts.Utility.Logger;
 
 namespace TeroftheMagic.Scripts.Universe;
 
-public partial class ItemDrop : RigidBody2D {
+public partial class ItemDrop : RigidBody2D, IEntity {
 	[Export] public Sprite2D ItemSprite { get; set; }
 	[Export] public Area2D FusionArea { get; set; }
 	private ItemStack itemStack;
