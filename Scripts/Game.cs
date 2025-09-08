@@ -21,9 +21,9 @@ public partial class Game : Node2D {
 	public static readonly byte tickMs = (byte)Math.Round(ppPerTick * 1000f / Engine.PhysicsTicksPerSecond);
 	public static List<Task> GenTasks = [];
 	public static bool loaded = false;
-	private static Vector2I worldChunks = new(50, 12);
-	public static ushort WorldWidth { get => (ushort)worldChunks.X; set => worldChunks.X = value; }
-	public static ushort WorldHeight { get => (ushort)worldChunks.Y; set => worldChunks.Y = value; }
+	public static Vector2I WorldChunks = new(100, 20);
+	public static ushort WorldWidth { get => (ushort)WorldChunks.X; set => WorldChunks.X = value; }
+	public static ushort WorldHeight { get => (ushort)WorldChunks.Y; set => WorldChunks.Y = value; }
 	private static byte minHeight = 75;
 	public static byte MinHeight { get => minHeight; set => minHeight = value; }
 	private static byte maxHeight = 85;
@@ -86,7 +86,7 @@ public partial class Game : Node2D {
 		random = new(seed);
 		noise.Seed = seed;
 		initGen = true;
-		World.New(worldChunks);
+		World.New(WorldChunks);
 		Task.WaitAll([.. GenTasks]);
 		// foreach (Task task in GenTasks) {
 		//     GD.Print($"Task {task.Id} Status: {task.Status}");
@@ -241,5 +241,33 @@ public partial class Game : Node2D {
 		Vector2 pos = mapPos * 16;
 		pos.Y = -pos.Y;
 		player.Position = pos;
+	}
+
+	private static readonly byte ttu = 12;
+	private byte ppCounter = ttu;
+
+	public override void _PhysicsProcess(double delta) {
+		base._PhysicsProcess(delta);
+		ppCounter++;
+		if (ppCounter >= ttu) {
+			// GD.Print("Render Check");
+			Vector2 pos = Player.Position;
+			pos.Y *= -1;
+			for (int i = 0; i < WorldChunks.X; i++) {
+				for (int ii = 0; ii < WorldChunks.Y; ii++) {
+					TileMapLayerController tml = WorldData.main.chunks[i, ii].TML;
+					float distance = (pos / TilePixelSizeV - tml.Center).Length();
+					if (distance <= RenderDistance && !tml.Enabled) {
+						tml.Render();
+						WorldData.back.chunks[i, ii].TML.Render();
+					}
+					else if (distance > RenderDistance && tml.Enabled) {
+						tml.Unrender();
+						WorldData.back.chunks[i, ii].TML.Unrender();
+					}
+				}
+			}
+			ppCounter -= ttu;
+		}
 	}
 }

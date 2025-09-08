@@ -1,12 +1,25 @@
-[gd_scene load_steps=3 format=3 uid="uid://0o7sjwx7705r"]
+[gd_scene load_steps=4 format=3 uid="uid://0o7sjwx7705r"]
 
 [ext_resource type="TileSet" uid="uid://d3dchveij2chi" path="res://GameAssets/WorldTileSet.tres" id="1_gck6b"]
 [ext_resource type="Script" uid="uid://byd8v852giflb" path="res://Scripts/TileMapLayerController.cs" id="2_dgni1"]
 
-[node name="TileMapLayer" type="TileMapLayer"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dgni1"]
+size = Vector2(16, 16)
+
+[node name="TileMapLayer" type="TileMapLayer" node_paths=PackedStringArray("ScanArea")]
 z_index = 200
 tile_set = ExtResource("1_gck6b")
 occlusion_enabled = false
 rendering_quadrant_size = 20
 physics_quadrant_size = 20
 script = ExtResource("2_dgni1")
+ScanArea = NodePath("ScanArea")
+
+[node name="ScanArea" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 14
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ScanArea"]
+position = Vector2(8, -8)
+shape = SubResource("RectangleShape2D_dgni1")

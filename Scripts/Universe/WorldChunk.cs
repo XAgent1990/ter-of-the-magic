@@ -16,7 +16,7 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 	private BlockData[,] chunk = new BlockData[WorldData.chunkSize, WorldData.chunkSize];
 	public Vector2I origin = origin;
 	public WorldLayer layer = layer;
-	public TileMapLayer TML;
+	public TileMapLayerController TML;
 
 	public ref BlockData this[Vector2I pos] {
 		get => ref chunk[pos.X, pos.Y];
@@ -76,7 +76,7 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 			Logger.StartTimer("WorldChunk.BreakBlock");
 			BlockData bd = chunk[cOff.X, cOff.Y];
 			Logger.StartTimer("WorldChunk.BreakBlock.GetItem");
-			IItem item = Item.Get(bd.ID);
+			Item item = Item.Get(bd.ID);
 			Logger.StopTimer("WorldChunk.BreakBlock.GetItem");
 			Logger.StartTimer("WorldChunk.BreakBlock.GetItemDrops");
 			List<ItemStack> drops = item.GetItemDrops();
@@ -168,8 +168,9 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 	public void Load(WorldLayer layer) {
 		// if (layer == WorldLayer.main)
 		// 	GD.Print(chunk.AsString());
-		TML = TMLPrefab.Instantiate<TileMapLayer>();
-		((TileMapLayerController)TML).Chunk = this;
+		TML = TMLPrefab.Instantiate<TileMapLayerController>();
+		TML.ScanArea.Scale = WorldData.chunkSizeV;
+		TML.Chunk = this;
 		switch (layer) {
 			case WorldLayer.back:
 				TML.CollisionEnabled = false;

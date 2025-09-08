@@ -90,7 +90,7 @@ public partial class World : Node2D {
 			SendBlockUpdates(mapPos);
 	}
 
-	public static void Interact(Vector2I mapPos) {}
+	public static void Interact(Vector2I mapPos) { }
 
 	public static async void SendBlockUpdates(Vector2I pos) {
 		await Task.Delay(TimeSpan.FromMilliseconds(tickMs));
@@ -106,5 +106,7 @@ public partial class World : Node2D {
 
 	public static Vector2 GetPosition(Vector2I mapPos) =>
 		new Vector2(mapPos.X + .5f, -mapPos.Y + .5f) * TilePixelSizeV;
+	public static Vector2I GetMapPosition(Vector2 pos) =>
+		new((int)Math.Floor(pos.X / TilePixelSize - .5f), (int)Math.Floor(-pos.Y / TilePixelSize + .5f));
 	// public static Vector2 GetWorldPosition(Vector2I mapPos) => WorldData.main.GetWorldPosition(mapPos);
 }

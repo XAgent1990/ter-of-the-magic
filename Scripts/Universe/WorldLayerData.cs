@@ -12,7 +12,7 @@ namespace TeroftheMagic.Scripts.Universe;
 
 public class WorldLayerData {
 
-	private readonly WorldChunk[,] chunks;
+	public readonly WorldChunk[,] chunks;
 
 	public WorldLayerData(ushort x, ushort y) => chunks = new WorldChunk[x / WorldData.chunkSize, y / WorldData.chunkSize];
 
