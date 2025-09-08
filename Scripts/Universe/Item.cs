@@ -5,7 +5,6 @@ using TeroftheMagic.Scripts.Utility;
 using static TeroftheMagic.Scripts.Utility.Functions;
 using static TeroftheMagic.Scripts.Utility.Exceptions;
 using static TeroftheMagic.Scripts.Utility.TileUtil;
-using System.Diagnostics;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 
@@ -13,6 +12,8 @@ namespace TeroftheMagic.Scripts.Universe;
 
 [JsonDerivedType(typeof(Item), "item")]
 [JsonDerivedType(typeof(Block), "block")]
+[JsonDerivedType(typeof(Wand), "wand")]
+[JsonDerivedType(typeof(Pickup), "pickup")]
 public class Item {
 	public string ID { get; set; }
 	public string Name { get; set; }
