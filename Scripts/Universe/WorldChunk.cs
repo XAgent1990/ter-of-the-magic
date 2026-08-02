@@ -121,6 +121,10 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 			case TileSetId.tree:
 				UpdateTree(bd, mapPos);
 				break;
+			case TileSetId.plants:
+				if (WorldData.TargetLayer(WorldLayer.main)[mapPos + Down].ID == Block.Air)
+					World.BreakBlock(WorldLayer.main, mapPos);
+				break;
 			default:
 				return;
 		}

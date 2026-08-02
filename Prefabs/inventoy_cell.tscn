@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dwakc763c1vvr"]
+[gd_scene format=3 uid="uid://dwakc763c1vvr"]
 
 [ext_resource type="Script" uid="uid://dgbdr1at2kt0i" path="res://Scripts/Interactables/InventoryCell.cs" id="1_upp2x"]
 [ext_resource type="Texture2D" uid="uid://d1oaqe3ssr6ik" path="res://Assets/BlockTileSet.png" id="2_ct837"]
@@ -8,12 +8,12 @@
 atlas = ExtResource("2_ct837")
 region = Rect2(0, 16, 16, 16)
 
-[node name="InventoyCell" type="Control" node_paths=PackedStringArray("Texture", "CountLabel")]
-custom_minimum_size = Vector2(120, 120)
+[node name="InventoyCell" type="Control" unique_id=1016482099 node_paths=PackedStringArray("Texture", "CountLabel")]
+custom_minimum_size = Vector2(48, 48)
 layout_mode = 3
 anchors_preset = 0
-offset_right = 120.0
-offset_bottom = 120.0
+offset_right = 48.0
+offset_bottom = 48.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_behavior_recursive = 2
@@ -21,8 +21,8 @@ script = ExtResource("1_upp2x")
 Texture = NodePath("ColorRect/ColorRect2/Icon")
 CountLabel = NodePath("ColorRect/ColorRect2/Count")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-custom_minimum_size = Vector2(60, 60)
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1920093075]
+custom_minimum_size = Vector2(48, 48)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -32,8 +32,8 @@ grow_vertical = 2
 mouse_behavior_recursive = 1
 color = Color(0.47007585, 0.47007585, 0.47007585, 1)
 
-[node name="ColorRect2" type="ColorRect" parent="ColorRect"]
-custom_minimum_size = Vector2(50, 50)
+[node name="ColorRect2" type="ColorRect" parent="ColorRect" unique_id=532550587]
+custom_minimum_size = Vector2(38, 38)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -48,7 +48,7 @@ mouse_filter = 2
 mouse_behavior_recursive = 1
 color = Color(1, 1, 1, 0.13725491)
 
-[node name="Icon" type="TextureRect" parent="ColorRect/ColorRect2"]
+[node name="Icon" type="TextureRect" parent="ColorRect/ColorRect2" unique_id=656041724]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -59,20 +59,23 @@ mouse_behavior_recursive = 1
 mouse_force_pass_scroll_events = false
 texture = SubResource("AtlasTexture_upp2x")
 expand_mode = 1
+stretch_mode = 3
 
-[node name="Count" type="Label" parent="ColorRect/ColorRect2"]
+[node name="Count" type="Label" parent="ColorRect/ColorRect2" unique_id=1942550308]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -24.0
-offset_top = -23.0
+offset_left = -19.0
+offset_top = -39.0
+offset_right = 5.0
+offset_bottom = 5.0
 grow_horizontal = 0
 grow_vertical = 0
 theme = ExtResource("3_svgwm")
-theme_override_constants/outline_size = 8
-theme_override_font_sizes/font_size = 36
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 18
 horizontal_alignment = 2
 vertical_alignment = 2

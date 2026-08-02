@@ -21,9 +21,9 @@ public partial class Game : Node2D {
 	public static readonly byte tickMs = (byte)Math.Round(ppPerTick * 1000f / Engine.PhysicsTicksPerSecond);
 	public static List<Task> GenTasks = [];
 	public static bool loaded = false;
-	public static Vector2I WorldChunks = new(100, 20);
-	public static ushort WorldWidth { get => (ushort)WorldChunks.X; set => WorldChunks.X = value; }
-	public static ushort WorldHeight { get => (ushort)WorldChunks.Y; set => WorldChunks.Y = value; }
+	public static Vector2I WorldChunks;
+	public static ushort WorldWidth = 100;
+	public static ushort WorldHeight = 20;
 	private static byte minHeight = 75;
 	public static byte MinHeight { get => minHeight; set => minHeight = value; }
 	private static byte maxHeight = 85;
@@ -81,6 +81,7 @@ public partial class Game : Node2D {
 	}
 
 	public void Init() {
+		WorldChunks = new(WorldWidth, WorldHeight);
 		s = System.Diagnostics.Stopwatch.StartNew();
 		loaded = false;
 		random = new(seed);
@@ -105,12 +106,28 @@ public partial class Game : Node2D {
 		PlantTrees();
 		GD.Print($"Time for Trees: {s.ElapsedMilliseconds}ms");
 		s.Restart();
+		GrowVegetation();
+		GD.Print($"Time for Vegetation: {s.ElapsedMilliseconds}ms");
+		s.Restart();
 		World.Load();
 		Task.WaitAll([.. GenTasks]);
 		GenTasks.Clear();
 		loaded = true;
 		GD.Print($"Time for Load: {s.ElapsedMilliseconds}ms");
 		s.Restart();
+	}
+
+	private void GrowVegetation() {
+		GrowGrass();
+	}
+
+	private void GrowGrass() {
+		for (ushort x = 1; x < WorldData.size.X - 2; x++) {
+			var pos = new Vector2I(x, WorldData.heightMap[x]);
+			if (WorldData.main[pos].ID==Block.Air&&WorldData.main[pos + Vector2I.Up].ID==Block.Moss) {
+				WorldData.main[pos] = new("totm:grass_plant");
+			}
+		}
 	}
 
 	public override void _Process(double delta) {
@@ -146,7 +163,7 @@ public partial class Game : Node2D {
 
 	private static void PlantTrees() {
 		for (ushort x = 1; x < WorldData.size.X - 2; x++) {
-			Vector2I idPos = new(x, WorldData.size.Y - minTreeHeight);
+			Vector2I idPos = new(x, WorldData.heightMap[x]);
 			while (WorldData.main[idPos].ID == Block.Air) {
 				idPos.Y--;
 			}

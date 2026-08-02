@@ -11,7 +11,8 @@ public abstract class TileUtil {
 	private static readonly Dictionary<TileSetId, CompressedTexture2D> textures = new(){
 		{ TileSetId.item, GD.Load<CompressedTexture2D>("res://Assets/ItemTileSet.png") },
 		{ TileSetId.block, GD.Load<CompressedTexture2D>("res://Assets/BlockTileSet.png") },
-		{ TileSetId.tree, GD.Load<CompressedTexture2D>("res://Assets/TreeTileSet.png") }
+		{ TileSetId.tree, GD.Load<CompressedTexture2D>("res://Assets/TreeTileSet.png") },
+		{ TileSetId.plants, GD.Load<CompressedTexture2D>("res://Assets/PlantsTileSet.png")}
 	};
 	public static Vector2I TileMapIdToCoord(TileSetId sourceId, ushort id) =>
 		new(--id % TileMapWidth(sourceId), id / TileMapWidth(sourceId));
@@ -19,7 +20,7 @@ public abstract class TileUtil {
 		(byte)(textures[sourceId].GetWidth() / TilePixelSize);
 
 	[JsonConverter(typeof(JsonStringEnumConverter))]
-	public enum TileSetId { item, block, tree }
+	public enum TileSetId { item, block, tree, plants }
 	public struct TileSetData(TileSetId sourceId, ushort id, byte alt = 0) {
 		[JsonPropertyName("Type")]
 		public TileSetId SourceId { get; set; } = sourceId;

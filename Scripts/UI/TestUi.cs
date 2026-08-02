@@ -7,9 +7,6 @@ using TeroftheMagic.Scripts.Universe;
 
 public partial class TestUi : Control {
 
-	private float UpdateTimer = 0.0f;
-	private float UpdateTime = 0.75f;
-
 	Label PlayerPosX;
 	Label PlayerPosY;
 	Label MousePosX;
@@ -30,30 +27,30 @@ public partial class TestUi : Control {
 		CanPosY = GetNode<Label>("BG/VBoxContainer/CPY");
 		FPSCounter = GetNode<Label>("BG/VBoxContainer/FPS");
 
+		var timer = new Timer {
+			Autostart = true,
+			WaitTime = 0.75f
+		};
+		AddChild(timer);
+		timer.Timeout += () => UIInfos();
+
 	}
 
-	public override void _Process(double delta) {
-		base._Process(delta);
+	void UIInfos() {
 
-		if (!loaded) return;
+		Vector2 canvasPos = GetLocalMousePosition();
+		CanPosX.Text = $"Canvas Pos x: [ {canvasPos.X} ]";
+		CanPosY.Text = $"Canvas Pos y: [ {canvasPos.Y} ]";
 
-		UpdateTimer += (float)delta;
+		Vector2 mousePos = World.Main.GetLocalMousePosition();
+		Vector2I mapPos = new((int)(mousePos.X / 16), (int)(mousePos.Y / 16));
+		MousePosX.Text = $"Mouse Pos x: [ {mapPos.X} ]";
+		MousePosY.Text = $"Mouse Pos y: [ {mapPos.Y *= -1} ]";
 
-		if (UpdateTimer >= UpdateTime) {
-			Vector2 canvasPos = GetLocalMousePosition();
-			CanPosX.Text = $"Canvas Pos x: [ {canvasPos.X} ]";
-			CanPosY.Text = $"Canvas Pos y: [ {canvasPos.Y} ]";
+		Vector2 playerPos = PlayerMovement.PlayerPosition / 16;
+		PlayerPosX.Text = $"Player Pos x: [ {(int)playerPos.X} ]";
+		PlayerPosY.Text = $"Player Pos y: [ {(int)(playerPos.Y *= -1)} ]";
 
-			Vector2 mousePos = World.Main.GetLocalMousePosition();
-			Vector2I mapPos = new((int)(mousePos.X / 16), (int)(mousePos.Y / 16));
-			MousePosX.Text = $"Mouse Pos x: [ {mapPos.X} ]";
-			MousePosY.Text = $"Mouse Pos y: [ {mapPos.Y *= -1} ]";
-
-			Vector2 playerPos = PlayerMovement.PlayerPosition / 16;
-			PlayerPosX.Text = $"Player Pos x: [ {playerPos.X} ]";
-			PlayerPosY.Text = $"Player Pos y: [ {playerPos.Y *= -1} ]";
-			UpdateTimer = 0.0f;
-		}
 		FPSCounter.Text = $"FPS: [ {Engine.GetFramesPerSecond()} ]";
 
 	}

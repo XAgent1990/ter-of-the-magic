@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://ciettug7hcnrm"]
+[gd_scene format=3 uid="uid://ciettug7hcnrm"]
 
 [ext_resource type="Script" uid="uid://cjyaqdmxi64j0" path="res://Scripts/Game.cs" id="1_idj7w"]
 [ext_resource type="PackedScene" uid="uid://c366gkf0gv6gc" path="res://Prefabs/player.tscn" id="2_rgh2o"]
@@ -17,87 +17,88 @@
 atlas = ExtResource("7_vy5pj")
 region = Rect2(0, 16, 16, 16)
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("player", "playerInventory")]
+[node name="Game" type="Node2D" unique_id=1163609889 node_paths=PackedStringArray("player", "playerInventory")]
 script = ExtResource("1_idj7w")
 player = NodePath("World/Entities/Player")
 playerInventory = NodePath("CanvasLayer/Inventory")
 metadata/_edit_horizontal_guides_ = [-86.0]
 
-[node name="BackgroundParallax" type="Parallax2D" parent="."]
+[node name="BackgroundParallax" type="Parallax2D" parent="." unique_id=1761649764]
 
-[node name="World" type="Node2D" parent="."]
+[node name="World" type="Node2D" parent="." unique_id=445730190]
 
-[node name="Borders" type="StaticBody2D" parent="World"]
+[node name="Borders" type="StaticBody2D" parent="World" unique_id=421372498]
 
-[node name="LeftWall" type="CollisionShape2D" parent="World/Borders"]
+[node name="LeftWall" type="CollisionShape2D" parent="World/Borders" unique_id=1864212732]
 rotation = 1.5707964
 shape = SubResource("WorldBoundaryShape2D_pbw6q")
 
-[node name="RightWall" type="CollisionShape2D" parent="World/Borders"]
+[node name="RightWall" type="CollisionShape2D" parent="World/Borders" unique_id=673075076]
 rotation = -1.5707964
 shape = SubResource("WorldBoundaryShape2D_pbw6q")
 
-[node name="SkyWall" type="CollisionShape2D" parent="World/Borders"]
+[node name="SkyWall" type="CollisionShape2D" parent="World/Borders" unique_id=364101085]
 rotation = 3.1415927
 shape = SubResource("WorldBoundaryShape2D_pbw6q")
 
-[node name="BackLayer" type="Node2D" parent="World"]
+[node name="BackLayer" type="Node2D" parent="World" unique_id=531967898]
 
-[node name="MainLayer" type="Node2D" parent="World"]
+[node name="MainLayer" type="Node2D" parent="World" unique_id=1443949002]
 
-[node name="FrontLayer" type="Node2D" parent="World"]
+[node name="FrontLayer" type="Node2D" parent="World" unique_id=1035871846]
 
-[node name="Entities" type="Node2D" parent="World"]
+[node name="Entities" type="Node2D" parent="World" unique_id=1629655081]
 
-[node name="Player" parent="World/Entities" instance=ExtResource("2_rgh2o")]
+[node name="Player" parent="World/Entities" unique_id=1827074930 instance=ExtResource("2_rgh2o")]
 z_index = 250
 
-[node name="Camera2D" type="Camera2D" parent="World/Entities/Player"]
+[node name="Camera2D" type="Camera2D" parent="World/Entities/Player" unique_id=796293448]
 scale = Vector2(0.5, 0.5)
 
-[node name="AudioPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioPlayer" type="AudioStreamPlayer" parent="." unique_id=1519330923]
 script = ExtResource("3_vy5pj")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1134093309]
 script = ExtResource("4_pbw6q")
 
-[node name="Test-UI" parent="CanvasLayer" instance=ExtResource("4_rgh2o")]
+[node name="Test-UI" parent="CanvasLayer" unique_id=1922855780 instance=ExtResource("4_rgh2o")]
 anchors_preset = 11
 anchor_left = 1.0
 offset_left = 1.0
 offset_right = 1.0
 grow_horizontal = 0
 
-[node name="Inventory" parent="CanvasLayer" instance=ExtResource("6_v1gob")]
+[node name="Inventory" parent="CanvasLayer" unique_id=1826493181 instance=ExtResource("6_v1gob")]
 visible = false
-scale = Vector2(0.75, 0.75)
+offset_top = 72.0
+offset_bottom = 392.0
 
-[node name="Hotbar" parent="CanvasLayer" instance=ExtResource("7_bmxlf")]
-scale = Vector2(0.5, 0.5)
+[node name="Hotbar" parent="CanvasLayer" unique_id=270660475 instance=ExtResource("7_bmxlf")]
 
-[node name="Mouse" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("Texture", "CountLabel")]
+[node name="Mouse" type="Control" parent="CanvasLayer" unique_id=2054460057 node_paths=PackedStringArray("Texture", "CountLabel")]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("6_50glp")
 Texture = NodePath("MarginContainer/ItemIcon")
 CountLabel = NodePath("MarginContainer/ItemCount")
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Mouse"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Mouse" unique_id=1698901650]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 20.0
 offset_right = 50.0
 offset_bottom = 60.0
 
-[node name="ItemIcon" type="TextureRect" parent="CanvasLayer/Mouse/MarginContainer"]
-custom_minimum_size = Vector2(40, 40)
+[node name="ItemIcon" type="TextureRect" parent="CanvasLayer/Mouse/MarginContainer" unique_id=2075318700]
+custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 texture = SubResource("AtlasTexture_4kpch")
 expand_mode = 1
+stretch_mode = 3
 
-[node name="ItemCount" type="Label" parent="CanvasLayer/Mouse/MarginContainer"]
+[node name="ItemCount" type="Label" parent="CanvasLayer/Mouse/MarginContainer" unique_id=761206008]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8

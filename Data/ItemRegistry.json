@@ -269,5 +269,74 @@
         },
         "VariantTileSetData": {},
         "ItemDrops": []
+    },
+    {
+        "$type": "block",
+        "ID": "totm:grass_plant",
+        "Name": "Grass",
+        "Description": "green",
+        "TileSetData": {
+            "Type": "plants",
+            "ID": 1,
+            "Alt": 0
+        },
+        "VariantTileSetData": {},
+        "ItemDrops": [
+            {
+                "Chance": 1,
+                "Items": [
+                    {
+                        "ID": "totm:seed_block"
+                    }
+                ]
+            }
+
+        ]
+    },
+    {
+        "$type": "item",
+        "ID": "totm:seed_item",
+        "Name": "Seed",
+        "Description": "It grows Green",
+        "StackSize": 99,
+        "TileSetData": {
+            "Type": "plants",
+            "ID": 2,
+            "Alt": 0
+        },
+        "VariantTileSetData": {}
+    },
+    {
+        "$type": "block",
+        "ID": "totm:seed_block",
+        "Name": "Seed",
+        "Description": "It grows Green",
+        "StackSize": 99,
+        "TileSetData": {
+            "Type": "plants",
+            "ID": 2,
+            "Alt": 0
+        },
+        "VariantTileSetData": {},
+        "ItemDrops": [
+            {
+                "Chance": 0.25,
+                "Items": [
+                    {
+                        "ID": "totm:seed_block"
+                    }
+                ]
+            },
+            {
+                "Chance":0.1,
+                "Items":[
+                    {
+                        "ID": "totm:dirt"
+                    }
+
+                ]
+            }
+
+        ]
     }
 ]

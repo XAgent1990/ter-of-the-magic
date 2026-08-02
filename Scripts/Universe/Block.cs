@@ -11,6 +11,7 @@ namespace TeroftheMagic.Scripts.Universe;
 public class Block : Item {
 	public const string Air = "totm:air";
 	public const string Bedrock = "totm:bedrock";
+	public const string Moss = "totm:moss";
 	public static TileSetId GetType(string id, string variant = "") => Get(id).GetTileSetData(variant).SourceId;
 }
 

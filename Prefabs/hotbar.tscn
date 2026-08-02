@@ -1,48 +1,48 @@
-[gd_scene load_steps=2 format=3 uid="uid://dxirjufr2g60x"]
+[gd_scene format=3 uid="uid://dxirjufr2g60x"]
 
 [ext_resource type="PackedScene" uid="uid://dwakc763c1vvr" path="res://Prefabs/inventoy_cell.tscn" id="1_wtqgt"]
 
-[node name="Hotbar" type="MarginContainer"]
-offset_right = 1124.0
-offset_bottom = 132.0
+[node name="Hotbar" type="MarginContainer" unique_id=91769505]
+offset_right = 476.0
+offset_bottom = 60.0
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=1713862917]
 layout_mode = 2
 color = Color(1, 1, 1, 0.4)
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=458196561]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=874945085]
 layout_mode = 2
 
-[node name="InventoyCell" parent="MarginContainer/HBoxContainer" instance=ExtResource("1_wtqgt")]
+[node name="InventoyCell" parent="MarginContainer/HBoxContainer" unique_id=759566677 instance=ExtResource("1_wtqgt")]
 layout_mode = 2
 
-[node name="InventoyCell2" parent="MarginContainer/HBoxContainer" instance=ExtResource("1_wtqgt")]
+[node name="InventoyCell2" parent="MarginContainer/HBoxContainer" unique_id=925390953 instance=ExtResource("1_wtqgt")]
 layout_mode = 2
 
-[node name="InventoyCell3" parent="MarginContainer/HBoxContainer" instance=ExtResource("1_wtqgt")]
+[node name="InventoyCell3" parent="MarginContainer/HBoxContainer" unique_id=1658729169 instance=ExtResource("1_wtqgt")]
 layout_mode = 2
 
-[node name="InventoyCell4" parent="MarginContainer/HBoxContainer" instance=ExtResource("1_wtqgt")]
+[node name="InventoyCell4" parent="MarginContainer/HBoxContainer" unique_id=1034002768 instance=ExtResource("1_wtqgt")]
 layout_mode = 2
 
-[node name="InventoyCell5" parent="MarginContainer/HBoxContainer" instance=ExtResource("1_wtqgt")]
+[node name="InventoyCell5" parent="MarginContainer/HBoxContainer" unique_id=1453642424 instance=ExtResource("1_wtqgt")]
 layout_mode = 2
 
-[node name="InventoyCell6" parent="MarginContainer/HBoxContainer" instance=ExtResource("1_wtqgt")]
+[node name="InventoyCell6" parent="MarginContainer/HBoxContainer" unique_id=2022730546 instance=ExtResource("1_wtqgt")]
 layout_mode = 2
 
-[node name="InventoyCell7" parent="MarginContainer/HBoxContainer" instance=ExtResource("1_wtqgt")]
+[node name="InventoyCell7" parent="MarginContainer/HBoxContainer" unique_id=1549846389 instance=ExtResource("1_wtqgt")]
 layout_mode = 2
 
-[node name="InventoyCell8" parent="MarginContainer/HBoxContainer" instance=ExtResource("1_wtqgt")]
+[node name="InventoyCell8" parent="MarginContainer/HBoxContainer" unique_id=1125107103 instance=ExtResource("1_wtqgt")]
 layout_mode = 2
 
-[node name="InventoyCell9" parent="MarginContainer/HBoxContainer" instance=ExtResource("1_wtqgt")]
+[node name="InventoyCell9" parent="MarginContainer/HBoxContainer" unique_id=174430802 instance=ExtResource("1_wtqgt")]
 layout_mode = 2

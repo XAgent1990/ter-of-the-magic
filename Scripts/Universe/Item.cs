@@ -12,6 +12,7 @@ namespace TeroftheMagic.Scripts.Universe;
 
 [JsonDerivedType(typeof(Item), "item")]
 [JsonDerivedType(typeof(Block), "block")]
+[JsonDerivedType(typeof(Plants), "plants")]
 [JsonDerivedType(typeof(Wand), "wand")]
 [JsonDerivedType(typeof(Pickup), "pickup")]
 public class Item {
@@ -64,15 +65,23 @@ public class Item {
 				}
 				else {
 					if (drop.Count <= 0) break;
-					Item item = Get(drop.ID);
-					if (item.StackSize <= 0) break;
-					ushort totalCount = drop.Count;
-					while (totalCount > item.StackSize) {
-						IS.Add(new(item, item.StackSize));
-						totalCount -= item.StackSize;
+					try
+					{
+						Item item = Get(drop.ID);
+						if (item.StackSize <= 0) break;
+						ushort totalCount = drop.Count;
+						while (totalCount > item.StackSize) {
+							IS.Add(new(item, item.StackSize));
+							totalCount -= item.StackSize;
+						}
+						IS.Add(new(item, (byte)totalCount));
 					}
-					IS.Add(new(item, (byte)totalCount));
+					catch (NotAnItem e)
+					{
+						GD.PrintErr(e.Message);	
+					}
 					break;
+					
 				}
 			}
 		}
