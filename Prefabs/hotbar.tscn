@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://dxirjufr2g60x"]
 
+[ext_resource type="Script" uid="uid://mpfka0v7s36s" path="res://Scripts/UI/BlockMouseInput.cs" id="1_7ajij"]
 [ext_resource type="PackedScene" uid="uid://dwakc763c1vvr" path="res://Prefabs/inventoy_cell.tscn" id="1_wtqgt"]
 
 [node name="Hotbar" type="MarginContainer" unique_id=91769505]
@@ -16,6 +17,7 @@ theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
+script = ExtResource("1_7ajij")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=874945085]
 layout_mode = 2

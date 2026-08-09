@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dwakc763c1vvr" path="res://Prefabs/inventoy_cell.tscn" id="1_eyqil"]
 [ext_resource type="Script" uid="uid://dyiqb7pjlc5sr" path="res://Scripts/Interactables/Inventory.cs" id="1_is7it"]
+[ext_resource type="Script" uid="uid://mpfka0v7s36s" path="res://Scripts/UI/BlockMouseInput.cs" id="2_mc4su"]
 
 [node name="Inventory" type="MarginContainer" unique_id=655227014]
 offset_right = 476.0
@@ -20,6 +21,7 @@ theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
+script = ExtResource("2_mc4su")
 
 [node name="GridContainer" type="GridContainer" parent="MarginContainer" unique_id=173664553]
 layout_mode = 2

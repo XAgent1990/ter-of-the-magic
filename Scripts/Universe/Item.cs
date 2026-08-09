@@ -88,7 +88,9 @@ public class Item {
 		return IS;
 	}
 
-	public bool TryUse(Vector2I mapPos) { return false; }
+	public bool TryUse(Vector2I mapPos) { 
+		return false; 
+	}
 	public override string ToString() => Name;
 }
 
