@@ -61,7 +61,9 @@ public class WorldData {
 				1,
 				PercentToWorldHeight(MinHeight),
 				PercentToWorldHeight(MaxHeight),
-				noise.GetNoise1D(x * HeightMod) + .5f
+				( noise.GetNoise1D(SurfaceFrequency * x + WorldWidth) * (WorldWidth - x) / WorldWidth
+				+ noise.GetNoise1D(SurfaceFrequency * x) * x / WorldWidth
+				+ .5f)
 			);
 		}
 	}

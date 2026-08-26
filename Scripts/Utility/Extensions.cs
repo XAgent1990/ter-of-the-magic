@@ -7,6 +7,10 @@ using TileSetData = TeroftheMagic.Scripts.Utility.TileUtil.TileSetData;
 namespace TeroftheMagic.Scripts.Utility;
 
 public static class Extensions {
+	public static Vector2I Up = Vector2I.Down;
+	public static Vector2I Down = Vector2I.Up;
+	public static Vector2I Left = Vector2I.Left;
+	public static Vector2I Right = Vector2I.Right;
 
 	public static void UpdateCell(this TileMapLayer tml, Vector2I pos) => tml.UpdateCell(pos, new(TileSetId.block, 6));
 	public static void UpdateCell(this TileMapLayer tml, Vector2I pos, TileSetData td) {
@@ -15,13 +19,23 @@ public static class Extensions {
 		else tml.SetCell(pos, (int)td.SourceId, TileMapIdToCoord(td.SourceId, td.ID), td.Alt);
 	}
 
+	public static Node GetGrandparent(this Node node) => node.GetParent().GetParent();
+	public static Node GetGreatgrandparent(this Node node) => node.GetGrandparent().GetParent();
+
+	public static Node GetNthParent(this Node node, int n) {
+		Node current = node;
+		for (int i = 0; i < n; i++)
+			current = current.GetParent();
+		return current;
+	}
+
+	public static void Toggle(this ref bool b) => b = !b;
+
+	public static int Mod(this int i, uint mod) => i.Mod((int)mod);
 	public static int Mod(this int i, int mod) {
-		if (i >= 0)
-			return i % mod;
-		else {
-			i -= (i / mod - 1) * mod;
-			return i % mod;
-		}
+		if (i < 0)
+			i += -(i / mod - 1) * mod;
+		return i % mod;
 	}
 
 	public static bool TryFind<T>(this List<T> list, Predicate<T> predicate, out T obj) {

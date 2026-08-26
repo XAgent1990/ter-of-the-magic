@@ -15,6 +15,7 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 	public static PackedScene TMLPrefab = GD.Load<PackedScene>("res://Prefabs/TileMapLayer.tscn");
 	private BlockData[,] chunk = new BlockData[WorldData.chunkSize, WorldData.chunkSize];
 	public Vector2I origin = origin;
+	public Vector2I ID = origin / WorldData.chunkSizeV;
 	public WorldLayer layer = layer;
 	public TileMapLayerController TML;
 

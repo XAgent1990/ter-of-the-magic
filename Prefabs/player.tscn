@@ -1,8 +1,8 @@
-[gd_scene load_steps=28 format=3 uid="uid://c366gkf0gv6gc"]
+[gd_scene format=3 uid="uid://c366gkf0gv6gc"]
 
-[ext_resource type="Script" uid="uid://bwq8k4uft4wt7" path="res://Scripts/Entitys/PlayerMovement.cs" id="1_cvnsp"]
+[ext_resource type="Script" uid="uid://bwq8k4uft4wt7" path="res://Scripts/Entities/PlayerMovement.cs" id="1_cvnsp"]
 [ext_resource type="Texture2D" uid="uid://dlcb5rj416w5f" path="res://Assets/Testing char idea.png" id="2_2nftw"]
-[ext_resource type="Script" uid="uid://tygksmpc13ro" path="res://Scripts/Entitys/Player.cs" id="3_y5hcb"]
+[ext_resource type="Script" uid="uid://tygksmpc13ro" path="res://Scripts/Entities/Player.cs" id="3_y5hcb"]
 [ext_resource type="Script" uid="uid://dphaudmbwmgka" path="res://Scripts/Spells/SpellBook.cs" id="4_2nftw"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_knrd4"]

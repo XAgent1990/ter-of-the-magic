@@ -1,8 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://dgpt0rlvictxb"]
+[gd_scene format=3 uid="uid://dgpt0rlvictxb"]
 
 [ext_resource type="Texture2D" uid="uid://dkswkqef4p6dd" path="res://Assets/knight.png" id="1_hghv2"]
-[ext_resource type="Script" uid="uid://bfla12j6dcwym" path="res://Scripts/Entitys/EntityMovement.cs" id="1_t4g6b"]
-[ext_resource type="Script" uid="uid://c83iwmqgu1bal" path="res://Scripts/Entitys/Enemy.cs" id="3_30yes"]
+[ext_resource type="Script" uid="uid://bfla12j6dcwym" path="res://Scripts/Entities/EntityMovement.cs" id="1_t4g6b"]
+[ext_resource type="Script" uid="uid://c83iwmqgu1bal" path="res://Scripts/Entities/Enemy.cs" id="3_30yes"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1f0kj"]
 atlas = ExtResource("1_hghv2")

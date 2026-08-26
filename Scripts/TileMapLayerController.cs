@@ -33,7 +33,7 @@ public partial class TileMapLayerController : TileMapLayer {
 		base._Ready();
 
 		center = Chunk.origin + WorldData.chunkSizeV / 2;
-		if (Chunk.layer == WorldLayer.back) {
+		if (Chunk.layer != WorldLayer.main) {
 			ScanArea.QueueFree();
 			ScanArea = null;
 		}

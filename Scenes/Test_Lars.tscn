@@ -1,20 +1,130 @@
-[gd_scene load_steps=3 format=3 uid="uid://0xtd6s5wl4rf"]
+[gd_scene format=3 uid="uid://ice05pmqcke1"]
 
 [ext_resource type="Script" uid="uid://cjyaqdmxi64j0" path="res://Scripts/Game.cs" id="1_p37jn"]
-[ext_resource type="TileSet" uid="uid://d3dchveij2chi" path="res://GameAssets/WorldTileSet.tres" id="2_y7p1v"]
+[ext_resource type="PackedScene" uid="uid://c366gkf0gv6gc" path="res://Prefabs/player.tscn" id="2_tdnvq"]
+[ext_resource type="Script" uid="uid://hcbvqpwbjycn" path="res://Scripts/Utility/AudioManager.cs" id="3_se6n6"]
+[ext_resource type="Script" uid="uid://ld38cvp7naj6" path="res://Scripts/UI/UIController.cs" id="4_srirk"]
+[ext_resource type="PackedScene" uid="uid://bfoceiykrmmhu" path="res://Prefabs/test_ui.tscn" id="5_dd4o2"]
+[ext_resource type="Script" uid="uid://5ndn0v7cqmhm" path="res://Scripts/UI/EdgeCamera.cs" id="5_se6n6"]
+[ext_resource type="PackedScene" uid="uid://dclive1vjj1cl" path="res://Prefabs/PlayerInventory.tscn" id="6_1jqew"]
+[ext_resource type="PackedScene" uid="uid://dxirjufr2g60x" path="res://Prefabs/hotbar.tscn" id="7_88m1a"]
+[ext_resource type="Script" uid="uid://dswqdqivpj11r" path="res://Scripts/UI/MouseController.cs" id="8_3t5l2"]
+[ext_resource type="Texture2D" uid="uid://d1oaqe3ssr6ik" path="res://Assets/BlockTileSet.png" id="9_fjqup"]
+[ext_resource type="Theme" uid="uid://hjgbplpdvb0p" path="res://GameAssets/Pixeloid_Theme.tres" id="10_qs7am"]
 
-[node name="Game" type="Node2D"]
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_pbw6q"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4kpch"]
+atlas = ExtResource("9_fjqup")
+region = Rect2(0, 16, 16, 16)
+
+[node name="Game" type="Node2D" unique_id=1163609889 node_paths=PackedStringArray("player")]
 script = ExtResource("1_p37jn")
+player = NodePath("World/Entities/Player")
+metadata/_edit_horizontal_guides_ = [-86.0]
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(576, -324)
+[node name="BackgroundParallax" type="Parallax2D" parent="." unique_id=1761649764]
 
-[node name="World" type="Node2D" parent="."]
-scale = Vector2(1, -1)
+[node name="World" type="Node2D" parent="." unique_id=445730190]
 
-[node name="BackLayer" type="TileMapLayer" parent="World"]
+[node name="Borders" type="StaticBody2D" parent="World" unique_id=421372498]
 
-[node name="MainLayer" type="TileMapLayer" parent="World"]
-tile_set = ExtResource("2_y7p1v")
+[node name="LeftWall" type="CollisionShape2D" parent="World/Borders" unique_id=1864212732]
+rotation = 1.5707964
+shape = SubResource("WorldBoundaryShape2D_pbw6q")
+disabled = true
 
-[node name="FrontLayer" type="TileMapLayer" parent="World"]
+[node name="RightWall" type="CollisionShape2D" parent="World/Borders" unique_id=673075076]
+rotation = -1.5707964
+shape = SubResource("WorldBoundaryShape2D_pbw6q")
+disabled = true
+
+[node name="SkyWall" type="CollisionShape2D" parent="World/Borders" unique_id=364101085]
+rotation = 3.1415927
+shape = SubResource("WorldBoundaryShape2D_pbw6q")
+
+[node name="BackLayer" type="Node2D" parent="World" unique_id=531967898]
+
+[node name="MainLayer" type="Node2D" parent="World" unique_id=1443949002]
+
+[node name="FrontLayer" type="Node2D" parent="World" unique_id=1035871846]
+
+[node name="Entities" type="Node2D" parent="World" unique_id=1629655081]
+
+[node name="Player" parent="World/Entities" unique_id=1827074930 instance=ExtResource("2_tdnvq")]
+z_index = 250
+
+[node name="Camera2D" type="Camera2D" parent="World/Entities/Player" unique_id=796293448]
+scale = Vector2(0.5, 0.5)
+
+[node name="AudioPlayer" type="AudioStreamPlayer" parent="." unique_id=1519330923]
+script = ExtResource("3_se6n6")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1134093309]
+script = ExtResource("4_srirk")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="CanvasLayer" unique_id=929271215]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="CanvasLayer/SubViewportContainer" unique_id=580626220]
+transparent_bg = true
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="EdgeCamera" type="Camera2D" parent="CanvasLayer/SubViewportContainer/SubViewport" unique_id=2033683787]
+scale = Vector2(0.5, 0.5)
+script = ExtResource("5_se6n6")
+
+[node name="Test-UI" parent="CanvasLayer" unique_id=1922855780 instance=ExtResource("5_dd4o2")]
+anchors_preset = 11
+anchor_left = 1.0
+offset_left = 1.0
+offset_right = 1.0
+grow_horizontal = 0
+
+[node name="Inventory" parent="CanvasLayer" unique_id=1826493181 instance=ExtResource("6_1jqew")]
+visible = false
+offset_top = 72.0
+offset_bottom = 392.0
+
+[node name="Hotbar" parent="CanvasLayer" unique_id=270660475 instance=ExtResource("7_88m1a")]
+
+[node name="Mouse" type="Control" parent="CanvasLayer" unique_id=2054460057 node_paths=PackedStringArray("Texture", "CountLabel")]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("8_3t5l2")
+Texture = NodePath("MarginContainer/ItemIcon")
+CountLabel = NodePath("MarginContainer/ItemCount")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Mouse" unique_id=1698901650]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 20.0
+offset_right = 50.0
+offset_bottom = 60.0
+
+[node name="ItemIcon" type="TextureRect" parent="CanvasLayer/Mouse/MarginContainer" unique_id=2075318700]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = SubResource("AtlasTexture_4kpch")
+expand_mode = 1
+stretch_mode = 3
+
+[node name="ItemCount" type="Label" parent="CanvasLayer/Mouse/MarginContainer" unique_id=761206008]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme = ExtResource("10_qs7am")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+horizontal_alignment = 2
+vertical_alignment = 2

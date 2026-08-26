@@ -15,15 +15,18 @@ public partial class Game : Node2D {
 	public static Game Instance { get; private set; }
 	[Export] private CharacterBody2D player;
 	public static CharacterBody2D Player { get => Instance.player; }
-	[Export] private Inventory playerInventory;
-	public static Inventory PlayerInventory { get => Instance.playerInventory; }
+	public static PlayerInventory PlayerInventory { get => PlayerInventory.Instance; }
 	public static readonly byte ppPerTick = 2;
 	public static readonly byte tickMs = (byte)Math.Round(ppPerTick * 1000f / Engine.PhysicsTicksPerSecond);
 	public static List<Task> GenTasks = [];
 	public static bool loaded = false;
 	public static Vector2I WorldChunks;
-	public static ushort WorldWidth = 100;
-	public static ushort WorldHeight = 20;
+	public static ushort WorldWidthChunks = 100;
+	public static ushort WorldHeightChunks = 20;
+	public static uint WorldWidth { get => (uint)(WorldChunks.X * WorldData.chunkSize); }
+	public static uint WorldHeight { get => (uint)(WorldChunks.Y * WorldData.chunkSize); }
+	public static uint WorldWidthPx { get => WorldWidth * TilePixelSize; }
+	public static uint WorldHeightPx {  get => WorldHeight * TilePixelSize; }
 	private static byte minHeight = 75;
 	public static byte MinHeight { get => minHeight; set => minHeight = value; }
 	private static byte maxHeight = 85;
@@ -34,14 +37,14 @@ public partial class Game : Node2D {
 	public static int Seed { get => seed; set => seed = value; }
 	public static Random random;
 	public static readonly FastNoiseLite noise = new();
-	private static float heightMod = .5f;
+	private static float surfaceFrequency = .5f;
 	/// <summary>
 	/// Wie die Frequenz einer Sinuskurve
 	/// </summary>
-	public static float HeightMod { get => heightMod; set => heightMod = value; }
+	public static float SurfaceFrequency { get => surfaceFrequency; set => surfaceFrequency = value; }
 	private static float caveMod = .5f;
 	/// <summary>
-	/// Zoomfaktor der Höhlen
+	/// Größenfaktor der Höhlen
 	/// </summary>
 	public static float CaveMod { get => caveMod; set => caveMod = value; }
 	private static byte caveThreshold = 60;
@@ -58,12 +61,16 @@ public partial class Game : Node2D {
 	private const byte maxTreeHeight = 23;
 	private const byte branchChance = 20;
 	private System.Diagnostics.Stopwatch s;
-	public static Vector2I Up = Vector2I.Down;
-	public static Vector2I Down = Vector2I.Up;
-	public static Vector2I Left = Vector2I.Left;
-	public static Vector2I Right = Vector2I.Right;
 
-	public static ushort RenderDistance = 90;
+	/// <summary>
+	/// Render distance in Chunks.
+	/// (1,1) means the 3x3 chunks surrounding the Player will be rendered.
+	/// </summary>
+	public static Vector2I RenderDistance = new(1, 1);
+	/// <summary>
+	/// List of Chunk IDs
+	/// </summary>
+	private static List<Vector2I> RenderedChunks = [];
 
 
 	public override void _Ready() {
@@ -81,7 +88,8 @@ public partial class Game : Node2D {
 	}
 
 	public void Init() {
-		WorldChunks = new(WorldWidth, WorldHeight);
+		RenderedChunks = [];
+		WorldChunks = new(WorldWidthChunks, WorldHeightChunks);
 		s = System.Diagnostics.Stopwatch.StartNew();
 		loaded = false;
 		random = new(seed);
@@ -102,7 +110,6 @@ public partial class Game : Node2D {
 		GrowMoss();
 		GD.Print($"Time for Moss: {s.ElapsedMilliseconds}ms");
 		s.Restart();
-		SpawnPlayer();
 		PlantTrees();
 		GD.Print($"Time for Trees: {s.ElapsedMilliseconds}ms");
 		s.Restart();
@@ -115,32 +122,23 @@ public partial class Game : Node2D {
 		loaded = true;
 		GD.Print($"Time for Load: {s.ElapsedMilliseconds}ms");
 		s.Restart();
+		SpawnPlayer();
+		RenderChunks();
+		GD.Print($"Time for Render: {s.ElapsedMilliseconds}ms");
+		s.Restart();
 	}
 
-	private void GrowVegetation() {
+	private static void GrowVegetation() {
 		GrowGrass();
 	}
 
-	private void GrowGrass() {
-		for (ushort x = 1; x < WorldData.size.X - 2; x++) {
+	private static void GrowGrass() {
+		for (ushort x = 0; x < WorldData.size.X; x++) {
 			var pos = new Vector2I(x, WorldData.heightMap[x]);
-			if (WorldData.main[pos].ID==Block.Air&&WorldData.main[pos + Vector2I.Up].ID==Block.Moss) {
+			if (WorldData.main[pos].ID == Block.Air && WorldData.main[pos + Vector2I.Up].ID == Block.Moss) {
 				WorldData.main[pos] = new("totm:grass_plant");
 			}
 		}
-	}
-
-	public override void _Process(double delta) {
-		base._Process(delta);
-		if (!loaded) return;
-		if (s.IsRunning) {
-			GD.Print($"Time for Frame: {s.ElapsedMilliseconds}ms");
-			s.Stop();
-		}
-		if (Input.IsPhysicalKeyPressed(Key.L))
-			Logger.LogCurrentMax();
-		if (Input.IsActionJustPressed("ToggleInventory"))
-			PlayerInventory.Visible = !PlayerInventory.Visible;
 	}
 
 	private static void SmoothWorld() {
@@ -260,31 +258,113 @@ public partial class Game : Node2D {
 		player.Position = pos;
 	}
 
+	public static void RenderChunks() {
+		// Unrender all chunks first, since they start off rendered
+		foreach (WorldChunk chunk in WorldData.main.chunks) {
+			if (IsInRenderDistance(chunk.ID)) {
+				RenderedChunks.Add(chunk.ID);
+				if (!chunk.TML.Enabled) {
+					chunk.TML.Render();
+					WorldData.back.chunks[chunk.ID.X, chunk.ID.Y].TML.Render();
+				}
+			}
+			else if (chunk.TML.Enabled) {
+				chunk.TML.Unrender();
+				WorldData.back.chunks[chunk.ID.X, chunk.ID.Y].TML.Unrender();
+			}
+		}
+	}
+
+	public override void _Process(double delta) {
+		base._Process(delta);
+		if (!loaded) return;
+		if (s.IsRunning) {
+			GD.Print($"Time for Frame: {s.ElapsedMilliseconds}ms");
+			s.Stop();
+		}
+		if (Input.IsPhysicalKeyPressed(Key.L))
+			Logger.LogCurrentMax();
+		if (Input.IsActionJustPressed("ToggleInventory")) {
+			Control UIInventory = (Control)PlayerInventory.GetGrandparent();
+			UIInventory.Visible = !UIInventory.Visible;
+		}
+	}
+
 	private static readonly byte ttu = 12;
 	private byte ppCounter = ttu;
+
+	public static bool IsInRenderDistance(Vector2I chunkID) {
+		Vector2I pChunkID = ((PlayerMovement)Player).CurrentChunkID;
+		if (pChunkID.X >= RenderDistance.X && pChunkID.X < WorldChunks.X - RenderDistance.X) {
+			return
+				Math.Abs(pChunkID.X - chunkID.X) <= RenderDistance.X &&
+				Math.Abs(pChunkID.Y - chunkID.Y) <= RenderDistance.Y;
+		}
+		else {
+			return
+				!(chunkID.X > (pChunkID.X + RenderDistance.X).Mod(WorldChunks.X)
+				&& chunkID.X < (pChunkID.X - RenderDistance.X).Mod(WorldChunks.X))
+				&& Math.Abs(pChunkID.Y - chunkID.Y) <= RenderDistance.Y;
+		}
+	}
 
 	public override void _PhysicsProcess(double delta) {
 		base._PhysicsProcess(delta);
 		ppCounter++;
 		if (ppCounter >= ttu) {
 			// GD.Print("Render Check");
-			Vector2 pos = Player.Position;
-			pos.Y *= -1;
-			for (int i = 0; i < WorldChunks.X; i++) {
-				for (int ii = 0; ii < WorldChunks.Y; ii++) {
-					TileMapLayerController tml = WorldData.main.chunks[i, ii].TML;
-					float distance = (pos / TilePixelSizeV - tml.Center).Length();
-					if (distance <= RenderDistance && !tml.Enabled) {
-						tml.Render();
-						WorldData.back.chunks[i, ii].TML.Render();
-					}
-					else if (distance > RenderDistance && tml.Enabled) {
-						tml.Unrender();
-						WorldData.back.chunks[i, ii].TML.Unrender();
-					}
+
+			Vector2I pChunkID = World.GetChunkID(Player.Position);
+			if (pChunkID == ((PlayerMovement)Player).CurrentChunkID)
+				return;
+			else
+				((PlayerMovement)Player).CurrentChunkID = pChunkID;
+
+			for (int i = RenderedChunks.Count - 1; i >= 0; i--) {
+				Vector2I chunkID = RenderedChunks[i];
+				if (!IsInRenderDistance(chunkID)) {
+					WorldData.main.chunks[chunkID.X, chunkID.Y].TML.Unrender();
+					WorldData.back.chunks[chunkID.X, chunkID.Y].TML.Unrender();
+					RenderedChunks.RemoveAt(i);
 				}
 			}
+
+			int x = (pChunkID.X - RenderDistance.X).Mod(WorldChunks.X);
+			int y = Math.Max(pChunkID.Y - RenderDistance.Y, 0);
+			int min = x;
+			int max = Math.Min(pChunkID.Y + RenderDistance.Y, WorldChunks.Y - 1);
+
+			while (y <= max) {
+				if (!WorldData.main.chunks[x, y].TML.Enabled) {
+					WorldData.main.chunks[x, y].TML.Render();
+					WorldData.back.chunks[x, y].TML.Render();
+					RenderedChunks.Add(new(x, y));
+				}
+				x = (++x).Mod(WorldChunks.X);
+				if (!IsInRenderDistance(new(x, y))) {
+					x = min;
+					y++;
+				}
+			}
+
+			// for (int i = 0; i < WorldChunks.X; i++) {
+			// 	for (int ii = 0; ii < WorldChunks.Y; ii++) {
+			// 		TileMapLayerController tml = WorldData.main.chunks[i, ii].TML;
+			// 		float distance = (pos / TilePixelSizeV - tml.Center).Length();
+			// 		if (distance <= RenderDistance && !tml.Enabled) {
+			// 			tml.Render();
+			// 			WorldData.back.chunks[i, ii].TML.Render();
+			// 		}
+			// 		else if (distance > RenderDistance && tml.Enabled) {
+			// 			tml.Unrender();
+			// 			WorldData.back.chunks[i, ii].TML.Unrender();
+			// 		}
+			// 	}
+			// }
 			ppCounter -= ttu;
 		}
+	}
+	public enum DamageType {
+		Fire, Ice, Lightning, Thunder, Poison, Acid, Holy, Unholy, Arcane, Force
 	}
 }

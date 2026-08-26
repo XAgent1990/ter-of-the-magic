@@ -43,11 +43,11 @@ public class Spell { // : Item {
 
 }
 
-public enum DamageTypes {
-	Magical,
-	Envirement,
-	Physical
-}
+// public enum DamageTypes {
+// 	Magical,
+// 	Envirement,
+// 	Physical
+// }
 
 public enum ProjectileMovement {
 }

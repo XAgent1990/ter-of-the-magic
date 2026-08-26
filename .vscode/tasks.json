@@ -13,7 +13,7 @@
         }
         // {
         //     "label": "build",
-        //     "command": "D:/Godot/Godot_v4.5-dev5_mono_win64/Godot_v4.5-dev5_mono_win64.exe",
+        //     "command": "D:/Godot/Godot_v4.8-dev3_mono_win64/Godot_v4.8-dev3_mono_win64.exe",
         //     "type": "process",
         //     "args": [
         //         "--build-solutions",

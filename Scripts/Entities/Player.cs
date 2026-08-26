@@ -5,6 +5,8 @@ using System.Numerics;
 using TeroftheMagic.Scripts;
 using TeroftheMagic.Scripts.Universe;
 
+namespace TeroftheMagic.Scripts.Entities;
+
 public partial class Player : Entity {
 
 	[Export] int StartInventorySize = 20;

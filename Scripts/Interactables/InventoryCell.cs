@@ -15,13 +15,14 @@ public partial class InventoryCell : Control {
 	public byte Count {
 		get => itemStack.Count;
 		set {
-			if (value > 0) {
+			if (value > 1) {
 				CountLabel.Text = value.ToString();
 				itemStack.Count = value;
 			}
 			else {
 				CountLabel.Text = "";
-				ItemStack = new();
+				if (value == 0)
+					ItemStack = new();
 			}
 		}
 	}
@@ -70,7 +71,7 @@ public partial class InventoryCell : Control {
 			if (mouseButton.ButtonMask == MouseButtonMask.Left) {
 				if (MC.ID != ID)
 					(MC.ItemStack, ItemStack) = (ItemStack, MC.ItemStack);
-				else if (ID != ""){
+				else if (ID != "") {
 					if (Count + MC.Count <= StackSize) {
 						Count += MC.Count;
 						MC.ItemStack = new();

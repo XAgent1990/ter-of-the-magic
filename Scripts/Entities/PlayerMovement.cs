@@ -3,12 +3,15 @@ using System;
 using System.Security.Cryptography.X509Certificates;
 using TeroftheMagic.Scripts;
 using TeroftheMagic.Scripts.Utility;
+using static TeroftheMagic.Scripts.Utility.Extensions;
 using static TeroftheMagic.Scripts.Game;
 
 public partial class PlayerMovement : CharacterBody2D {
 	public const float Speed = 300.0f;
 	public const float JumpVelocity = -400.0f;
 	public const float VerticalOffset = 1f;
+	
+	public Vector2I CurrentChunkID = new();
 
 
 	public static Vector2 PlayerPosition;
@@ -107,6 +110,11 @@ public partial class PlayerMovement : CharacterBody2D {
 			Game.Instance.SpawnPlayer();
 			Velocity = Vector2.Zero;
 		}
+		if(Position.X < 0)
+			Position += Right * (int)WorldWidthPx;
+		if(Position.X > WorldWidthPx)
+			Position += Left * (int)WorldWidthPx;
+		// Position = new((float)Math.Round(Position.X), (float)Math.Round(Position.Y));
 		PlayerPosition = Position;
 	}
 

@@ -50,11 +50,11 @@ public partial class ItemDrop : RigidBody2D, IEntity {
 		Logger.StartTimer("ItemDrop.Spawn.Instantiate");
 		ItemDrop itemDrop = Prefab.Instantiate<ItemDrop>();
 		Logger.StopTimer("ItemDrop.Spawn.Instantiate");
-		Logger.StartTimer("ItemDrop.Spawn.GetWorldPosition");
+		Logger.StartTimer("ItemDrop.Spawn.DataSet");
 		itemDrop.Position = pos;
-		Logger.StopTimer("ItemDrop.Spawn.GetWorldPosition");
 		itemDrop.LinearVelocity = new((float)(Random.Shared.NextDouble() - .5d) * jumpHeight, -jumpHeight);
 		itemDrop.ItemStack = itemStack;
+		Logger.StopTimer("ItemDrop.Spawn.DataSet");
 		Logger.StartTimer("ItemDrop.Spawn.AddChild");
 		// World.Entities.AddChild(itemDrop);
 		World.Entities.CallDeferred("add_child", itemDrop);

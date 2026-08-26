@@ -48,7 +48,9 @@ public partial class World : Node2D {
 			return false;
 		if (IsOnEdge(pos) && id != "totm:dirt")
 			return false;
-		byte r = (byte)Math.Round((noise.GetNoise2D(pos.X / CaveMod, pos.Y / CaveMod) + .5f) * 100);
+		float n = noise.GetNoise2D(pos.X + WorldWidth, pos.Y) * (WorldWidth - pos.X) / WorldWidth
+				+ noise.GetNoise2D(pos.X, pos.Y) * pos.X / WorldWidth;
+		byte r = (byte)Math.Round((n + .5f) * 100);
 		// float r = random.Rand(0, 100);
 		// r /= 1 + y / 600f;
 		return r > CaveThreshold;
@@ -108,5 +110,7 @@ public partial class World : Node2D {
 		new Vector2(mapPos.X + .5f, -mapPos.Y + .5f) * TilePixelSizeV;
 	public static Vector2I GetMapPosition(Vector2 pos) =>
 		new((int)Math.Floor(pos.X / TilePixelSize - .5f), (int)Math.Floor(-pos.Y / TilePixelSize + .5f));
-	// public static Vector2 GetWorldPosition(Vector2I mapPos) => WorldData.main.GetWorldPosition(mapPos);
+
+	public static Vector2I GetChunkID(Vector2I mapPos) => mapPos / WorldData.chunkSizeV;
+	public static Vector2I GetChunkID(Vector2 pos) => GetChunkID(GetMapPosition(pos));
 }

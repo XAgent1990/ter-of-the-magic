@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://dh86r6iohh6uu"]
+
+[ext_resource type="Theme" uid="uid://cqixh1owkg67r" path="res://GameAssets/InventoryTheme.tres" id="1_sud3c"]
+[ext_resource type="Script" uid="uid://bokkjl0hghb0w" path="res://Scripts/UI/InventoryLayoutController.cs" id="2_bykra"]
+[ext_resource type="Script" uid="uid://cktvsdyx0jxeu" path="res://Scripts/Interactables/WandInventory.cs" id="3_sud3c"]
+
+[node name="WandBar" type="PanelContainer"]
+offset_right = 12.0
+offset_bottom = 12.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme = ExtResource("1_sud3c")
+script = ExtResource("2_bykra")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+
+[node name="WandSlots" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+script = ExtResource("3_sud3c")

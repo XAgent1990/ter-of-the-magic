@@ -1,0 +1,190 @@
+[gd_scene load_steps=5 format=3 uid="uid://dclive1vjj1cl"]
+
+[ext_resource type="PackedScene" uid="uid://dwakc763c1vvr" path="res://Prefabs/inventoy_cell.tscn" id="1_eyqil"]
+[ext_resource type="Script" uid="uid://dyiqb7pjlc5sr" path="res://Scripts/Interactables/PlayerInventory.cs" id="1_is7it"]
+[ext_resource type="Theme" uid="uid://cqixh1owkg67r" path="res://GameAssets/InventoryTheme.tres" id="1_mc4su"]
+[ext_resource type="Script" uid="uid://bokkjl0hghb0w" path="res://Scripts/UI/InventoryLayoutController.cs" id="2_j6csw"]
+
+[node name="PlayerInventory" type="PanelContainer"]
+offset_right = 12.0
+offset_bottom = 12.0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+theme = ExtResource("1_mc4su")
+script = ExtResource("2_j6csw")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="InventorySlots" type="GridContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 6
+theme_override_constants/v_separation = 6
+columns = 9
+script = ExtResource("1_is7it")
+
+[node name="InventoyCell" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell2" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell3" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell4" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell5" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell6" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell7" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell8" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell9" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell10" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell11" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell12" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell13" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell14" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell15" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell16" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell17" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell18" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell19" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell20" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell21" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell22" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell23" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell24" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell25" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell26" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell27" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell28" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell29" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell30" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell31" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell32" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell33" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell34" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell35" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell36" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell37" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell38" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell39" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell40" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell41" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell42" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell43" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell44" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell45" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell46" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell47" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell48" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell49" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell50" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell51" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell52" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell53" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2
+
+[node name="InventoyCell54" parent="MarginContainer/InventorySlots" instance=ExtResource("1_eyqil")]
+layout_mode = 2

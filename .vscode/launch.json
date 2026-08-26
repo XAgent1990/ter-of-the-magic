@@ -15,7 +15,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "D:/Godot/Godot_v4.5-dev5_mono_win64/Godot_v4.5-dev5_mono_win64.exe",
+            "program": "D:/Godot/Godot_v4.8-dev3_mono_win64/Godot_v4.8-dev3_mono_win64.exe",
             "cwd":"${workspaceFolder}",
             "console": "internalConsole",
             "stopAtEntry": false,
@@ -30,7 +30,7 @@
             "request": "launch",
             "mode": "executable",
             "preLaunchTask": "build",
-            "executable": "D:/Godot/Godot_v4.5-dev5_mono_win64/Godot_v4.5-dev5_mono_win64.exe",
+            "executable": "D:/Godot/Godot_v4.8-dev3_mono_win64/Godot_v4.8-dev3_mono_win64.exe",
             "executableArguments": [
                 "--path",
                 "${workspaceRoot}"
@@ -42,7 +42,7 @@
             "request": "launch",
             "mode": "executable",
             "preLaunchTask": "build",
-            "executable": "D:/Godot/Godot_v4.5-dev5_mono_win64/Godot_v4.5-dev5_mono_win64.exe",
+            "executable": "D:/Godot/Godot_v4.8-dev3_mono_win64/Godot_v4.8-dev3_mono_win64.exe",
             "executableArguments": [
                 "--path",
                 "${workspaceRoot}",

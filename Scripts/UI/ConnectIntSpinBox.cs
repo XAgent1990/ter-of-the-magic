@@ -12,7 +12,7 @@ public partial class ConnectIntSpinBox : SpinBox {
 				Value = Game.Seed;
 				break;
 			case GameActions.hMod:
-				Value = Game.HeightMod;
+				Value = Game.SurfaceFrequency;
 				break;
 			case GameActions.cMod:
 				Value = Game.CaveMod;
@@ -30,10 +30,10 @@ public partial class ConnectIntSpinBox : SpinBox {
 				Value = Game.MaxHeight;
 				break;
 			case GameActions.mapx:
-				Value = Game.WorldWidth;
+				Value = Game.WorldWidthChunks;
 				break;
 			case GameActions.mapy:
-				Value = Game.WorldHeight;
+				Value = Game.WorldHeightChunks;
 				break;
 		}
 
@@ -48,7 +48,7 @@ public partial class ConnectIntSpinBox : SpinBox {
 				break;
 			case GameActions.hMod:
 				Print($"HeightMod = {newValue}");
-				Game.HeightMod = (float)newValue;
+				Game.SurfaceFrequency = (float)newValue;
 				break;
 			case GameActions.cMod:
 				Print($"CaveMod = {newValue}");
@@ -72,11 +72,11 @@ public partial class ConnectIntSpinBox : SpinBox {
 				break;
 			case GameActions.mapx:
 				Print($"Map X = {newValue}");
-				Game.WorldWidth = (ushort)(newValue);
+				Game.WorldWidthChunks = (ushort)newValue;
 				break;
 			case GameActions.mapy:
 				Print($"Map Y = {newValue}");
-				Game.WorldHeight = (ushort)(newValue);
+				Game.WorldHeightChunks = (ushort)newValue;
 				break;
 		}
 	}

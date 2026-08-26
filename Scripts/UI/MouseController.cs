@@ -1,8 +1,9 @@
 using Godot;
 using System;
 using TeroftheMagic.Scripts.Universe;
-using static TeroftheMagic.Scripts.Utility.TileUtil;
+using static TeroftheMagic.Scripts.Game;
 using static TeroftheMagic.Scripts.Universe.World;
+using static TeroftheMagic.Scripts.Utility.TileUtil;
 using static TeroftheMagic.Scripts.Utility.Functions;
 using TeroftheMagic.Scripts.Utility;
 
@@ -40,13 +41,17 @@ public partial class MouseController : Control {
 
 
 	public override void _PhysicsProcess(double delta) {
-		base._Process(delta);
+		base._PhysicsProcess(delta);
 
 		if (blocked) return;
 
 		if (held) {
+			Vector2 canvPos = Viewport.GetMousePosition();
+			Vector2 canvSize = Viewport.GetVisibleRect().Size;
+			if(canvPos.X < 0 || canvPos.Y < 0 || canvPos.X > canvSize.X || canvPos.Y > canvSize.Y)
+				return;
 			Vector2 mousePos = Main.GetLocalMousePosition();
-			Vector2I mapPos = new((int)mousePos.X / TilePixelSize, (int)Math.Ceiling(-mousePos.Y / TilePixelSize));
+			Vector2I mapPos = new(((int)Math.Floor(mousePos.X / TilePixelSize)).Mod(WorldWidth), (int)Math.Ceiling(-mousePos.Y / TilePixelSize));
 			WorldLayer layer = ctrl ? WorldLayer.back : WorldLayer.main;
 			if (Count > 0) {
 				switch (activeButton) {
