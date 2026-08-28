@@ -1,7 +1,9 @@
 [gd_scene format=3 uid="uid://30em8mroafg5"]
 
 [ext_resource type="Script" uid="uid://c8u1bardnjv53" path="res://Scripts/Multiplayer/MultiplayerTest.cs" id="1_1ctdy"]
+[ext_resource type="Script" uid="uid://ci51m1o356hrx" path="res://Scripts/Multiplayer/MultiplayerTestButtonCreate.cs" id="2_0ugqy"]
 [ext_resource type="Script" uid="uid://dunyov0jhqts0" path="res://Scripts/Multiplayer/MultiplayerTestButton.cs" id="2_dgtyu"]
+[ext_resource type="Script" uid="uid://dojcrucvp8v3h" path="res://Scripts/Multiplayer/MultiplayerTestButtonJoin.cs" id="3_htke1"]
 
 [node name="MultiplayerTest" type="Control" unique_id=1088007976]
 layout_mode = 3
@@ -11,6 +13,68 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_1ctdy")
+
+[node name="Create" type="ColorRect" parent="." unique_id=673719704]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -250.0
+offset_right = -150.0
+offset_bottom = -150.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="Create" unique_id=584302492]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -25.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_0ugqy")
+
+[node name="Join" type="ColorRect" parent="." unique_id=1798074531]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 150.0
+offset_top = -250.0
+offset_right = 250.0
+offset_bottom = -150.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="Join" unique_id=997187818]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -25.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_htke1")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1562735991]
 custom_minimum_size = Vector2(100, 100)

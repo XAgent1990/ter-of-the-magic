@@ -4,25 +4,27 @@ using System;
 namespace TeroftheMagic.Scripts.Multiplayer;
 
 public partial class MultiplayerTestButton : Button {
-	ColorRect cr;
 	
 	public override void _Ready() {
 		base._Ready();
-
-		cr = GetParent<ColorRect>();
 		Pressed += OnPressed;
 	}
 
 	public void OnPressed() {
 		Rpc(MethodName.ChangeColor);
-		GD.Print("Button Pressed");
+		GD.Print($"{Multiplayer.GetUniqueId()}: Button Pressed");
 	}
 
-	[Rpc]
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer)]
 	public void ChangeColor() {
-		GD.Print("Color Changed");
-		cr.Color = Color.Color8((byte)Game.random.Next(256),
-								(byte)Game.random.Next(256),
-								(byte)Game.random.Next(256));
+		GD.Print($"{Multiplayer.GetUniqueId()}: Color Changed");
+		GetTree().Root.GetNode("MultiplayerTest").PrintTree();
+		Node current = this;
+		GD.Print($"{Multiplayer.GetUniqueId()}: {current.GetPath()}");
+		Node parent = current.GetParent();
+		GD.Print($"{Multiplayer.GetUniqueId()}: {parent.GetPath()}");
+		((ColorRect)parent).Color = Color.Color8((byte)new Random().Next(256),
+												 (byte)new Random().Next(256),
+												 (byte)new Random().Next(256));
 	}
 }

@@ -43,11 +43,9 @@ public partial class MultiplayerTest : Control {
         Multiplayer.ConnectedToServer += OnConnectOk;
         Multiplayer.ConnectionFailed += OnConnectionFail;
         Multiplayer.ServerDisconnected += OnServerDisconnected;
-
-		CreateGame();
     }
 
-    private Error JoinGame(string address = "")
+    public Error JoinGame(string address = "")
     {
         if (string.IsNullOrEmpty(address))
         {
@@ -66,7 +64,7 @@ public partial class MultiplayerTest : Control {
         return Error.Ok;
     }
 
-    private Error CreateGame()
+    public Error CreateGame()
     {
         var peer = new ENetMultiplayerPeer();
         Error error = peer.CreateServer(Port, MaxConnections);
@@ -106,7 +104,7 @@ public partial class MultiplayerTest : Control {
             if (_playersLoaded == _players.Count)
             {
                 //GetNode<Game>("/root/Game").StartGame();
-				GD.Print("All Players Loaded");
+				GD.Print($"{Multiplayer.GetUniqueId()}: All Players Loaded");
                 _playersLoaded = 0;
             }
         }
@@ -116,6 +114,7 @@ public partial class MultiplayerTest : Control {
     // This allows transfer of all desired data for each player, not only the unique ID.
     private void OnPlayerConnected(long id)
     {
+		GD.Print($"{Multiplayer.GetUniqueId()}: Player with ID {id} connected");
         RpcId(id, MethodName.RegisterPlayer, _playerInfo);
     }
 
@@ -129,12 +128,14 @@ public partial class MultiplayerTest : Control {
 
     private void OnPlayerDisconnected(long id)
     {
+		GD.Print($"{Multiplayer.GetUniqueId()}: Player with ID {id} disconnected");
         _players.Remove(id);
         EmitSignal(SignalName.PlayerDisconnected, id);
     }
 
     private void OnConnectOk()
     {
+		GD.Print($"{Multiplayer.GetUniqueId()}: Connection successful");
         int peerId = Multiplayer.GetUniqueId();
         _players[peerId] = _playerInfo;
         EmitSignal(SignalName.PlayerConnected, peerId, _playerInfo);
@@ -142,11 +143,13 @@ public partial class MultiplayerTest : Control {
 
     private void OnConnectionFail()
     {
+		GD.Print($"{Multiplayer.GetUniqueId()}: Connection failed");
         Multiplayer.MultiplayerPeer = null;
     }
 
     private void OnServerDisconnected()
     {
+		GD.Print($"{Multiplayer.GetUniqueId()}: Disconnected from Server");
         Multiplayer.MultiplayerPeer = null;
         _players.Clear();
         EmitSignal(SignalName.ServerDisconnected);
