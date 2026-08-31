@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://ld38cvp7naj6" path="res://Scripts/UI/UIController.cs" id="4_pbw6q"]
 [ext_resource type="PackedScene" uid="uid://bfoceiykrmmhu" path="res://Prefabs/test_ui.tscn" id="4_rgh2o"]
 [ext_resource type="Script" uid="uid://dswqdqivpj11r" path="res://Scripts/UI/MouseController.cs" id="6_50glp"]
-[ext_resource type="PackedScene" uid="uid://dclive1vjj1cl" path="res://Prefabs/Inventory.tscn" id="6_v1gob"]
+[ext_resource type="PackedScene" uid="uid://dclive1vjj1cl" path="res://Prefabs/PlayerInventory.tscn" id="6_v1gob"]
 [ext_resource type="PackedScene" uid="uid://dxirjufr2g60x" path="res://Prefabs/hotbar.tscn" id="7_bmxlf"]
 [ext_resource type="Texture2D" uid="uid://d1oaqe3ssr6ik" path="res://Assets/BlockTileSet.png" id="7_vy5pj"]
 [ext_resource type="Theme" uid="uid://hjgbplpdvb0p" path="res://GameAssets/Pixeloid_Theme.tres" id="8_bmxlf"]
@@ -17,10 +17,9 @@
 atlas = ExtResource("7_vy5pj")
 region = Rect2(0, 16, 16, 16)
 
-[node name="Game" type="Node2D" unique_id=1163609889 node_paths=PackedStringArray("player", "playerInventory")]
+[node name="Game" type="Node2D" unique_id=1163609889 node_paths=PackedStringArray("player")]
 script = ExtResource("1_idj7w")
 player = NodePath("World/Entities/Player")
-playerInventory = NodePath("CanvasLayer/Inventory")
 metadata/_edit_horizontal_guides_ = [-86.0]
 
 [node name="BackgroundParallax" type="Parallax2D" parent="." unique_id=1761649764]

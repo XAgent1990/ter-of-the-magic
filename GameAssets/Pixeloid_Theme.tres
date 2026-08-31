@@ -1,7 +1,17 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://hjgbplpdvb0p"]
+[gd_resource type="Theme" format=3 uid="uid://hjgbplpdvb0p"]
 
+[ext_resource type="StyleBox" uid="uid://d03y4nq78r7kd" path="res://GameAssets/Pixeloid_style_box_flat.tres" id="1_bncrl"]
 [ext_resource type="FontFile" uid="uid://bnbicw2q6o6c0" path="res://Assets/Fonts/pixeloid.sans.otf" id="1_rnlm8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y13iq"]
+bg_color = Color(0.28235295, 0.29411766, 0.45882353, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bncrl"]
+bg_color = Color(0.8, 0.8, 0.8, 1)
 
 [resource]
 default_font = ExtResource("1_rnlm8")
 default_font_size = 18
+Button/styles/hover = SubResource("StyleBoxFlat_y13iq")
+Button/styles/normal = ExtResource("1_bncrl")
+Button/styles/pressed = SubResource("StyleBoxFlat_bncrl")

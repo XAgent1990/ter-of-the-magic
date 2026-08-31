@@ -280,7 +280,18 @@
             "ID": 1,
             "Alt": 0
         },
-        "VariantTileSetData": {},
+        "VariantTileSetData": {
+            "1":{
+                "Type": "plants",
+                "ID": 2,
+                "Alt": 0
+            },
+            "2":{
+                "Type": "plants",
+                "ID": 4,
+                "Alt": 0
+            }
+        },
         "ItemDrops": [
             {
                 "Chance": 1,
@@ -294,19 +305,6 @@
         ]
     },
     {
-        "$type": "item",
-        "ID": "totm:seed_item",
-        "Name": "Seed",
-        "Description": "It grows Green",
-        "StackSize": 99,
-        "TileSetData": {
-            "Type": "plants",
-            "ID": 2,
-            "Alt": 0
-        },
-        "VariantTileSetData": {}
-    },
-    {
         "$type": "block",
         "ID": "totm:seed_block",
         "Name": "Seed",
@@ -314,7 +312,7 @@
         "StackSize": 99,
         "TileSetData": {
             "Type": "plants",
-            "ID": 2,
+            "ID": 4,
             "Alt": 0
         },
         "VariantTileSetData": {},

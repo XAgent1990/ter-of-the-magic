@@ -1,29 +1,67 @@
-[gd_scene load_steps=2 format=3 uid="uid://snegxyr1ogtw"]
+[gd_scene format=3 uid="uid://snegxyr1ogtw"]
 
+[ext_resource type="Theme" uid="uid://hjgbplpdvb0p" path="res://GameAssets/Pixeloid_Theme.tres" id="1_0on6r"]
 [ext_resource type="Script" uid="uid://b2ts010nmcwc2" path="res://Scripts/UI/NewWorldButton.cs" id="1_ko4ly"]
 
-[node name="StartScreen" type="Control"]
+[node name="StartScreen" type="Control" unique_id=487538842]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_0on6r")
 
-[node name="Button" type="Button" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1991585250]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.49803922, 0.49803922, 0.49803922, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1756095282]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -4.0
-offset_top = -4.0
-offset_right = 4.0
-offset_bottom = 4.0
+offset_left = -85.0
+offset_top = -50.0
+offset_right = 85.0
+offset_bottom = 50.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Button" type="Button" parent="VBoxContainer" unique_id=1770076289]
+layout_mode = 2
 text = "New World"
 script = ExtResource("1_ko4ly")
 
-[connection signal="pressed" from="Button" to="Button" method="NewWorld"]
+[node name="Button5" type="Button" parent="VBoxContainer" unique_id=1484435159]
+layout_mode = 2
+text = "Load World"
+script = ExtResource("1_ko4ly")
+
+[node name="Button2" type="Button" parent="VBoxContainer" unique_id=865995740]
+layout_mode = 2
+text = "Join World"
+script = ExtResource("1_ko4ly")
+
+[node name="Button3" type="Button" parent="VBoxContainer" unique_id=948739345]
+layout_mode = 2
+text = "Options"
+script = ExtResource("1_ko4ly")
+
+[node name="Button4" type="Button" parent="VBoxContainer" unique_id=1020579003]
+layout_mode = 2
+text = "Exit"
+script = ExtResource("1_ko4ly")
+
+[connection signal="pressed" from="VBoxContainer/Button" to="VBoxContainer/Button" method="NewWorld"]
+[connection signal="pressed" from="VBoxContainer/Button5" to="VBoxContainer/Button5" method="NewWorld"]
+[connection signal="pressed" from="VBoxContainer/Button2" to="VBoxContainer/Button2" method="NewWorld"]
+[connection signal="pressed" from="VBoxContainer/Button3" to="VBoxContainer/Button3" method="NewWorld"]
+[connection signal="pressed" from="VBoxContainer/Button4" to="VBoxContainer/Button4" method="NewWorld"]
