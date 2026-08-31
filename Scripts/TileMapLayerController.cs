@@ -1,12 +1,11 @@
 using Godot;
 using Godot.Collections;
 using System;
-using TeroftheMagic.Scripts;
-using TeroftheMagic.Scripts.Universe;
-using TeroftheMagic.Scripts.Utility;
-using Logger = TeroftheMagic.Scripts.Utility.Logger;
+using TeroftheMagic.Universe;
+using TeroftheMagic.Utility;
+using Logger = TeroftheMagic.Utility.Logger;
 
-namespace TeroftheMagic.Scripts;
+namespace TeroftheMagic;
 
 public partial class TileMapLayerController : TileMapLayer {
 

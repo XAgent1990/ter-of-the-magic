@@ -1,9 +1,9 @@
 using Godot;
 using System;
-using static TeroftheMagic.Scripts.Game;
-using TeroftheMagic.Scripts;
-using TeroftheMagic.Scripts.Utility;
-using TeroftheMagic.Scripts.Universe;
+using static TeroftheMagic.Game;
+using TeroftheMagic;
+using TeroftheMagic.Utility;
+using TeroftheMagic.Universe;
 
 public partial class TestUi : Control {
 

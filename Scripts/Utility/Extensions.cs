@@ -1,10 +1,10 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using static TeroftheMagic.Scripts.Utility.TileUtil;
-using TileSetData = TeroftheMagic.Scripts.Utility.TileUtil.TileSetData;
+using static TeroftheMagic.Utility.TileUtil;
+using TileSetData = TeroftheMagic.Utility.TileUtil.TileSetData;
 
-namespace TeroftheMagic.Scripts.Utility;
+namespace TeroftheMagic.Utility;
 
 public static class Extensions {
 	public static Vector2I Up = Vector2I.Down;
@@ -12,7 +12,7 @@ public static class Extensions {
 	public static Vector2I Left = Vector2I.Left;
 	public static Vector2I Right = Vector2I.Right;
 
-	public static void UpdateCell(this TileMapLayer tml, Vector2I pos) => tml.UpdateCell(pos, new(TileSetId.block, 6));
+	public static void UpdateCell(this TileMapLayer tml, Vector2I pos) => tml.UpdateCell(pos, new(TileSetId.block, 0));
 	public static void UpdateCell(this TileMapLayer tml, Vector2I pos, TileSetData td) {
 		pos.Y = -pos.Y - 1;
 		if (td.ID <= 0) tml.SetCell(pos);

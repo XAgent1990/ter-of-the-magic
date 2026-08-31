@@ -1,6 +1,6 @@
 using Godot;
 using System;
-using TeroftheMagic.Scripts.Universe;
+using TeroftheMagic.Universe;
 
 public partial class Plants : Block {
     

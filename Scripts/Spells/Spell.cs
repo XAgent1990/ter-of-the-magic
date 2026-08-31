@@ -1,8 +1,8 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using TeroftheMagic.Scripts;
-using TeroftheMagic.Scripts.Universe;
+using TeroftheMagic;
+using TeroftheMagic.Universe;
 
 public class Spell { // : Item {
 	public Spell(string target, Node node) {

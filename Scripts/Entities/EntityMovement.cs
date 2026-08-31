@@ -1,10 +1,10 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using TeroftheMagic.Scripts;
-using TeroftheMagic.Scripts.Universe;
-using TeroftheMagic.Scripts.Utility;
-using static TeroftheMagic.Scripts.Utility.TileUtil;
+using TeroftheMagic;
+using TeroftheMagic.Universe;
+using TeroftheMagic.Utility;
+using static TeroftheMagic.Utility.TileUtil;
 
 public partial class EntityMovement : CharacterBody2D {
 	//Move Left right up down jump

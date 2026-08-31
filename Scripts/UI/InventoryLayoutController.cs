@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-namespace TeroftheMagic.Scripts.UI;
+namespace TeroftheMagic.UI;
 
 public partial class InventoryLayoutController : PanelContainer {
 	public override void _Ready() {

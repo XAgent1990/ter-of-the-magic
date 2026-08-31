@@ -1,26 +1,32 @@
 using Godot;
 using System;
 using System.Threading.Tasks;
-using TeroftheMagic.Scripts.Utility;
-using static TeroftheMagic.Scripts.Game;
-using static TeroftheMagic.Scripts.Utility.Functions;
-using static TeroftheMagic.Scripts.Utility.Extensions;
-using static TeroftheMagic.Scripts.Utility.TileUtil;
-using Logger = TeroftheMagic.Scripts.Utility.Logger;
+using TeroftheMagic.Utility;
+using static TeroftheMagic.Game;
+using static TeroftheMagic.Utility.Functions;
+using static TeroftheMagic.Utility.Extensions;
+using static TeroftheMagic.Utility.TileUtil;
+using Logger = TeroftheMagic.Utility.Logger;
 using System.Collections.Generic;
 
-namespace TeroftheMagic.Scripts.Universe;
+namespace TeroftheMagic.Universe;
 
 public class WorldChunk(Vector2I origin, WorldLayer layer) {
 	public static PackedScene TMLPrefab = GD.Load<PackedScene>("res://Prefabs/TileMapLayer.tscn");
-	private BlockData[,] chunk = new BlockData[WorldData.chunkSize, WorldData.chunkSize];
+	private BlockData[,] block = new BlockData[WorldData.chunkSize, WorldData.chunkSize];
+	public BlockData[,] GetBlocks() => block;
+	public void SetBlocks(BlockData[,] blocks) => block = blocks;
 	public Vector2I origin = origin;
 	public Vector2I ID = origin / WorldData.chunkSizeV;
 	public WorldLayer layer = layer;
 	public TileMapLayerController TML;
 
 	public ref BlockData this[Vector2I pos] {
-		get => ref chunk[pos.X, pos.Y];
+		get => ref block[pos.X, pos.Y];
+	}
+
+	public ref BlockData this[int x, int y] {
+		get => ref block[x, y];
 	}
 
 	public void Clear() {
@@ -34,13 +40,13 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 				for (cOff.Y = 0; cOff.Y < WorldData.chunkSize; cOff.Y++) {
 					Vector2I pos = origin + cOff;
 					if (pos.Y > WorldData.heightMap[pos.X]) {
-						chunk[cOff.X, cOff.Y] = new(Block.Air);
+						block[cOff.X, cOff.Y] = new(Block.Air);
 						continue;
 					}
 					if (layer == WorldLayer.back || !World.IsCave(pos))
-						chunk[cOff.X, cOff.Y] = new(World.GetMaterial(pos));
+						block[cOff.X, cOff.Y] = new(World.GetMaterial(pos));
 					else
-						chunk[cOff.X, cOff.Y] = new(Block.Air);
+						block[cOff.X, cOff.Y] = new(Block.Air);
 				}
 			}
 		}));
@@ -52,7 +58,7 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 			Vector2I off = new();
 			for (off.X = 0; off.X < WorldData.chunkSize; off.X++) {
 				for (off.Y = 0; off.Y < WorldData.chunkSize; off.Y++) {
-					BlockData bd = chunk[off.X, off.Y];
+					BlockData bd = block[off.X, off.Y];
 					if (bd.ID == Block.Bedrock) { // Bedrock
 						temp[off.X, off.Y] = bd;
 						continue;
@@ -67,7 +73,7 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 			}
 			// GD.Print(chunk.AsString());
 			// GD.Print(temp.AsString());
-			chunk = temp;
+			block = temp;
 			// GD.Print(chunk.AsString());
 		}));
 	}
@@ -75,7 +81,7 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 	public void BreakBlock(Vector2I cOff) {
 		Task.Run(() => {
 			Logger.StartTimer("WorldChunk.BreakBlock");
-			BlockData bd = chunk[cOff.X, cOff.Y];
+			BlockData bd = block[cOff.X, cOff.Y];
 			Logger.StartTimer("WorldChunk.BreakBlock.GetItem");
 			Item item = Item.Get(bd.ID);
 			Logger.StopTimer("WorldChunk.BreakBlock.GetItem");
@@ -108,14 +114,14 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 
 	public void PlaceBlock(Vector2I cOff, BlockData bd) {
 		Logger.StartTimer("WorldChunk.PlaceBlock");
-		chunk[cOff.X, cOff.Y] = bd;
+		block[cOff.X, cOff.Y] = bd;
 		TML.UpdateCell(cOff, Item.Get(bd.ID).GetTileSetData(bd.Variant));
 		Logger.StopTimer("WorldChunk.PlaceBlock");
 	}
 
 	public void UpdateBlock(Vector2I cOff) {
 		Vector2I mapPos = origin + cOff;
-		BlockData bd = chunk[cOff.X, cOff.Y];
+		BlockData bd = block[cOff.X, cOff.Y];
 		if (bd.ID == Block.Air)
 			return;
 		switch (Block.GetType(bd.ID, bd.Variant)) {
@@ -193,7 +199,7 @@ public class WorldChunk(Vector2I origin, WorldLayer layer) {
 			for (pos.X = 0; pos.X < WorldData.chunkSize; pos.X++) {
 				for (pos.Y = 0; pos.Y < WorldData.chunkSize; pos.Y++) {
 					// GD.Print($"{pos.X},{pos.Y}: {chunk[pos.X, pos.Y].ID}");
-					BlockData bd = chunk[pos.X, pos.Y];
+					BlockData bd = block[pos.X, pos.Y];
 					TML.UpdateCell(pos, Item.Get(bd.ID).GetTileSetData(bd.Variant));
 				}
 			}

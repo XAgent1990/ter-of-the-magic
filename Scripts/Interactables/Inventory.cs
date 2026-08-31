@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-namespace TeroftheMagic.Scripts.Interactables;
+namespace TeroftheMagic.Interactables;
 
 public partial class Inventory : Node
 {

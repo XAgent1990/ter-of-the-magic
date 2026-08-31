@@ -1,10 +1,10 @@
 using Godot;
 using System;
-using TeroftheMagic.Scripts.UI;
-using TeroftheMagic.Scripts.Universe;
-using static TeroftheMagic.Scripts.Utility.TileUtil;
+using TeroftheMagic.UI;
+using TeroftheMagic.Universe;
+using static TeroftheMagic.Utility.TileUtil;
 
-namespace TeroftheMagic.Scripts.Interactables;
+namespace TeroftheMagic.Interactables;
 
 public partial class InventoryCell : Control {
 	[Export] private TextureRect Texture;

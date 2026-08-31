@@ -5,11 +5,11 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
-using TeroftheMagic.Scripts.Universe;
-using static TeroftheMagic.Scripts.Game;
-using static TeroftheMagic.Scripts.Utility.TileUtil;
+using TeroftheMagic.Universe;
+using static TeroftheMagic.Game;
+using static TeroftheMagic.Utility.TileUtil;
 
-namespace TeroftheMagic.Scripts.Utility;
+namespace TeroftheMagic.Utility;
 
 public abstract class Functions {
 

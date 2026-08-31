@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace TeroftheMagic.Scripts.Utility;
+namespace TeroftheMagic.Utility;
 
 public abstract class TileUtil {
 	public const byte TilePixelSize = 16;

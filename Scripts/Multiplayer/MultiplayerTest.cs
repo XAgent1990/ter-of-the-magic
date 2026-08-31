@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Reflection;
 
-namespace TeroftheMagic.Scripts.Multiplayer;
+namespace TeroftheMagic.Multiplayer;
 
 public partial class MultiplayerTest : Control {
 

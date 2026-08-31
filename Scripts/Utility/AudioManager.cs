@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace TeroftheMagic.Scripts.Utility;
+namespace TeroftheMagic.Utility;
 
 public partial class AudioManager : AudioStreamPlayer {
 	public static Dictionary<string, AudioStreamMP3> Audios = [];

@@ -1,6 +1,6 @@
 using Godot;
 using System;
-using TeroftheMagic.Scripts;
+using TeroftheMagic;
 
 public partial class ButtonsForAny : Button {
 

@@ -2,14 +2,14 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TeroftheMagic.Scripts.Interactables;
-using TeroftheMagic.Scripts.Universe;
-using TeroftheMagic.Scripts.Utility;
-using static TeroftheMagic.Scripts.Utility.Functions;
-using static TeroftheMagic.Scripts.Utility.TileUtil;
-using Logger = TeroftheMagic.Scripts.Utility.Logger;
+using TeroftheMagic.Interactables;
+using TeroftheMagic.Universe;
+using TeroftheMagic.Utility;
+using static TeroftheMagic.Utility.Functions;
+using static TeroftheMagic.Utility.TileUtil;
+using Logger = TeroftheMagic.Utility.Logger;
 
-namespace TeroftheMagic.Scripts;
+namespace TeroftheMagic;
 
 public partial class Game : Node2D {
 	public static Game Instance { get; private set; }
@@ -60,7 +60,7 @@ public partial class Game : Node2D {
 	private const byte minTreeHeight = 7;
 	private const byte maxTreeHeight = 23;
 	private const byte branchChance = 20;
-	private System.Diagnostics.Stopwatch s;
+	private static System.Diagnostics.Stopwatch s;
 
 	/// <summary>
 	/// Render distance in Chunks.
@@ -94,6 +94,24 @@ public partial class Game : Node2D {
 		loaded = false;
 		random = new(seed);
 		noise.Seed = seed;
+		// NewWorld();
+		WorldArchive.Load("TestWorld");
+		World.Load();
+		Task.WaitAll([.. GenTasks]);
+		GenTasks.Clear();
+		loaded = true;
+		GD.Print($"Time for Load: {s.ElapsedMilliseconds}ms");
+		s.Restart();
+		SpawnPlayer();
+		RenderChunks();
+		GD.Print($"Time for Render: {s.ElapsedMilliseconds}ms");
+		s.Restart();
+		// WorldArchive.Save("TestWorld");
+		// GD.Print($"Time for Save: {s.ElapsedMilliseconds}ms");
+		// s.Restart();
+	}
+
+	private static void NewWorld() {
 		initGen = true;
 		World.New(WorldChunks);
 		Task.WaitAll([.. GenTasks]);
@@ -115,16 +133,6 @@ public partial class Game : Node2D {
 		s.Restart();
 		GrowVegetation();
 		GD.Print($"Time for Vegetation: {s.ElapsedMilliseconds}ms");
-		s.Restart();
-		World.Load();
-		Task.WaitAll([.. GenTasks]);
-		GenTasks.Clear();
-		loaded = true;
-		GD.Print($"Time for Load: {s.ElapsedMilliseconds}ms");
-		s.Restart();
-		SpawnPlayer();
-		RenderChunks();
-		GD.Print($"Time for Render: {s.ElapsedMilliseconds}ms");
 		s.Restart();
 	}
 
@@ -364,6 +372,15 @@ public partial class Game : Node2D {
 			ppCounter -= ttu;
 		}
 	}
+
+	public override void _Notification(int what)
+	{
+		if (what == NotificationWMCloseRequest) {
+			WorldArchive.Save("TestWorld");
+			GetTree().Quit(); // default behavior
+		}
+	}
+
 	public enum DamageType {
 		Fire, Ice, Lightning, Thunder, Poison, Acid, Holy, Unholy, Arcane, Force
 	}

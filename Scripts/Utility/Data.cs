@@ -3,9 +3,9 @@ using System;
 using System.Runtime.Serialization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using TeroftheMagic.Scripts.Universe;
+using TeroftheMagic.Universe;
 
-namespace TeroftheMagic.Scripts.Utility;
+namespace TeroftheMagic.Utility;
 
 [JsonConverter(typeof(RangeIJsonConverter))]
 public struct RangeI(int from, int to) {

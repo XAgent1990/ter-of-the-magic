@@ -1,11 +1,11 @@
 using Godot;
 using System;
-using TeroftheMagic.Scripts.Spells;
-using TeroftheMagic.Scripts.UI;
-using TeroftheMagic.Scripts.Universe;
-using static TeroftheMagic.Scripts.Utility.TileUtil;
+using TeroftheMagic.Spells;
+using TeroftheMagic.UI;
+using TeroftheMagic.Universe;
+using static TeroftheMagic.Utility.TileUtil;
 
-namespace TeroftheMagic.Scripts.Interactables;
+namespace TeroftheMagic.Interactables;
 
 public partial class WandSlot : Control {
 	[Export] private TextureRect Texture;

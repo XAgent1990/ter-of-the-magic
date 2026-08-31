@@ -1,13 +1,13 @@
 using Godot;
 using System;
-using TeroftheMagic.Scripts.Universe;
-using static TeroftheMagic.Scripts.Game;
-using static TeroftheMagic.Scripts.Universe.World;
-using static TeroftheMagic.Scripts.Utility.TileUtil;
-using static TeroftheMagic.Scripts.Utility.Functions;
-using TeroftheMagic.Scripts.Utility;
+using TeroftheMagic.Universe;
+using static TeroftheMagic.Game;
+using static TeroftheMagic.Universe.World;
+using static TeroftheMagic.Utility.TileUtil;
+using static TeroftheMagic.Utility.Functions;
+using TeroftheMagic.Utility;
 
-namespace TeroftheMagic.Scripts.UI;
+namespace TeroftheMagic.UI;
 
 public partial class MouseController : Control {
 	private enum ActiveButton { Left, Right }

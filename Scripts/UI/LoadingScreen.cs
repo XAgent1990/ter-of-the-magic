@@ -2,7 +2,7 @@ using Godot;
 using System;
 using Array = Godot.Collections.Array;
 
-namespace TeroftheMagic.Scripts.UI;
+namespace TeroftheMagic.UI;
 
 public partial class LoadingScreen : Control {
 	[Export] public ProgressBar ProgressBar;

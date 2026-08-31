@@ -17,7 +17,7 @@
 atlas = ExtResource("7_vy5pj")
 region = Rect2(0, 16, 16, 16)
 
-[node name="Game" type="Node2D" unique_id=1163609889 node_paths=PackedStringArray("player")]
+[node name="Game2" type="Node2D" unique_id=1163609889 node_paths=PackedStringArray("player")]
 script = ExtResource("1_idj7w")
 player = NodePath("World/Entities/Player")
 metadata/_edit_horizontal_guides_ = [-86.0]
@@ -31,10 +31,12 @@ metadata/_edit_horizontal_guides_ = [-86.0]
 [node name="LeftWall" type="CollisionShape2D" parent="World/Borders" unique_id=1864212732]
 rotation = 1.5707964
 shape = SubResource("WorldBoundaryShape2D_pbw6q")
+disabled = true
 
 [node name="RightWall" type="CollisionShape2D" parent="World/Borders" unique_id=673075076]
 rotation = -1.5707964
 shape = SubResource("WorldBoundaryShape2D_pbw6q")
+disabled = true
 
 [node name="SkyWall" type="CollisionShape2D" parent="World/Borders" unique_id=364101085]
 rotation = 3.1415927

@@ -2,9 +2,9 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TeroftheMagic.Scripts.Universe;
+using TeroftheMagic.Universe;
 
-namespace TeroftheMagic.Scripts.Interactables;
+namespace TeroftheMagic.Interactables;
 
 public partial class PlayerInventory : Inventory {
 	public static PlayerInventory Instance;

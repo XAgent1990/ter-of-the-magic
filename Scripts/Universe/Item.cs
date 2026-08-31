@@ -1,14 +1,14 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using TeroftheMagic.Scripts.Utility;
-using static TeroftheMagic.Scripts.Utility.Functions;
-using static TeroftheMagic.Scripts.Utility.Exceptions;
-using static TeroftheMagic.Scripts.Utility.TileUtil;
+using TeroftheMagic.Utility;
+using static TeroftheMagic.Utility.Functions;
+using static TeroftheMagic.Utility.Exceptions;
+using static TeroftheMagic.Utility.TileUtil;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 
-namespace TeroftheMagic.Scripts.Universe;
+namespace TeroftheMagic.Universe;
 
 [JsonDerivedType(typeof(Item), "item")]
 [JsonDerivedType(typeof(Block), "block")]

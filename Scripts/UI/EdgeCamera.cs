@@ -1,10 +1,10 @@
 using Godot;
 using System;
-using static TeroftheMagic.Scripts.Utility.Extensions;
-using static TeroftheMagic.Scripts.Universe.World;
-using static TeroftheMagic.Scripts.Game;
+using static TeroftheMagic.Utility.Extensions;
+using static TeroftheMagic.Universe.World;
+using static TeroftheMagic.Game;
 
-namespace TeroftheMagic.Scripts.UI;
+namespace TeroftheMagic.UI;
 
 public partial class EdgeCamera : Camera2D {
 

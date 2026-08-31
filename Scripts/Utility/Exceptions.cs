@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-namespace TeroftheMagic.Scripts.Utility;
+namespace TeroftheMagic.Utility;
 
 public class Exceptions {
 	public class StackSizeViolation(string message) : Exception(message) {}

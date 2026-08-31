@@ -1,10 +1,10 @@
 using Godot;
 using System;
 using System.Diagnostics;
-using TeroftheMagic.Scripts.Utility;
-using Logger = TeroftheMagic.Scripts.Utility.Logger;
+using TeroftheMagic.Utility;
+using Logger = TeroftheMagic.Utility.Logger;
 
-namespace TeroftheMagic.Scripts.Universe;
+namespace TeroftheMagic.Universe;
 
 public partial class ItemDrop : RigidBody2D, IEntity {
 	[Export] public Sprite2D ItemSprite { get; set; }

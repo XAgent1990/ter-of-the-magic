@@ -1,4 +1,4 @@
-namespace TeroftheMagic.Scripts.Universe;
+namespace TeroftheMagic.Universe;
 
 using Godot;
 using System;

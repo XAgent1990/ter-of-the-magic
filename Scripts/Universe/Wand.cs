@@ -1,10 +1,10 @@
-namespace TeroftheMagic.Scripts.Universe;
+namespace TeroftheMagic.Universe;
 
 using Godot;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using static TeroftheMagic.Scripts.Game;
+using static TeroftheMagic.Game;
 
 public class Wand : Item {
 	public byte Slots { get; set; }

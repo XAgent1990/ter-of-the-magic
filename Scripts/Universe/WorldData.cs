@@ -1,14 +1,14 @@
 using Godot;
 using System;
 using System.Threading.Tasks;
-using TeroftheMagic.Scripts.Utility;
-using static TeroftheMagic.Scripts.Game;
-using static TeroftheMagic.Scripts.Utility.Functions;
-using static TeroftheMagic.Scripts.Utility.Extensions;
-using static TeroftheMagic.Scripts.Utility.TileUtil;
-using Logger = TeroftheMagic.Scripts.Utility.Logger;
+using TeroftheMagic.Utility;
+using static TeroftheMagic.Game;
+using static TeroftheMagic.Utility.Functions;
+using static TeroftheMagic.Utility.Extensions;
+using static TeroftheMagic.Utility.TileUtil;
+using Logger = TeroftheMagic.Utility.Logger;
 
-namespace TeroftheMagic.Scripts.Universe;
+namespace TeroftheMagic.Universe;
 
 public class WorldData {
 	public static Vector2I size;

@@ -2,10 +2,10 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
-using TeroftheMagic.Scripts;
-using TeroftheMagic.Scripts.Universe;
+using TeroftheMagic;
+using TeroftheMagic.Universe;
 
-namespace TeroftheMagic.Scripts.Entities;
+namespace TeroftheMagic.Entities;
 
 public partial class Player : Entity {
 

@@ -1,8 +1,8 @@
 using Godot;
 using System;
-using TeroftheMagic.Scripts.Universe;
+using TeroftheMagic.Universe;
 
-namespace TeroftheMagic.Scripts.Spells;
+namespace TeroftheMagic.Spells;
 
 public class SpellComponent : Item {
 }

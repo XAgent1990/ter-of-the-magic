@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-namespace TeroftheMagic.Scripts.Multiplayer;
+namespace TeroftheMagic.Multiplayer;
 
 public partial class MultiplayerTestButtonCreate : Button
 {

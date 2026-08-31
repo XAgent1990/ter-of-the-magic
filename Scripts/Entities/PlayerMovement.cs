@@ -1,10 +1,10 @@
 using Godot;
 using System;
 using System.Security.Cryptography.X509Certificates;
-using TeroftheMagic.Scripts;
-using TeroftheMagic.Scripts.Utility;
-using static TeroftheMagic.Scripts.Utility.Extensions;
-using static TeroftheMagic.Scripts.Game;
+using TeroftheMagic;
+using TeroftheMagic.Utility;
+using static TeroftheMagic.Utility.Extensions;
+using static TeroftheMagic.Game;
 
 public partial class PlayerMovement : CharacterBody2D {
 	public const float Speed = 300.0f;

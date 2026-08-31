@@ -1,11 +1,11 @@
 using Godot;
 using System;
-using TeroftheMagic.Scripts.Universe;
-using TeroftheMagic.Scripts.Utility;
-using static TeroftheMagic.Scripts.Game;
-using Logger = TeroftheMagic.Scripts.Utility.Logger;
+using TeroftheMagic.Universe;
+using TeroftheMagic.Utility;
+using static TeroftheMagic.Game;
+using Logger = TeroftheMagic.Utility.Logger;
 
-namespace TeroftheMagic.Scripts.UI;
+namespace TeroftheMagic.UI;
 
 public partial class UIController : CanvasLayer {
 }
