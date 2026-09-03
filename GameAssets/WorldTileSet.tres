@@ -1,9 +1,9 @@
 [gd_resource type="TileSet" format=3 uid="uid://d3dchveij2chi"]
 
-[ext_resource type="Texture2D" uid="uid://d1oaqe3ssr6ik" path="res://Assets/BlockTileSet.png" id="1_7mi7d"]
-[ext_resource type="Texture2D" uid="uid://cc1im5srv8sug" path="res://Assets/ItemTileSet.png" id="1_x0n16"]
-[ext_resource type="Texture2D" uid="uid://ccnhte57i42q7" path="res://Assets/TreeTileSet.png" id="2_7mi7d"]
-[ext_resource type="Texture2D" uid="uid://hhfvhbje133b" path="res://Assets/PlantsTileSet.png" id="4_4hx2b"]
+[ext_resource type="Texture2D" uid="uid://d1oaqe3ssr6ik" path="res://Assets/Visuals/BlockTileSet.png" id="1_7mi7d"]
+[ext_resource type="Texture2D" uid="uid://cc1im5srv8sug" path="res://Assets/Visuals/ItemTileSet.png" id="1_x0n16"]
+[ext_resource type="Texture2D" uid="uid://ccnhte57i42q7" path="res://Assets/Visuals/TreeTileSet.png" id="2_7mi7d"]
+[ext_resource type="Texture2D" uid="uid://hhfvhbje133b" path="res://Assets/Visuals/PlantsTileSet.png" id="4_4hx2b"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4hx2b"]
 texture = ExtResource("1_x0n16")

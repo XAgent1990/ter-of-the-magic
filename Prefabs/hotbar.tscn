@@ -21,6 +21,7 @@ script = ExtResource("1_7ajij")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=874945085]
 layout_mode = 2
+theme_override_constants/separation = 6
 
 [node name="InventoyCell" parent="MarginContainer/HBoxContainer" unique_id=759566677 instance=ExtResource("1_wtqgt")]
 layout_mode = 2

@@ -2,21 +2,22 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bpxlk1rxlrmir"
-path="res://.godot/imported/DropHighlight.png-52b4cacf347653d53933b672b444d430.ctex"
+uid="uid://d1oaqe3ssr6ik"
+path="res://.godot/imported/BlockTileSet.png-f00619f45cdbd5f2157800502fe0fb09.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/DropHighlight.png"
-dest_files=["res://.godot/imported/DropHighlight.png-52b4cacf347653d53933b672b444d430.ctex"]
+source_file="res://Assets/Visuals/BlockTileSet.png"
+dest_files=["res://.godot/imported/BlockTileSet.png-f00619f45cdbd5f2157800502fe0fb09.ctex"]
 
 [params]
 
 compress/mode=0
 compress/high_quality=false
+compress/high_quality_mode=0
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

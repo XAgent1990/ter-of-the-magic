@@ -94,8 +94,8 @@ public partial class Game : Node2D {
 		loaded = false;
 		random = new(seed);
 		noise.Seed = seed;
-		// NewWorld();
-		WorldArchive.Load("TestWorld");
+		NewWorld();
+		// WorldArchive.Load("TestWorld");
 		World.Load();
 		Task.WaitAll([.. GenTasks]);
 		GenTasks.Clear();

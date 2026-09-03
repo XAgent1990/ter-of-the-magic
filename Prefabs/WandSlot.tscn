@@ -1,6 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://d16bfgs01sgyh"]
+[gd_scene format=3 uid="uid://d16bfgs01sgyh"]
 
-[ext_resource type="Texture2D" uid="uid://dgma1qud541d0" path="res://Assets/SpellTileSet.png" id="1_lk8k0"]
+[ext_resource type="Texture2D" uid="uid://dgma1qud541d0" path="res://Assets/Visuals/SpellTileSet.png" id="1_lk8k0"]
 [ext_resource type="Theme" uid="uid://hjgbplpdvb0p" path="res://GameAssets/Pixeloid_Theme.tres" id="3_s0eq5"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_upp2x"]

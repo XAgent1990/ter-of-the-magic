@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dgpt0rlvictxb"]
 
-[ext_resource type="Texture2D" uid="uid://dkswkqef4p6dd" path="res://Assets/knight.png" id="1_hghv2"]
+[ext_resource type="Texture2D" uid="uid://dkswkqef4p6dd" path="res://Assets/Visuals/knight.png" id="1_hghv2"]
 [ext_resource type="Script" uid="uid://bfla12j6dcwym" path="res://Scripts/Entities/EntityMovement.cs" id="1_t4g6b"]
 [ext_resource type="Script" uid="uid://c83iwmqgu1bal" path="res://Scripts/Entities/Enemy.cs" id="3_30yes"]
 

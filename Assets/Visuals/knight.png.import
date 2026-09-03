@@ -2,21 +2,22 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ccnhte57i42q7"
-path="res://.godot/imported/TreeTileSet.png-13d59321a7d193fa7fd58f3207c4694c.ctex"
+uid="uid://dkswkqef4p6dd"
+path="res://.godot/imported/knight.png-c3fc6c24b51fb5f5741fb8283f88a833.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/TreeTileSet.png"
-dest_files=["res://.godot/imported/TreeTileSet.png-13d59321a7d193fa7fd58f3207c4694c.ctex"]
+source_file="res://Assets/Visuals/knight.png"
+dest_files=["res://.godot/imported/knight.png-c3fc6c24b51fb5f5741fb8283f88a833.ctex"]
 
 [params]
 
 compress/mode=0
 compress/high_quality=false
+compress/high_quality_mode=0
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

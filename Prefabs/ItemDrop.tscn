@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://dq2jnar0gbw7o"]
+[gd_scene format=3 uid="uid://dq2jnar0gbw7o"]
 
-[ext_resource type="Texture2D" uid="uid://bpxlk1rxlrmir" path="res://Assets/DropHighlight.png" id="1_753xi"]
+[ext_resource type="Texture2D" uid="uid://bpxlk1rxlrmir" path="res://Assets/Visuals/DropHighlight.png" id="1_753xi"]
 [ext_resource type="Script" uid="uid://ceov3qbtx0c7w" path="res://Scripts/Universe/ItemDrop.cs" id="1_bd0g0"]
-[ext_resource type="Texture2D" uid="uid://d1oaqe3ssr6ik" path="res://Assets/BlockTileSet.png" id="2_bd0g0"]
+[ext_resource type="Texture2D" uid="uid://d1oaqe3ssr6ik" path="res://Assets/Visuals/BlockTileSet.png" id="2_bd0g0"]
+[ext_resource type="Material" uid="uid://d004ji8merqev" path="res://GameAssets/bobbing_shader_material.tres" id="2_tarru"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_753xi"]
 radius = 8.0
@@ -10,7 +11,7 @@ radius = 8.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_tarru"]
 radius = 24.0
 
-[node name="ItemDrop" type="RigidBody2D" node_paths=PackedStringArray("ItemSprite", "FusionArea")]
+[node name="ItemDrop" type="RigidBody2D" unique_id=2000894064 node_paths=PackedStringArray("ItemSprite", "FusionArea")]
 z_index = 240
 collision_layer = 8
 center_of_mass_mode = 1
@@ -21,26 +22,28 @@ script = ExtResource("1_bd0g0")
 ItemSprite = NodePath("ItemSprite")
 FusionArea = NodePath("Area2D")
 
-[node name="ItemColliderShape" type="CollisionShape2D" parent="."]
+[node name="ItemColliderShape" type="CollisionShape2D" parent="." unique_id=1969514293]
 rotation = 1.5707964
 shape = SubResource("CircleShape2D_753xi")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Area2D" type="Area2D" parent="." unique_id=1310398288]
 process_mode = 4
 collision_layer = 0
 collision_mask = 8
 input_pickable = false
 monitorable = false
 
-[node name="FusionAreaShape" type="CollisionShape2D" parent="Area2D"]
+[node name="FusionAreaShape" type="CollisionShape2D" parent="Area2D" unique_id=407069427]
 shape = SubResource("CircleShape2D_tarru")
 
-[node name="ItemSprite" type="Sprite2D" parent="."]
+[node name="ItemSprite" type="Sprite2D" parent="." unique_id=746620594]
+material = ExtResource("2_tarru")
 texture = ExtResource("2_bd0g0")
 region_enabled = true
 region_rect = Rect2(0, 0, 16, 16)
 
-[node name="HighlightSprite" type="Sprite2D" parent="ItemSprite"]
+[node name="HighlightSprite" type="Sprite2D" parent="ItemSprite" unique_id=493328451]
 z_index = -1
+use_parent_material = true
 position = Vector2(0, -16)
 texture = ExtResource("1_753xi")

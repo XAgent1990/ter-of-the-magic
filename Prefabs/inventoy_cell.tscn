@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dwakc763c1vvr"]
 
 [ext_resource type="Script" uid="uid://dgbdr1at2kt0i" path="res://Scripts/Interactables/InventoryCell.cs" id="1_upp2x"]
-[ext_resource type="Texture2D" uid="uid://d1oaqe3ssr6ik" path="res://Assets/BlockTileSet.png" id="2_ct837"]
+[ext_resource type="Texture2D" uid="uid://d1oaqe3ssr6ik" path="res://Assets/Visuals/BlockTileSet.png" id="2_ct837"]
 [ext_resource type="Theme" uid="uid://hjgbplpdvb0p" path="res://GameAssets/Pixeloid_Theme.tres" id="3_svgwm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_upp2x"]
