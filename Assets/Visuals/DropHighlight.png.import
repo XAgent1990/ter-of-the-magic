@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dgma1qud541d0"
-path="res://.godot/imported/SpellTileSet.png-63813612072af2a9fa737b5186d92dce.ctex"
+uid="uid://bpxlk1rxlrmir"
+path="res://.godot/imported/DropHighlight.png-b8544e49336f13833b94eee22b95bc10.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/SpellTileSet.png"
-dest_files=["res://.godot/imported/SpellTileSet.png-63813612072af2a9fa737b5186d92dce.ctex"]
+source_file="res://Assets/Visuals/DropHighlight.png"
+dest_files=["res://.godot/imported/DropHighlight.png-b8544e49336f13833b94eee22b95bc10.ctex"]
 
 [params]
 

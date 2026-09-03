@@ -31,9 +31,7 @@ public partial class ItemDrop : RigidBody2D, IEntity {
 	public byte StackSize { get => ItemStack.Item.StackSize; }
 	private static readonly PackedScene Prefab = GD.Load<PackedScene>("res://Prefabs/ItemDrop.tscn");
 	private const float jumpHeight = 10 * TileUtil.TilePixelSize;
-	private double bobCounter = 0;
-	private const float bobSpeed = 3.5f;
-	private const float bobHeight = 2;
+	private double bobCounter = 0; // TODO: check if obsolete
 	private const double areaCooldown = 1;
 	private double areaTimer = areaCooldown;
 	private bool IsStationary { get => LinearVelocity.Length() < .1f; }
@@ -69,13 +67,6 @@ public partial class ItemDrop : RigidBody2D, IEntity {
 		base._Ready();
 
 		FusionArea.BodyEntered += OnEnter;
-	}
-
-	public override void _Process(double delta) {
-		base._Process(delta);
-
-		bobCounter += delta;
-		ItemSprite.Position = new(0, (float)Math.Sin(bobCounter * bobSpeed) * bobHeight - bobHeight);
 	}
 
 	public override void _PhysicsProcess(double delta) {

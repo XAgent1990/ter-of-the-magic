@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://dswqdqivpj11r" path="res://Scripts/UI/MouseController.cs" id="6_50glp"]
 [ext_resource type="PackedScene" uid="uid://dclive1vjj1cl" path="res://Prefabs/PlayerInventory.tscn" id="6_v1gob"]
 [ext_resource type="PackedScene" uid="uid://dxirjufr2g60x" path="res://Prefabs/hotbar.tscn" id="7_bmxlf"]
-[ext_resource type="Texture2D" uid="uid://d1oaqe3ssr6ik" path="res://Assets/BlockTileSet.png" id="7_vy5pj"]
+[ext_resource type="Texture2D" uid="uid://d1oaqe3ssr6ik" path="res://Assets/Visuals/BlockTileSet.png" id="7_vy5pj"]
 [ext_resource type="Theme" uid="uid://hjgbplpdvb0p" path="res://GameAssets/Pixeloid_Theme.tres" id="8_bmxlf"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_pbw6q"]

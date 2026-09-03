@@ -3,20 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cc1im5srv8sug"
-path="res://.godot/imported/ItemTileSet.png-50d3665f538fbd54802e3becab4b097a.ctex"
+path="res://.godot/imported/ItemTileSet.png-06d4d7f3cf28d7d8e4a73a206404e68f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/ItemTileSet.png"
-dest_files=["res://.godot/imported/ItemTileSet.png-50d3665f538fbd54802e3becab4b097a.ctex"]
+source_file="res://Assets/Visuals/ItemTileSet.png"
+dest_files=["res://.godot/imported/ItemTileSet.png-06d4d7f3cf28d7d8e4a73a206404e68f.ctex"]
 
 [params]
 
 compress/mode=0
 compress/high_quality=false
+compress/high_quality_mode=0
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

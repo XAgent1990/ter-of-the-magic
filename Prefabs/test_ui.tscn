@@ -1,11 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://bfoceiykrmmhu"]
+[gd_scene format=3 uid="uid://bfoceiykrmmhu"]
 
 [ext_resource type="Script" uid="uid://ee4aqadw1sff" path="res://Scripts/UI/ConnectIntSpinBox.cs" id="1_a021g"]
 [ext_resource type="Script" uid="uid://da1bh21cnyqim" path="res://Scripts/UI/TestUi.cs" id="1_ob34c"]
 [ext_resource type="Script" uid="uid://y0280m0kk5ep" path="res://Scripts/UI/ButtonsForAny.cs" id="2_ponrc"]
 [ext_resource type="Theme" uid="uid://hjgbplpdvb0p" path="res://GameAssets/Pixeloid_Theme.tres" id="2_xbsx2"]
 
-[node name="Test-UI" type="Control"]
+[node name="Test-UI" type="Control" unique_id=64149504]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,7 +14,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ob34c")
 
-[node name="BG" type="ColorRect" parent="."]
+[node name="BG" type="ColorRect" parent="." unique_id=313851811]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -25,7 +25,7 @@ grow_horizontal = 0
 grow_vertical = 2
 color = Color(0.427493, 0.42749307, 0.42749307, 1)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="BG"]
+[node name="VBoxContainer" type="VBoxContainer" parent="BG" unique_id=1431787063]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -33,7 +33,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SpinBox" type="SpinBox" parent="BG/VBoxContainer"]
+[node name="SpinBox" type="SpinBox" parent="BG/VBoxContainer" unique_id=283251965]
 layout_mode = 2
 theme = ExtResource("2_xbsx2")
 rounded = true
@@ -43,7 +43,7 @@ update_on_text_changed = true
 prefix = "Seed"
 script = ExtResource("1_a021g")
 
-[node name="SpinBox2" type="SpinBox" parent="BG/VBoxContainer"]
+[node name="SpinBox2" type="SpinBox" parent="BG/VBoxContainer" unique_id=1196520047]
 layout_mode = 2
 theme = ExtResource("2_xbsx2")
 step = 0.10000000000582077
@@ -54,7 +54,7 @@ prefix = "HeightMod"
 script = ExtResource("1_a021g")
 action = 1
 
-[node name="SpinBox3" type="SpinBox" parent="BG/VBoxContainer"]
+[node name="SpinBox3" type="SpinBox" parent="BG/VBoxContainer" unique_id=1483069442]
 layout_mode = 2
 theme = ExtResource("2_xbsx2")
 step = 0.10000000000582077
@@ -65,7 +65,7 @@ prefix = "CaveMod"
 script = ExtResource("1_a021g")
 action = 2
 
-[node name="SpinBox4" type="SpinBox" parent="BG/VBoxContainer"]
+[node name="SpinBox4" type="SpinBox" parent="BG/VBoxContainer" unique_id=1463157843]
 layout_mode = 2
 theme = ExtResource("2_xbsx2")
 max_value = 200.0
@@ -77,7 +77,7 @@ prefix = "CaveThreshold"
 script = ExtResource("1_a021g")
 action = 3
 
-[node name="SpinBox5" type="SpinBox" parent="BG/VBoxContainer"]
+[node name="SpinBox5" type="SpinBox" parent="BG/VBoxContainer" unique_id=2087179543]
 layout_mode = 2
 theme = ExtResource("2_xbsx2")
 max_value = 50.0
@@ -89,7 +89,7 @@ prefix = "Smoothing"
 script = ExtResource("1_a021g")
 action = 4
 
-[node name="SpinBox6" type="SpinBox" parent="BG/VBoxContainer"]
+[node name="SpinBox6" type="SpinBox" parent="BG/VBoxContainer" unique_id=130129821]
 layout_mode = 2
 theme = ExtResource("2_xbsx2")
 max_value = 50.0
@@ -101,7 +101,7 @@ prefix = "minHeight"
 script = ExtResource("1_a021g")
 action = 5
 
-[node name="SpinBox7" type="SpinBox" parent="BG/VBoxContainer"]
+[node name="SpinBox7" type="SpinBox" parent="BG/VBoxContainer" unique_id=512491722]
 layout_mode = 2
 theme = ExtResource("2_xbsx2")
 max_value = 50.0
@@ -113,7 +113,7 @@ prefix = "maxHeight"
 script = ExtResource("1_a021g")
 action = 6
 
-[node name="SpinBox8" type="SpinBox" parent="BG/VBoxContainer"]
+[node name="SpinBox8" type="SpinBox" parent="BG/VBoxContainer" unique_id=626094671]
 layout_mode = 2
 theme = ExtResource("2_xbsx2")
 max_value = 50.0
@@ -125,7 +125,7 @@ prefix = "Map X"
 script = ExtResource("1_a021g")
 action = 7
 
-[node name="SpinBox9" type="SpinBox" parent="BG/VBoxContainer"]
+[node name="SpinBox9" type="SpinBox" parent="BG/VBoxContainer" unique_id=1003879445]
 layout_mode = 2
 theme = ExtResource("2_xbsx2")
 max_value = 50.0
@@ -137,46 +137,64 @@ prefix = "Map Y"
 script = ExtResource("1_a021g")
 action = 8
 
-[node name="Button" type="Button" parent="BG/VBoxContainer"]
+[node name="Button" type="Button" parent="BG/VBoxContainer" unique_id=1860863233]
 layout_mode = 2
 focus_mode = 0
 theme = ExtResource("2_xbsx2")
 text = "ReMakeGameWorld"
 script = ExtResource("2_ponrc")
+Selection = 2
 
-[node name="PPX" type="Label" parent="BG/VBoxContainer"]
+[node name="Button2" type="Button" parent="BG/VBoxContainer" unique_id=592087200]
+layout_mode = 2
+focus_mode = 0
+theme = ExtResource("2_xbsx2")
+text = "Save"
+script = ExtResource("2_ponrc")
+
+[node name="Button3" type="Button" parent="BG/VBoxContainer" unique_id=965080584]
+layout_mode = 2
+focus_mode = 0
+theme = ExtResource("2_xbsx2")
+text = "Load"
+script = ExtResource("2_ponrc")
+Selection = 1
+
+[node name="PPX" type="Label" parent="BG/VBoxContainer" unique_id=1501176773]
 layout_mode = 2
 theme = ExtResource("2_xbsx2")
 text = "Player Pos x: [ 000 ]"
 
-[node name="MPX" type="Label" parent="BG/VBoxContainer"]
+[node name="MPX" type="Label" parent="BG/VBoxContainer" unique_id=58750765]
 layout_mode = 2
 theme = ExtResource("2_xbsx2")
 text = "Mouse Pos x: [ 000 ]"
 
-[node name="CPX" type="Label" parent="BG/VBoxContainer"]
+[node name="CPX" type="Label" parent="BG/VBoxContainer" unique_id=45230736]
 layout_mode = 2
 theme = ExtResource("2_xbsx2")
 text = "Canvas Pos x: [ 000 ]"
 
-[node name="PPY" type="Label" parent="BG/VBoxContainer"]
+[node name="PPY" type="Label" parent="BG/VBoxContainer" unique_id=1492231691]
 layout_mode = 2
 theme = ExtResource("2_xbsx2")
 text = "Player Pos y: [ 000 ]"
 
-[node name="MPY" type="Label" parent="BG/VBoxContainer"]
+[node name="MPY" type="Label" parent="BG/VBoxContainer" unique_id=622789997]
 layout_mode = 2
 theme = ExtResource("2_xbsx2")
 text = "Mouse Pos y: [ 000 ]"
 
-[node name="CPY" type="Label" parent="BG/VBoxContainer"]
+[node name="CPY" type="Label" parent="BG/VBoxContainer" unique_id=45060715]
 layout_mode = 2
 theme = ExtResource("2_xbsx2")
 text = "Canvas Pos y: [ 000 ]"
 
-[node name="FPS" type="Label" parent="BG/VBoxContainer"]
+[node name="FPS" type="Label" parent="BG/VBoxContainer" unique_id=1822795623]
 layout_mode = 2
 theme = ExtResource("2_xbsx2")
 text = "FPS: [ 000 ]"
 
 [connection signal="pressed" from="BG/VBoxContainer/Button" to="BG/VBoxContainer/Button" method="ButtonPressed"]
+[connection signal="pressed" from="BG/VBoxContainer/Button2" to="BG/VBoxContainer/Button2" method="ButtonPressed"]
+[connection signal="pressed" from="BG/VBoxContainer/Button3" to="BG/VBoxContainer/Button3" method="ButtonPressed"]

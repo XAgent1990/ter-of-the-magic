@@ -250,7 +250,7 @@
         "StackSize": 250,
         "TileSetData": {
             "Type": "item",
-            "ID": 3,
+            "ID": 1,
             "Alt": 0
         },
         "VariantTileSetData": {},
@@ -312,7 +312,7 @@
         "StackSize": 99,
         "TileSetData": {
             "Type": "plants",
-            "ID": 4,
+            "ID": 2,
             "Alt": 0
         },
         "VariantTileSetData": {},

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bc5jy3wqr8wmc"
-path="res://.godot/imported/magic summon.png-ebe069661595d54ddc5f5727fdcbfc6c.ctex"
+uid="uid://dlcb5rj416w5f"
+path="res://.godot/imported/Testing char idea.png-b94d0feb76e9bef8c41ed2bbf9423195.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/magic summon.png"
-dest_files=["res://.godot/imported/magic summon.png-ebe069661595d54ddc5f5727fdcbfc6c.ctex"]
+source_file="res://Assets/Visuals/Testing char idea.png"
+dest_files=["res://.godot/imported/Testing char idea.png-b94d0feb76e9bef8c41ed2bbf9423195.ctex"]
 
 [params]
 

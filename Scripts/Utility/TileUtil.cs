@@ -8,16 +8,21 @@ namespace TeroftheMagic.Utility;
 public abstract class TileUtil {
 	public const byte TilePixelSize = 16;
 	public static Vector2I TilePixelSizeV = new(TilePixelSize,TilePixelSize);
+
+	private static readonly TileSet WorldTileSet = GD.Load<TileSet>("res://GameAssets/WorldTileSet.tres");
 	private static readonly Dictionary<TileSetId, CompressedTexture2D> textures = new(){
-		{ TileSetId.item, GD.Load<CompressedTexture2D>("res://Assets/ItemTileSet.png") },
-		{ TileSetId.block, GD.Load<CompressedTexture2D>("res://Assets/BlockTileSet.png") },
-		{ TileSetId.tree, GD.Load<CompressedTexture2D>("res://Assets/TreeTileSet.png") },
-		{ TileSetId.plants, GD.Load<CompressedTexture2D>("res://Assets/PlantsTileSet.png")}
+		{ TileSetId.item, GD.Load<CompressedTexture2D>("res://Assets/Visuals/ItemTileSet.png") },
+		{ TileSetId.block, GD.Load<CompressedTexture2D>("res://Assets/Visuals/BlockTileSet.png") },
+		{ TileSetId.tree, GD.Load<CompressedTexture2D>("res://Assets/Visuals/TreeTileSet.png") },
+		{ TileSetId.plants, GD.Load<CompressedTexture2D>("res://Assets/Visuals/PlantsTileSet.png")}
 	};
+
 	public static Vector2I TileMapIdToCoord(TileSetId sourceId, ushort id) =>
-		new(--id % TileMapWidth(sourceId), id / TileMapWidth(sourceId));
-	private static byte TileMapWidth(TileSetId sourceId) =>
-		(byte)(textures[sourceId].GetWidth() / TilePixelSize);
+		WorldTileSet.GetSource((int)sourceId).GetTileId(--id);
+		//new(--id % TileMapWidth(sourceId), id / TileMapWidth(sourceId));
+
+	//private static byte TileMapWidth(TileSetId sourceId) =>
+	//	(byte)(textures[sourceId].GetWidth() / TilePixelSize);
 
 	[JsonConverter(typeof(JsonStringEnumConverter))]
 	public enum TileSetId { item, block, tree, plants }
@@ -38,6 +43,8 @@ public abstract class TileUtil {
 
 	public static bool TryTileSetDataToSprite(TileSetData td, out CompressedTexture2D texture, out Vector2I pos) {
 		pos = TilePixelSize * TileMapIdToCoord(td.SourceId, td.ID);
+		
+
 		return textures.TryGetValue(td.SourceId, out texture);
 	}
 }

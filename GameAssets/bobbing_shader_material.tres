@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://d004ji8merqev"]
+
+[ext_resource type="Shader" uid="uid://ci6pggg2h7liw" path="res://GameAssets/bobbing_shader_material.gdshader" id="1_x5du3"]
+
+[resource]
+shader = ExtResource("1_x5du3")
+shader_parameter/bob_speed = 3.5
+shader_parameter/bob_height = 1.75
+shader_parameter/bob_offset = 0.0
