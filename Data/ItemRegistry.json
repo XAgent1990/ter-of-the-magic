@@ -131,7 +131,7 @@
         "StackSize": 0,
         "TileSetData": {
             "Type": "tree",
-            "ID": 6
+            "ID": 8
         },
         "VariantTileSetData": {
             "stump": {
@@ -140,16 +140,16 @@
             },
             "left": {
                 "Type": "tree",
-                "ID": 3
+                "ID": 7
             },
             "right": {
                 "Type": "tree",
-                "ID": 3,
+                "ID": 7,
                 "Alt": 1
             },
             "both": {
                 "Type": "tree",
-                "ID": 8
+                "ID": 6
             }
         },
         "ItemDrops": [
@@ -172,11 +172,11 @@
         "VariantTileSetData": {
             "left": {
                 "Type": "tree",
-                "ID": 7
+                "ID": 3
             },
             "right": {
                 "Type": "tree",
-                "ID": 7,
+                "ID": 3,
                 "Alt": 1
             }
         },
@@ -190,7 +190,7 @@
         "StackSize": 250,
         "TileSetData": {
             "Type": "tree",
-            "ID": 2
+            "ID": 4
         },
         "VariantTileSetData": {
             "top": {
@@ -200,7 +200,7 @@
             },
             "topright": {
                 "Type": "tree",
-                "ID": 4,
+                "ID": 2,
                 "Alt": 3
             },
             "right": {
@@ -210,7 +210,7 @@
             },
             "bottomright": {
                 "Type": "tree",
-                "ID": 4,
+                "ID": 2,
                 "Alt": 1
             },
             "bottom": {
@@ -219,7 +219,7 @@
             },
             "bottomleft": {
                 "Type": "tree",
-                "ID": 4
+                "ID": 2
             },
             "left": {
                 "Type": "tree",
@@ -227,7 +227,7 @@
             },
             "topleft": {
                 "Type": "tree",
-                "ID": 4,
+                "ID": 2,
                 "Alt": 2
             }
         },
