@@ -49,14 +49,13 @@ public partial class ItemContainer : Control {
 	public byte Count {
 		get => itemStack.Count;
 		set {
-			if (value > 1) {
+			if (value > 0) {
 				CountLabel.Text = value.ToString();
 				itemStack.Count = value;
 			}
 			else {
 				CountLabel.Text = "";
-				if (value == 0)
-					ItemStack = new();
+				ItemStack = new();
 			}
 		}
 	}

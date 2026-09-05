@@ -107,6 +107,16 @@ public partial class MouseController : ItemContainer {
 		}
 	}
 
+	public new byte Count {
+		get => itemStack.Count;
+		set {
+			base.Count = value;
+			Visible = value > 0;
+		}
+	}
+
+
+
 	public static Vector2 MPosition {
 		get => Viewport.GetMousePosition();
 	}
