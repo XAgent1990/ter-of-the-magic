@@ -7,39 +7,13 @@ using static TeroftheMagic.Utility.TileUtil;
 
 namespace TeroftheMagic.Interactables;
 
-public partial class WandSlot : Control {
-	[Export] private TextureRect Texture;
-	private AtlasTexture AtlasTexture;
-	public bool Empty { get => ItemStack.Count == 0; }
-	public string ID { get => ItemStack.ID; }
-	private ItemStack itemStack;
-	public ItemStack ItemStack {
-		get => itemStack;
-		set {
-			if (value.Item is not SpellComponent)
-				return;
-			else if (value.Count > 0 && TryTileSetDataToSprite(value.Item.GetTileSetData(), out CompressedTexture2D texture, out Vector2I pos))
-				SetTexture(texture, pos);
-			else
-				SetTexture(null, Vector2I.Zero);
-			itemStack = value;
-		}
-	}
+public partial class WandSlot : ItemContainer {
 
 	public override void _Ready() {
 		base._Ready();
 
-		Texture.Texture = new AtlasTexture();
-		AtlasTexture = (AtlasTexture)Texture.Texture;
 		MouseEntered += OnEnter;
 		MouseExited += OnExit;
-	}
-
-	private void SetTexture(CompressedTexture2D texture, Vector2I pos) {
-		AtlasTexture.Atlas = texture;
-		// GD.Print($"Texture set to {texture.ResourcePath} at {pos}");
-		if (texture is not null)
-			AtlasTexture.Region = new(pos, TilePixelSizeV);
 	}
 
 	private bool Hovered { get; set; }

@@ -9,7 +9,7 @@ using TeroftheMagic.Utility;
 
 namespace TeroftheMagic.UI;
 
-public partial class MouseController : Control {
+public partial class MouseController : ItemContainer {
 	private enum ActiveButton { Left, Right }
 	private static ActiveButton activeButton;
 
@@ -96,47 +96,14 @@ public partial class MouseController : Control {
 		else
 			CountLabel.Text = Count.ToString();
 	}
-
-
-
 	private MouseController() { }
 	public static MouseController Instance { get; private set; }
 	private static Viewport Viewport;
-	[Export] private TextureRect Texture;
-	private AtlasTexture AtlasTexture;
-	[Export] private Label CountLabel;
-	public bool Empty { get => ItemStack.Count == 0; }
-	public string ID { get => ItemStack.ID; }
-	public byte Count {
-		get => itemStack.Count;
-		set {
-			if (value > 0) {
-				CountLabel.Text = value.ToString();
-				itemStack.Count = value;
-			}
-			else {
-				CountLabel.Text = "";
-				ItemStack = new();
-			}
-			Visible = value > 0;
-		}
-	}
-	public byte StackSize { get => itemStack.StackSize; }
-
-	private ItemStack itemStack;
-	public ItemStack ItemStack {
+	public new ItemStack ItemStack {
 		get => itemStack;
 		set {
-			if (value.Count > 0 && TryTileSetDataToSprite(value.Item.GetTileSetData(), out CompressedTexture2D texture, out Vector2I pos)) {
-				SetTexture(texture, pos);
-				CountLabel.Text = value.Count.ToString();
-			}
-			else {
-				SetTexture(null, Vector2I.Zero);
-				CountLabel.Text = "";
-			}
+			base.ItemStack = value;
 			Instance.Visible = value.Count != 0;
-			itemStack = value;
 		}
 	}
 
@@ -149,8 +116,6 @@ public partial class MouseController : Control {
 
 		Instance = this;
 		Viewport = GetViewport();
-		Texture.Texture = new AtlasTexture();
-		AtlasTexture = (AtlasTexture)Texture.Texture;
 	}
 
 	public override void _Process(double delta) {
@@ -158,11 +123,5 @@ public partial class MouseController : Control {
 
 		if (Visible)
 			Position = MPosition;
-	}
-
-	private void SetTexture(CompressedTexture2D texture, Vector2I pos) {
-		AtlasTexture.Atlas = texture;
-		if (texture is not null)
-			AtlasTexture.Region = new(pos, TilePixelSizeV);
 	}
 }

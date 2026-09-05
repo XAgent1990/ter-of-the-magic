@@ -13,7 +13,7 @@ public partial class ItemDrop : RigidBody2D, IEntity {
 	public ItemStack ItemStack {
 		get => itemStack;
 		set {
-			if (TileUtil.TryTileSetDataToSprite(value.Item.GetTileSetData(), out CompressedTexture2D texture, out Vector2I pos)) {
+			if (TileUtil.TryTileSetDataToSprite(value.Item.GetTileSetData(), out Texture2D texture, out Vector2I pos)) {
 				ItemSprite.Texture = texture;
 				ItemSprite.RegionRect = new(pos, TileUtil.TilePixelSizeV);
 			}
